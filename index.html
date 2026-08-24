@@ -1,0 +1,558 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Livro de assentos - Produção acadêmica</title>
+<style>
+  :root{
+    --paper:#E7E9E1; --card:#FFFFFF; --ink:#15191C; --ink2:#4A5259; --rule:#C6CBBE;
+    --navy:#22406B; --navy-soft:#E3E9F2; --stamp:#9E2B2B; --stamp-soft:#F5E4E4;
+    --green:#2F6B4F; --green-soft:#E1EEE7; --amber:#8A6212; --amber-soft:#F6EBD3;
+    --display:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --data:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px}
+  header{background:var(--card);border-bottom:1px solid var(--rule);padding:16px 20px}
+  .wrap{max-width:1000px;margin:0 auto}
+  .eyebrow{font-family:var(--data);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink2)}
+  h1{font-family:var(--display);font-size:27px;margin:2px 0 0;line-height:1.15}
+  h2{font-family:var(--display);font-size:19px;margin:0 0 10px}
+  h3{font-family:var(--display);font-size:16.5px;margin:0;line-height:1.3;font-weight:600}
+  nav{display:flex;gap:4px;margin-top:14px;overflow-x:auto;padding-bottom:4px}
+  nav button{padding:6px 12px;border-radius:3px;white-space:nowrap;font-family:var(--data);font-size:11.5px;
+    letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:1px solid transparent;background:none;color:var(--ink2)}
+  nav button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  main{padding:22px 20px 60px}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:16px}
+  .grid{display:grid;gap:12px}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:720px){.g2,.g3,.g4{grid-template-columns:1fr}.g4.metricas{grid-template-columns:1fr 1fr}}
+  .num{font-family:var(--display);font-size:33px;line-height:1}
+  .rot{font-family:var(--data);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink2);margin-top:6px}
+  label{display:block;font-family:var(--data);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:4px}
+  input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--rule);border-radius:3px;background:#FCFCFA;
+    color:var(--ink);font-family:var(--body);font-size:14px;outline:none}
+  textarea{min-height:70px;resize:vertical}
+  input:focus,select:focus,textarea:focus{border-color:var(--navy);box-shadow:0 0 0 2px var(--navy-soft)}
+  .btn{padding:9px 15px;border-radius:3px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--rule);background:#fff;color:var(--ink);font-family:var(--body)}
+  .btn.pri{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .btn.dan{color:var(--stamp);border-color:var(--stamp)}
+  .btn.sm{padding:5px 10px;font-size:12.5px}
+  .tag{display:inline-block;padding:2px 8px;border-radius:2px;font-family:var(--data);font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+  .carimbo{display:inline-block;padding:3px 8px;border:2px solid var(--stamp);color:var(--stamp);font-family:var(--display);
+    font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transform:rotate(-3deg);opacity:.85;border-radius:2px;white-space:nowrap}
+  .carimbo.ok{border-color:var(--green);color:var(--green)}
+  .item{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--rule);border-radius:3px;padding:14px;cursor:pointer;margin-bottom:8px}
+  .item:hover{border-color:var(--navy)}
+  .linha{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+  .meta{font-size:12.5px;color:var(--ink2);margin-top:3px}
+  .sep{border-top:1px solid var(--rule);padding-top:8px;margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .vazio{border:1px dashed var(--rule);border-radius:4px;background:var(--card);padding:34px;text-align:center}
+  .modal{position:fixed;inset:0;background:rgba(20,24,28,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
+  .modal .box{background:var(--card);border-radius:6px;width:100%;max-width:720px;max-height:92vh;overflow-y:auto;padding:20px}
+  .col{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:12px}
+  .mini{border:1px solid var(--rule);border-radius:3px;background:#FCFCFA;padding:10px;cursor:pointer;margin-bottom:8px}
+  .barra{height:14px;background:var(--navy);border-radius:2px;min-width:14px}
+  .chip{padding:6px 10px;border-radius:3px;cursor:pointer;font-family:var(--data);font-size:12px;border:1px solid var(--rule);background:#fff;color:var(--ink2)}
+  .chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .aviso{background:var(--stamp-soft);color:var(--stamp);padding:8px 20px;font-size:13px}
+  .salvo{font-family:var(--data);font-size:11px;color:var(--ink2)}
+  .full{grid-column:1/-1}
+  @media(max-width:720px){.full{grid-column:1}}
+</style>
+
+<header>
+  <div class="wrap">
+    <div class="linha">
+      <div>
+        <div class="eyebrow">Registro de produção acadêmica</div>
+        <h1>Livro de assentos</h1>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="salvo" id="salvo"></span>
+        <button class="btn pri" onclick="novo()">+ Registrar produção</button>
+      </div>
+    </div>
+    <nav id="nav"></nav>
+  </div>
+</header>
+<div id="aviso"></div>
+<main><div class="wrap" id="app"></div></main>
+<div id="modal"></div>
+<input type="file" id="arquivo" accept=".json" style="display:none">
+
+<script>
+/* ============================ dados ============================ */
+const KEY = "producao-academica-v1";
+const TIPOS = ["Artigo em periódico","Capítulo de livro","Livro / organização","Trabalho completo em anais",
+  "Resumo expandido","Resumo simples","Relatório técnico","Produto educacional","Software / jogo",
+  "Palestra / minicurso","Orientação concluída","Outro"];
+const STATUS = ["Escrevendo","A submeter","Submetido","Em revisão","Aceito","Publicado","Recusado"];
+const CONCLUIDOS = ["Aceito","Publicado"];
+const CORES = {
+  "Escrevendo":["var(--amber-soft)","var(--amber)"], "A submeter":["var(--amber-soft)","var(--amber)"],
+  "Submetido":["var(--navy-soft)","var(--navy)"], "Em revisão":["var(--navy-soft)","var(--navy)"],
+  "Aceito":["var(--green-soft)","var(--green)"], "Publicado":["var(--green-soft)","var(--green)"],
+  "Recusado":["#EDEDED","#6B6B6B"]
+};
+const FOMENTO_PADRAO = [{
+  id:"f-cnpq-405203", agencia:"CNPq", nome:"Divulgação científica por tecnologias lúdicas",
+  processo:"405203/2025", chamada:"Chamada CNPq nº 44/2024, Faixa A",
+  inicio:"2025-11-18", fim:"2028-11-30",
+  texto:"O autor agradece ao CNPq pelo apoio financeiro, Processo nº 405203/2025."
+},{
+  id:"f-fapema-bepp-10468", agencia:"FAPEMA", nome:"Tecnologias lúdicas e abordagem CTS no Museu Game Ciência para a divulgação e alfabetização científica na microrregião do Médio Mearim",
+  processo:"BEPP-10468/26", chamada:"Edital 12/2026, Programa Maranhão Ciência, Bolsa de Produtividade (BEPP), Termo 4653/2026",
+  inicio:"2026-08-01", fim:"2027-07-30",
+  texto:"O autor agradece à FAPEMA pela Bolsa de Produtividade, Processo BEPP-10468/26. Relatório Técnico Final até 30/08/2027, via Patronage."
+}];
+
+let state = {itens:[], fomentos:JSON.parse(JSON.stringify(FOMENTO_PADRAO))};
+let ui = {aba:"painel", busca:"", fStatus:"Todos", fTipo:"Todos", fFomento:"Todos", fomentoRel:"f-cnpq-405203", editando:null};
+let semStorage = false;
+let gh = {owner:"", repo:"", path:"dados/producao.json", token:"", ultimoEnvio:""};
+
+function carregarConfigGH(){
+  try{ const d = JSON.parse(localStorage.getItem(KEY+":github")); if(d) gh = Object.assign(gh, d); }catch(e){}
+}
+function salvarConfigGH(){
+  try{ localStorage.setItem(KEY+":github", JSON.stringify(gh)); }catch(e){}
+}
+function ghUrl(){ return "https://api.github.com/repos/"+gh.owner.trim()+"/"+gh.repo.trim()+"/contents/"+gh.path.trim(); }
+function ghHeaders(){ return {"Authorization":"Bearer "+gh.token.trim(),"Accept":"application/vnd.github+json","Content-Type":"application/json"}; }
+function b64enc(s){ const b = new TextEncoder().encode(s); let r=""; for(let i=0;i<b.length;i++) r += String.fromCharCode(b[i]); return btoa(r); }
+function b64dec(s){ const bin = atob(s.replace(/\s/g,"")); const a = new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) a[i]=bin.charCodeAt(i); return new TextDecoder().decode(a); }
+function ghStatus(msg, erro){
+  const el = document.getElementById("ghstatus");
+  if(el){ el.textContent = msg; el.style.color = erro ? "var(--stamp)" : "var(--green)"; }
+}
+function ghCampo(k, v){ gh[k] = v; salvarConfigGH(); }
+
+async function enviarGitHub(){
+  if(!gh.owner.trim() || !gh.repo.trim() || !gh.token.trim()){ ghStatus("Preencha usuário, repositório e token antes de enviar.", true); return; }
+  ghStatus("Enviando...");
+  try{
+    let sha = null;
+    const r0 = await fetch(ghUrl(), {headers:ghHeaders()});
+    if(r0.status === 200){ const d = await r0.json(); sha = d.sha; }
+    else if(r0.status === 401 || r0.status === 403){ throw new Error("token recusado (" + r0.status + ")"); }
+    else if(r0.status !== 404){ throw new Error("resposta " + r0.status); }
+    const corpo = {
+      message: "Atualiza registros de produção (" + new Date().toLocaleString("pt-BR") + ")",
+      content: b64enc(JSON.stringify({...state, atualizadoEm:new Date().toISOString()}, null, 2))
+    };
+    if(sha) corpo.sha = sha;
+    const r = await fetch(ghUrl(), {method:"PUT", headers:ghHeaders(), body:JSON.stringify(corpo)});
+    if(!r.ok) throw new Error("resposta " + r.status);
+    gh.ultimoEnvio = new Date().toISOString(); salvarConfigGH();
+    ghStatus("Enviado. " + state.itens.length + " registros guardados no GitHub.");
+  }catch(e){ ghStatus("Não foi enviado: " + e.message + ". Confira o token e o nome do repositório.", true); }
+}
+
+async function baixarGitHub(){
+  if(!gh.owner.trim() || !gh.repo.trim() || !gh.token.trim()){ ghStatus("Preencha usuário, repositório e token antes de baixar.", true); return; }
+  ghStatus("Baixando...");
+  try{
+    const r = await fetch(ghUrl(), {headers:ghHeaders()});
+    if(r.status === 404) throw new Error("o arquivo ainda não existe no repositório. Envie uma vez primeiro");
+    if(!r.ok) throw new Error("resposta " + r.status);
+    const d = await r.json();
+    const remoto = JSON.parse(b64dec(d.content));
+    if(!Array.isArray(remoto.itens)) throw new Error("o arquivo do repositório não tem o formato esperado");
+    const quando = remoto.atualizadoEm ? new Date(remoto.atualizadoEm).toLocaleString("pt-BR") : "data desconhecida";
+    if(!confirm("O GitHub tem " + remoto.itens.length + " registros, salvos em " + quando +
+      ".\nEste aparelho tem " + state.itens.length + ".\n\nBaixar substitui o que está aqui. Continuar?")) { ghStatus("Cancelado."); return; }
+    state.itens = remoto.itens;
+    if(Array.isArray(remoto.fomentos) && remoto.fomentos.length) state.fomentos = remoto.fomentos;
+    salvar();
+    ghStatus("Baixado. " + state.itens.length + " registros carregados neste aparelho.");
+  }catch(e){ ghStatus("Não foi baixado: " + e.message + ".", true); }
+}
+
+function carregar(){
+  try{
+    const bruto = localStorage.getItem(KEY);
+    if(bruto){ const d = JSON.parse(bruto);
+      if(Array.isArray(d.itens)) state.itens = d.itens;
+      if(Array.isArray(d.fomentos) && d.fomentos.length) state.fomentos = d.fomentos; }
+  }catch(e){ semStorage = true; }
+}
+function salvar(){
+  try{ localStorage.setItem(KEY, JSON.stringify({...state, atualizadoEm:new Date().toISOString()}));
+    document.getElementById("salvo").textContent = "salvo " + new Date().toLocaleTimeString("pt-BR").slice(0,5);
+  }catch(e){ semStorage = true; }
+  render();
+}
+
+/* ============================ utilitários ============================ */
+const esc = s => String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const fom = id => { const f = state.fomentos.find(x=>x.id===id); return f ? f.agencia+" "+f.processo : id; };
+const tag = s => `<span class="tag" style="background:${CORES[s]?CORES[s][0]:"#EEE"};color:${CORES[s]?CORES[s][1]:"#555"}">${esc(s)}</span>`;
+const pendentes = () => state.itens.filter(i=>CONCLUIDOS.includes(i.status) && i.fomentos.length>0 && i.agradecimento!=="Sim");
+function baixar(nome, conteudo, tipo){
+  const b = new Blob([conteudo], {type:(tipo||"text/plain")+";charset=utf-8"});
+  const u = URL.createObjectURL(b); const a = document.createElement("a");
+  a.href = u; a.download = nome; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u), 2000);
+}
+function novo(){
+  ui.editando = {id:"i"+Date.now()+Math.random().toString(36).slice(2,6), titulo:"", tipo:TIPOS[0], autores:"",
+    veiculo:"", ano:String(new Date().getFullYear()), qualis:"", link:"", status:"Escrevendo",
+    dataSubmissao:"", dataDecisao:"", prazo:"", fomentos:[], agradecimento:"Não", notas:""};
+  render();
+}
+function abrir(id){ const i = state.itens.find(x=>x.id===id); if(i){ ui.editando = JSON.parse(JSON.stringify(i)); render(); } }
+function campoEdit(k,v){ ui.editando[k] = v; }
+function alternarFomento(fid){
+  const l = ui.editando.fomentos;
+  ui.editando.fomentos = l.includes(fid) ? l.filter(x=>x!==fid) : l.concat([fid]);
+  render();
+}
+function gravar(){
+  const e = ui.editando;
+  if(!e.titulo.trim()){ alert("Dê um título ao assento antes de salvar."); return; }
+  const existe = state.itens.some(i=>i.id===e.id);
+  state.itens = existe ? state.itens.map(i=>i.id===e.id?e:i) : state.itens.concat([e]);
+  ui.editando = null; salvar();
+}
+function excluir(){
+  if(!confirm("Excluir este assento em definitivo?")) return;
+  state.itens = state.itens.filter(i=>i.id!==ui.editando.id);
+  ui.editando = null; salvar();
+}
+
+/* ============================ relatórios ============================ */
+function relatorio(){
+  const f = state.fomentos.find(x=>x.id===ui.fomentoRel); if(!f) return "";
+  const v = state.itens.filter(i=>i.fomentos.includes(f.id));
+  const c = v.filter(i=>CONCLUIDOS.includes(i.status));
+  const a = v.filter(i=>!CONCLUIDOS.includes(i.status) && i.status!=="Recusado");
+  let t = "PRESTAÇÃO DE CONTAS - PRODUÇÃO VINCULADA\n";
+  t += f.agencia+" - Processo nº "+f.processo+"\n"+f.chamada+"\n";
+  t += "Vigência: "+(f.inicio||"?")+" a "+(f.fim||"?")+"\n";
+  t += "Gerado em: "+new Date().toLocaleDateString("pt-BR")+"\n\n";
+  t += "1. PRODUÇÃO CONCLUÍDA (aceita ou publicada): "+c.length+"\n\n";
+  TIPOS.forEach(tp=>{
+    const g = c.filter(i=>i.tipo===tp); if(!g.length) return;
+    t += tp.toUpperCase()+"\n";
+    g.sort((x,y)=>(y.ano||"").localeCompare(x.ano||"")).forEach((i,n)=>{
+      t += "  "+(n+1)+". "+(i.autores||"[autores]")+". "+i.titulo+". "+(i.veiculo||"[veículo]")+", "+(i.ano||"s.d.")+".";
+      if(i.qualis) t += " Qualis "+i.qualis+".";
+      if(i.link) t += " Disponível em: "+i.link+".";
+      t += " [Agradecimento: "+i.agradecimento+"]\n";
+    });
+    t += "\n";
+  });
+  t += "2. PRODUÇÃO EM ANDAMENTO: "+a.length+"\n\n";
+  a.forEach((i,n)=>{
+    t += "  "+(n+1)+". "+i.titulo+" ("+i.tipo+"). Situação: "+i.status;
+    if(i.veiculo) t += ". Destino: "+i.veiculo;
+    if(i.dataSubmissao) t += ". Submetido em "+i.dataSubmissao;
+    t += ".\n";
+  });
+  const p = c.filter(i=>i.agradecimento!=="Sim");
+  t += "\n3. ITENS SEM AGRADECIMENTO REGISTRADO: "+p.length+"\n";
+  p.forEach((i,n)=>{ t += "  "+(n+1)+". "+i.titulo+" ("+(i.veiculo||"sem veículo")+")\n"; });
+  t += "\n4. TEXTO PADRÃO DE AGRADECIMENTO\n"+(f.texto||"[não definido]")+"\n";
+  return t;
+}
+function csv(){
+  const cols = ["titulo","tipo","autores","veiculo","ano","qualis","status","dataSubmissao","dataDecisao","agradecimento","link","notas"];
+  const q = v => '"'+String(v==null?"":v).replace(/"/g,'""')+'"';
+  let t = cols.join(";")+";fomentos\n";
+  state.itens.forEach(i=>{ t += cols.map(c=>q(i[c])).join(";")+";"+q(i.fomentos.map(fom).join(" | "))+"\n"; });
+  return "\ufeff"+t;
+}
+function mostrarTexto(txt, nomeArquivo, tipo){
+  document.getElementById("modal").innerHTML = `
+    <div class="modal" onclick="if(event.target===this)fecharModal()"><div class="box">
+      <div class="linha" style="margin-bottom:12px">
+        <h2 style="margin:0">Texto gerado</h2>
+        <button class="btn sm" onclick="fecharModal()">Fechar</button>
+      </div>
+      <textarea id="saida" readonly style="min-height:340px;font-family:var(--data);font-size:12px;line-height:1.5">${esc(txt)}</textarea>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn pri" onclick="copiarSaida()">Copiar tudo</button>
+        ${nomeArquivo?`<button class="btn" onclick='baixar(${JSON.stringify(nomeArquivo)}, document.getElementById("saida").value, ${JSON.stringify(tipo||"text/plain")})'>Baixar arquivo</button>`:""}
+      </div>
+    </div></div>`;
+}
+function copiarSaida(){ const t = document.getElementById("saida"); t.select(); try{document.execCommand("copy")}catch(e){} }
+function fecharModal(){ ui.editando = null; document.getElementById("modal").innerHTML = ""; render(); }
+
+/* ============================ backup ============================ */
+function exportarJSON(){
+  const d = new Date().toISOString().slice(0,10);
+  baixar("producao-academica-"+d+".json", JSON.stringify(state,null,2), "application/json");
+}
+function importarJSON(){
+  const el = document.getElementById("arquivo");
+  el.value = "";
+  el.onchange = () => {
+    const f = el.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try{
+        const d = JSON.parse(r.result);
+        if(!Array.isArray(d.itens)) throw new Error();
+        if(!confirm("Isto substitui os "+state.itens.length+" registros atuais pelos "+d.itens.length+" do arquivo. Continuar?")) return;
+        state.itens = d.itens;
+        if(Array.isArray(d.fomentos) && d.fomentos.length) state.fomentos = d.fomentos;
+        salvar();
+      }catch(e){ alert("O arquivo não é um backup válido desta plataforma."); }
+    };
+    r.readAsText(f);
+  };
+  el.click();
+}
+
+/* ============================ telas ============================ */
+const ABAS = [["painel","Painel"],["producao","Produção"],["andamento","Em andamento"],
+  ["contas","Prestação de contas"],["fomentos","Fomentos"],["dados","Backup"]];
+
+function telaPainel(){
+  const c = state.itens.filter(i=>CONCLUIDOS.includes(i.status)).length;
+  const a = state.itens.filter(i=>!CONCLUIDOS.includes(i.status) && i.status!=="Recusado").length;
+  const p = pendentes();
+  const anos = {};
+  state.itens.filter(i=>CONCLUIDOS.includes(i.status)).forEach(i=>{ const k=i.ano||"s/ano"; anos[k]=(anos[k]||0)+1; });
+  const lista = Object.entries(anos).sort((x,y)=>y[0].localeCompare(x[0]));
+  const prazos = state.itens.filter(i=>i.prazo).sort((x,y)=>x.prazo.localeCompare(y.prazo)).slice(0,8);
+
+  let h = `<div class="grid g4 metricas">
+    ${[["Total registrado",state.itens.length,"var(--ink)"],["Publicado ou aceito",c,"var(--green)"],
+       ["Em andamento",a,"var(--navy)"],["Agradecimento pendente",p.length,"var(--stamp)"]]
+      .map(m=>`<div class="card"><div class="num" style="color:${m[2]}">${m[1]}</div><div class="rot">${m[0]}</div></div>`).join("")}
+  </div>`;
+
+  if(p.length) h += `<div class="card" style="border-color:var(--stamp);margin-top:14px">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+      <span class="carimbo">Verificar antes do relatório</span>
+      <h2 style="margin:0">Produção com fomento e sem agradecimento confirmado</h2></div>
+    ${p.map(i=>`<div class="linha" style="border-top:1px solid var(--rule);padding-top:8px;margin-top:8px">
+      <div><div style="font-weight:600">${esc(i.titulo)}</div>
+      <div class="meta">${esc(i.veiculo)} · ${esc(i.ano)} · ${esc(i.fomentos.map(fom).join(", "))}</div></div>
+      <button class="btn sm" onclick="abrir('${i.id}')">Abrir</button></div>`).join("")}
+  </div>`;
+
+  h += `<div class="grid g2" style="margin-top:14px">
+    <div class="card"><h2>Concluído por ano</h2>
+      ${lista.length?lista.map(([ano,n])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-family:var(--data);font-size:12.5px;width:46px">${esc(ano)}</span>
+        <div class="barra" style="width:${Math.min(100,n*22)}%"></div>
+        <span style="font-family:var(--data);font-size:12.5px">${n}</span></div>`).join("")
+      :`<p class="meta">Nada concluído ainda. Registre um item e marque como publicado ou aceito.</p>`}</div>
+    <div class="card"><h2>Próximos prazos</h2>
+      ${prazos.length?prazos.map(i=>`<div style="display:flex;gap:10px;margin-bottom:8px">
+        <span style="font-family:var(--data);font-size:12.5px;color:var(--stamp)">${esc(i.prazo)}</span>
+        <span style="font-size:13.5px">${esc(i.titulo)}</span></div>`).join("")
+      :`<p class="meta">Nenhum prazo anotado. O campo Prazo serve para data-limite de chamada ou de revisão.</p>`}</div>
+  </div>`;
+  return h;
+}
+
+function telaProducao(){
+  const b = ui.busca.trim().toLowerCase();
+  const f = state.itens
+    .filter(i=>ui.fStatus==="Todos"||i.status===ui.fStatus)
+    .filter(i=>ui.fTipo==="Todos"||i.tipo===ui.fTipo)
+    .filter(i=>ui.fFomento==="Todos"||i.fomentos.includes(ui.fFomento))
+    .filter(i=>!b||((i.titulo+" "+i.autores+" "+i.veiculo+" "+i.notas).toLowerCase().includes(b)))
+    .sort((x,y)=>(y.ano||"").localeCompare(x.ano||"")||x.titulo.localeCompare(y.titulo));
+
+  let h = `<div class="grid g4" style="margin-bottom:14px">
+    <input placeholder="Buscar título, autor, veículo" value="${esc(ui.busca)}" oninput="ui.busca=this.value;render();document.querySelector('input[placeholder^=Buscar]').focus()">
+    <select onchange="ui.fStatus=this.value;render()">${["Todos"].concat(STATUS).map(s=>`<option ${s===ui.fStatus?"selected":""}>${s}</option>`).join("")}</select>
+    <select onchange="ui.fTipo=this.value;render()">${["Todos"].concat(TIPOS).map(s=>`<option ${s===ui.fTipo?"selected":""}>${s}</option>`).join("")}</select>
+    <select onchange="ui.fFomento=this.value;render()"><option value="Todos">Todos os fomentos</option>
+      ${state.fomentos.map(x=>`<option value="${x.id}" ${x.id===ui.fFomento?"selected":""}>${esc(x.agencia+" "+x.processo)}</option>`).join("")}</select>
+  </div>`;
+
+  if(!f.length) return h + `<div class="vazio">
+    <div style="font-family:var(--display);font-size:19px;margin-bottom:6px">Nenhum assento aqui.</div>
+    <p class="meta" style="margin-bottom:14px">Comece pelo que já está publicado neste ano, depois volte no histórico.</p>
+    <button class="btn pri" onclick="novo()">+ Registrar produção</button></div>`;
+
+  h += f.map(i=>{
+    const cor = CORES[i.status]?CORES[i.status][1]:"var(--rule)";
+    const rodape = (i.fomentos.length||i.agradecimento==="Sim") ? `<div class="sep">
+      ${i.fomentos.map(x=>`<span class="tag" style="background:var(--navy-soft);color:var(--navy)">${esc(fom(x))}</span>`).join("")}
+      ${i.agradecimento==="Sim"?`<span class="carimbo ok">Agradecimento incluído</span>`
+        :(i.fomentos.length&&CONCLUIDOS.includes(i.status)?`<span class="carimbo">Sem agradecimento</span>`:"")}
+    </div>` : "";
+    return `<div class="item" style="border-left-color:${cor}" onclick="abrir('${i.id}')">
+      <div class="linha">
+        <div style="flex:1;min-width:200px">
+          <h3>${esc(i.titulo||"(sem título)")}</h3>
+          <div class="meta">${esc(i.autores)}</div>
+          <div class="meta">${esc([i.veiculo,i.ano,i.qualis?"Qualis "+i.qualis:""].filter(Boolean).join(" · "))}</div>
+        </div>
+        <div style="text-align:right">${tag(i.status)}
+          <div class="rot" style="margin-top:6px">${esc(i.tipo)}</div></div>
+      </div>${rodape}</div>`;
+  }).join("");
+  return h;
+}
+
+function telaAndamento(){
+  const cols = ["Escrevendo","A submeter","Submetido","Em revisão","Aceito"];
+  return `<div class="grid g3">${cols.map(c=>{
+    const g = state.itens.filter(i=>i.status===c);
+    return `<div class="col"><div class="linha" style="margin-bottom:10px">${tag(c)}
+      <span style="font-family:var(--data);font-size:12px;color:var(--ink2)">${g.length}</span></div>
+      ${g.length?g.map(i=>`<div class="mini" onclick="abrir('${i.id}')">
+        <div style="font-size:13.5px;font-weight:600;line-height:1.3">${esc(i.titulo||"(sem título)")}</div>
+        <div class="meta" style="font-size:11.5px">${esc(i.veiculo||i.tipo)}</div>
+        ${i.prazo?`<div style="font-family:var(--data);font-size:11px;color:var(--stamp);margin-top:4px">prazo ${esc(i.prazo)}</div>`:""}
+      </div>`).join(""):`<p class="meta">Vazio.</p>`}</div>`;
+  }).join("")}</div>`;
+}
+
+function telaContas(){
+  const f = state.fomentos.find(x=>x.id===ui.fomentoRel) || state.fomentos[0];
+  if(!f) return `<div class="vazio"><p class="meta">Cadastre um fomento na aba Fomentos.</p></div>`;
+  ui.fomentoRel = f.id;
+  const v = state.itens.filter(i=>i.fomentos.includes(f.id));
+  const c = v.filter(i=>CONCLUIDOS.includes(i.status));
+  const s = c.filter(i=>i.agradecimento!=="Sim");
+
+  return `<div class="grid g3" style="align-items:end;margin-bottom:14px">
+    <div><label>Fomento a prestar contas</label>
+      <select onchange="ui.fomentoRel=this.value;render()">
+        ${state.fomentos.map(x=>`<option value="${x.id}" ${x.id===f.id?"selected":""}>${esc(x.agencia+" "+x.processo)}</option>`).join("")}
+      </select></div>
+    <div><button class="btn pri" onclick='mostrarTexto(relatorio(),"relatorio-producao.txt")'>Gerar relatório</button></div>
+    <div><button class="btn" onclick='mostrarTexto(csv(),"producao.csv","text/csv")'>Exportar planilha (CSV)</button></div>
+  </div>
+  <div class="card">
+    <div style="font-family:var(--display);font-size:21px">${esc(f.nome)}</div>
+    <div style="font-family:var(--data);font-size:12.5px;color:var(--ink2);margin-top:4px">${esc(f.agencia)} · Processo ${esc(f.processo)} · ${esc(f.chamada)}</div>
+    <div style="font-family:var(--data);font-size:12.5px;color:var(--ink2)">Vigência ${esc(f.inicio)} a ${esc(f.fim)}</div>
+    <div class="grid g3" style="margin:18px 0">
+      ${[["Vinculado",v.length,"var(--ink)"],["Concluído",c.length,"var(--green)"],["Sem agradecimento",s.length,"var(--stamp)"]]
+        .map(m=>`<div style="border-left:3px solid ${m[2]};padding-left:10px">
+          <div class="num" style="font-size:26px;color:${m[2]}">${m[1]}</div><div class="rot">${m[0]}</div></div>`).join("")}
+    </div>
+    <div style="background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:12px">
+      <div class="rot" style="margin:0 0 6px">Texto de agradecimento a colar no artigo</div>
+      <div style="font-size:13.5px;line-height:1.5">${esc(f.texto)}</div>
+      <button class="btn sm" style="margin-top:10px" onclick='mostrarTexto(${JSON.stringify(f.texto)})'>Copiar texto</button>
+    </div>
+    <h2 style="margin:22px 0 8px">Itens vinculados</h2>
+    ${v.length?v.map(i=>`<div class="linha" style="border-top:1px solid var(--rule);padding:8px 0">
+      <div style="flex:1"><div style="font-size:14px">${esc(i.titulo)}</div>
+      <div class="meta">${esc(i.tipo)} · ${esc(i.veiculo)} · ${esc(i.ano)}</div></div>
+      ${i.agradecimento==="Sim"?`<span class="carimbo ok">OK</span>`:`<span class="carimbo">Pendente</span>`}</div>`).join("")
+    :`<p class="meta">Nenhuma produção vinculada. Abra um item e marque o fomento correspondente.</p>`}
+  </div>`;
+}
+
+function telaFomentos(){
+  const campos = [["Agência","agencia"],["Processo","processo"],["Nome do projeto","nome"],
+    ["Chamada / edital","chamada"],["Início","inicio"],["Fim","fim"]];
+  return state.fomentos.map((f,idx)=>`<div class="card" style="margin-bottom:12px"><div class="grid g2">
+    ${campos.map(([r,k])=>`<div><label>${r}</label>
+      <input value="${esc(f[k]||"")}" onchange="state.fomentos[${idx}].${k}=this.value;salvar()"></div>`).join("")}
+    <div class="full"><label>Texto padrão de agradecimento</label>
+      <textarea onchange="state.fomentos[${idx}].texto=this.value;salvar()">${esc(f.texto||"")}</textarea></div>
+    <div class="full"><button class="btn dan sm" onclick="removerFomento('${f.id}')">Remover fomento</button></div>
+  </div></div>`).join("") + `<button class="btn" onclick="addFomento()">+ Adicionar fomento</button>`;
+}
+function addFomento(){
+  state.fomentos.push({id:"f"+Date.now(),agencia:"",nome:"",processo:"",chamada:"",inicio:"",fim:"",texto:""});
+  salvar();
+}
+function removerFomento(id){
+  if(!confirm("Remover este fomento? Os assentos vinculados a ele perdem o vínculo.")) return;
+  state.fomentos = state.fomentos.filter(x=>x.id!==id);
+  state.itens.forEach(i=>{ i.fomentos = i.fomentos.filter(x=>x!==id); });
+  salvar();
+}
+
+function telaDados(){
+  return `<div class="card" style="margin-bottom:12px">
+    <h2>Sincronizar entre aparelhos</h2>
+    <p class="meta" style="margin-bottom:14px">Guarda os registros num repositório privado do GitHub. Preencha uma vez em cada aparelho. Depois é sempre a mesma rotina: <strong>Baixar</strong> ao começar a trabalhar, <strong>Enviar</strong> ao terminar.</p>
+    <div class="grid g2">
+      <div><label>Seu usuário no GitHub</label><input value="${esc(gh.owner)}" oninput="ghCampo('owner',this.value)" placeholder="ex.: hawbertt"></div>
+      <div><label>Repositório privado dos dados</label><input value="${esc(gh.repo)}" oninput="ghCampo('repo',this.value)" placeholder="ex.: dados-producao"></div>
+      <div><label>Caminho do arquivo</label><input value="${esc(gh.path)}" oninput="ghCampo('path',this.value)"></div>
+      <div><label>Token de acesso (fine-grained)</label><input type="password" value="${esc(gh.token)}" oninput="ghCampo('token',this.value)" placeholder="github_pat_..."></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center">
+      <button class="btn pri" onclick="enviarGitHub()">Enviar para o GitHub</button>
+      <button class="btn" onclick="baixarGitHub()">Baixar do GitHub</button>
+      <span id="ghstatus" style="font-size:13px"></span>
+    </div>
+    <p class="meta" style="margin-top:12px">${gh.ultimoEnvio?("Último envio a partir deste aparelho: "+new Date(gh.ultimoEnvio).toLocaleString("pt-BR")):"Nenhum envio feito a partir deste aparelho."}</p>
+    <p class="meta" style="margin-top:8px;color:var(--stamp)">O token fica guardado neste navegador. Não use em computador compartilhado e gere um token restrito a este único repositório.</p>
+  </div>
+  <div class="card">
+    <h2>Guardar uma cópia</h2>
+    <p class="meta" style="margin-bottom:12px">Baixe o arquivo JSON e guarde junto dos seus documentos do projeto. É o que permite levar os dados para outro computador ou recuperar depois de uma atualização.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn pri" onclick="exportarJSON()">Baixar backup em JSON</button>
+      <button class="btn" onclick="importarJSON()">Restaurar de um arquivo</button>
+    </div>
+    <div style="border-top:1px solid var(--rule);margin-top:18px;padding-top:16px">
+      <h2>Onde os dados ficam</h2>
+      <p class="meta">Este arquivo guarda tudo no armazenamento local do navegador que você usa para abri-lo. Trocar de navegador, limpar dados de navegação ou usar janela anônima faz o registro sumir. Por isso: baixe o backup depois de cada sessão de cadastro.</p>
+      <p class="meta" style="margin-top:8px">Registros: <strong>${state.itens.length}</strong> · Fomentos: <strong>${state.fomentos.length}</strong></p>
+    </div>
+  </div>`;
+}
+
+/* ============================ formulário ============================ */
+function formulario(){
+  const e = ui.editando; if(!e) return "";
+  const inp = (rot,k,tipo,largo)=>`<div class="${largo?"full":""}"><label>${rot}</label>
+    <input ${tipo?`type="${tipo}"`:""} value="${esc(e[k])}" oninput="campoEdit('${k}',this.value)"></div>`;
+  const sel = (rot,k,ops)=>`<div><label>${rot}</label><select onchange="campoEdit('${k}',this.value);render()">
+    ${ops.map(o=>`<option ${o===e[k]?"selected":""}>${esc(o)}</option>`).join("")}</select></div>`;
+  return `<div class="modal" onclick="if(event.target===this)fecharModal()"><div class="box">
+    <h2>${state.itens.some(i=>i.id===e.id)?"Editar assento":"Novo assento"}</h2>
+    <div class="grid g2">
+      ${inp("Título","titulo","",true)}
+      ${inp("Autores (na ordem da publicação)","autores","",true)}
+      ${sel("Tipo","tipo",TIPOS)}
+      ${sel("Situação","status",STATUS)}
+      ${inp("Periódico, evento ou editora","veiculo","",true)}
+      ${inp("Ano","ano")}
+      ${inp("Qualis","qualis")}
+      ${inp("Data de submissão","dataSubmissao","date")}
+      ${inp("Data da decisão","dataDecisao","date")}
+      ${inp("Prazo a observar","prazo","date")}
+      ${sel("Agradecimento no texto","agradecimento",["Não","Sim","Não se aplica"])}
+      ${inp("DOI ou link","link","",true)}
+      <div class="full"><label>Fomentos vinculados</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          ${state.fomentos.map(f=>`<button class="chip ${e.fomentos.includes(f.id)?"on":""}" onclick="alternarFomento('${f.id}')">${esc(f.agencia+" "+f.processo)}</button>`).join("")}
+        </div></div>
+      <div class="full"><label>Observações</label>
+        <textarea oninput="campoEdit('notas',this.value)">${esc(e.notas)}</textarea></div>
+    </div>
+    <div class="linha" style="margin-top:18px">
+      <div style="display:flex;gap:8px">
+        <button class="btn pri" onclick="gravar()">Salvar assento</button>
+        <button class="btn" onclick="fecharModal()">Cancelar</button>
+      </div>
+      ${state.itens.some(i=>i.id===e.id)?`<button class="btn dan" onclick="excluir()">Excluir</button>`:""}
+    </div>
+  </div></div>`;
+}
+
+/* ============================ render ============================ */
+function render(){
+  document.getElementById("nav").innerHTML = ABAS.map(([k,r])=>
+    `<button class="${ui.aba===k?"on":""}" onclick="ui.aba='${k}';render()">${r}</button>`).join("");
+  document.getElementById("aviso").innerHTML = semStorage
+    ? `<div class="aviso">O navegador bloqueou o armazenamento local. Nada será salvo ao fechar. Baixe o backup em JSON antes de sair.</div>` : "";
+  const telas = {painel:telaPainel, producao:telaProducao, andamento:telaAndamento,
+    contas:telaContas, fomentos:telaFomentos, dados:telaDados};
+  document.getElementById("app").innerHTML = telas[ui.aba]();
+  document.getElementById("modal").innerHTML = ui.editando ? formulario() : document.getElementById("modal").innerHTML.includes("saida") ? document.getElementById("modal").innerHTML : "";
+}
+carregar();
+carregarConfigGH();
+render();
+</script>

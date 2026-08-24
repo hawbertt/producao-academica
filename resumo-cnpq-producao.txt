@@ -1,0 +1,54 @@
+PROJETO CNPq - RESUMO PARA GESTÃO (sem dados pessoais, sem orçamento)
+
+IDENTIFICAÇÃO
+Processo: 405203/2025-0
+Chamada: CNPq/MCTI nº 44/2024, Faixa A (Grupos Emergentes)
+Título: Divulgação Científica e Alfabetização Científica por Tecnologias Lúdicas como
+  Estratégia para o Ensino de Ciências em Espaços Não Formais
+Instituição executora: UFMA, Centro de Ciências de Bacabal (CCBa); PPECEM
+Vigência: 18/11/2025 a 30/11/2028 (36 meses)
+Espaços de execução: Museu Game Ciência (MGC) e PEDIC, no Espaço Ciência Maria Laura Lopes
+Parceiros: UnB (LudEQ), UFPI, IEMA, IFMA (Fábrica de Inovação), REM/MA, redes municipal de
+  Bacabal e estadual do Maranhão
+Bolsa vinculada: 1 Iniciação Científica, 36 meses
+
+OBJETIVO GERAL
+Desenvolver e integrar tecnologias lúdicas (jogos de tabuleiro, realidade virtual e robótica
+educacional) no MGC para potencializar a Divulgação Científica e a Alfabetização Científica em
+espaços de educação não formal.
+
+METAS E ENTREGAS PROMETIDAS
+M1. Concluir os quatro jogos em desenvolvimento: Ilha Renascente (educação ambiental),
+    FeminoFísicas (RPG de cartas, mulheres na Física), Zero Smoke (CTS, tabagismo) e
+    Planeta Química: Uma Aventura no Cotidiano (jogo digital). Prazo: curto.
+M2. Prototipar e testar novos jogos analógicos com mecânicas diversificadas. Prazo: médio/longo.
+M3. Desenvolver experiências de Realidade Virtual (plataformas tipo Google VR) para imersão em
+    ambientes históricos e culturais e visitas virtuais a outros espaços. Prazo: médio.
+M4. Implementar oficinas de robótica educacional com kits Arduino e LEGO Spike Prime, com
+    geração de protótipos. Prazo: médio/longo.
+M5. Inserir a UFMA em campeonatos de robótica nacionais e internacionais.
+M6. Aplicar mensalmente atividades museológicas no MGC com pibidianos, ICs e voluntários
+    como monitores. Prazo: contínuo, todos os 36 meses.
+M7. Divulgação semanal nos canais do MGC (site, Instagram, YouTube); reativar o canal do
+    PEDIC no YouTube. Prazo: contínuo.
+M8. Formar recursos humanos: orientações de TCC, dissertações e teses nos programas
+    parceiros (UFMA, UFPI, UnB), além de iniciação científica.
+M9. Publicar artigos em periódicos e apresentar trabalhos em eventos nacionais e
+    internacionais; organizar workshops e seminários.
+M10. Produzir materiais complementares: folders, cartilhas e um e-book com orientações para
+    professores integrarem os jogos e tecnologias em sala.
+M11. Consolidar o planejamento de uma startup vinculada à UFMA. Prazo: longo, final do projeto.
+M12. Reuniões mensais da equipe e um encontro anual presencial com UnB, UFPI e IEMA.
+
+MARCOS DE PRESTAÇÃO DE CONTAS
+- Relatório Parcial: previsto no cronograma do projeto (confirmar as datas exatas exigidas pelo
+  CNPq na plataforma Carlos Chagas).
+- Relatório Final: ao término da vigência, 30/11/2028.
+
+OBSERVAÇÃO SOBRE O CRONOGRAMA
+O cronograma original está em blocos trimestrais de 36 meses. Equivalência das datas:
+T1: 18/11/2025-17/02/2026 | T2: 18/02-17/05/2026 | T3: 18/05-17/08/2026 | T4: 18/08-17/11/2026
+T5: 18/11/2026-17/02/2027 | T6: 18/02-17/05/2027 | T7: 18/05-17/08/2027 | T8: 18/08-17/11/2027
+T9: 18/11/2027-17/02/2028 | T10: 18/02-17/05/2028 | T11: 18/05-17/08/2028 | T12: 18/08-30/11/2028
+As metas contínuas (M6, M7, M12) atravessam os 12 trimestres. As demais têm janelas específicas
+no cronograma aprovado, que devo revisar e ajustar dentro da plataforma.
