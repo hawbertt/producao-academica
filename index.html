@@ -44,6 +44,8 @@
   .carimbo.ok{border-color:var(--green);color:var(--green)}
   .item{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--rule);border-radius:3px;padding:14px;cursor:pointer;margin-bottom:8px}
   .item:hover{border-color:var(--navy)}
+  .metacard{cursor:default}
+  .metacard:hover{border-color:var(--rule)}
   .linha{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
   .meta{font-size:12.5px;color:var(--ink2);margin-top:3px}
   .sep{border-top:1px solid var(--rule);padding-top:8px;margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -107,8 +109,95 @@ const FOMENTO_PADRAO = [{
   texto:"O autor agradece à FAPEMA pela Bolsa de Produtividade, Processo BEPP-10468/26. Relatório Técnico Final até 30/08/2027, via Patronage."
 }];
 
-let state = {itens:[], fomentos:JSON.parse(JSON.stringify(FOMENTO_PADRAO))};
-let ui = {aba:"painel", busca:"", fStatus:"Todos", fTipo:"Todos", fFomento:"Todos", fomentoRel:"f-cnpq-405203", editando:null};
+const STATUS_META = ["A fazer","Em andamento","Concluída","Atrasada"];
+const CORES_META = {
+  "A fazer":["var(--amber-soft)","var(--amber)"], "Em andamento":["var(--navy-soft)","var(--navy)"],
+  "Concluída":["var(--green-soft)","var(--green)"], "Atrasada":["var(--stamp-soft)","var(--stamp)"]
+};
+const MARCOS = [
+  {rot:"Relatório Técnico Final · FAPEMA", data:"2027-08-30",
+   nota:"Envio exclusivo pelo bolsista, via Patronage. Prazo improrrogável (cláusulas 16 e 17 do termo)."},
+  {rot:"Fim da vigência · CNPq", data:"2028-11-30",
+   nota:"Relatório final ao término da vigência do Processo 405203/2025, na plataforma Carlos Chagas."}
+];
+const METAS_PADRAO = [
+  {id:"g-cnpq-m1", codigo:"M1", fomento:"f-cnpq-405203", continua:false, prazo:"2026-11-17", status:"A fazer",
+   descricao:"Concluir os quatro jogos em desenvolvimento: Ilha Renascente (educação ambiental), FeminoFísicas (RPG de cartas, mulheres na Física), Zero Smoke (CTS, tabagismo) e Planeta Química (jogo digital).",
+   obs:"Prazo curto no cronograma aprovado, equivalente ao fim do T4. Conferir a data exata na proposta."},
+  {id:"g-cnpq-m2", codigo:"M2", fomento:"f-cnpq-405203", continua:false, prazo:"2028-08-17", status:"A fazer",
+   descricao:"Prototipar e testar novos jogos analógicos com mecânicas diversificadas.",
+   obs:"Prazo médio/longo, equivalente ao fim do T11."},
+  {id:"g-cnpq-m3", codigo:"M3", fomento:"f-cnpq-405203", continua:false, prazo:"2027-08-17", status:"A fazer",
+   descricao:"Desenvolver experiências de Realidade Virtual para imersão em ambientes históricos e culturais e visitas virtuais a outros espaços.",
+   obs:"Prazo médio, equivalente ao fim do T7."},
+  {id:"g-cnpq-m4", codigo:"M4", fomento:"f-cnpq-405203", continua:false, prazo:"2028-05-17", status:"A fazer",
+   descricao:"Implementar oficinas de robótica educacional com kits Arduino e LEGO Spike Prime, com geração de protótipos.",
+   obs:"Prazo médio/longo, equivalente ao fim do T10."},
+  {id:"g-cnpq-m5", codigo:"M5", fomento:"f-cnpq-405203", continua:false, prazo:"2028-08-17", status:"A fazer",
+   descricao:"Inserir a UFMA em campeonatos de robótica nacionais e internacionais.",
+   obs:"Depende do calendário das competições. Ajustar a data quando sair o edital de cada campeonato."},
+  {id:"g-cnpq-m6", codigo:"M6", fomento:"f-cnpq-405203", continua:true, prazo:"", status:"A fazer",
+   descricao:"Aplicar mensalmente atividades museológicas no MGC, com pibidianos, ICs e voluntários como monitores.",
+   obs:"Contínua ao longo dos 36 meses de vigência."},
+  {id:"g-cnpq-m7", codigo:"M7", fomento:"f-cnpq-405203", continua:true, prazo:"", status:"A fazer",
+   descricao:"Divulgação semanal nos canais do MGC (site, Instagram, YouTube) e reativação do canal do PEDIC no YouTube.",
+   obs:"Contínua ao longo dos 36 meses de vigência."},
+  {id:"g-cnpq-m8", codigo:"M8", fomento:"f-cnpq-405203", continua:false, prazo:"2028-11-30", status:"A fazer",
+   descricao:"Formar recursos humanos: orientações de TCC, dissertações e teses nos programas parceiros (UFMA, UFPI, UnB), além de iniciação científica.",
+   obs:"Registrar cada orientação concluída na aba Produção e vincular a esta meta."},
+  {id:"g-cnpq-m9", codigo:"M9", fomento:"f-cnpq-405203", continua:false, prazo:"2028-11-30", status:"A fazer",
+   descricao:"Publicar artigos em periódicos, apresentar trabalhos em eventos nacionais e internacionais e organizar workshops e seminários.",
+   obs:"Vincular aqui cada item registrado na aba Produção."},
+  {id:"g-cnpq-m10", codigo:"M10", fomento:"f-cnpq-405203", continua:false, prazo:"2028-08-17", status:"A fazer",
+   descricao:"Produzir materiais complementares: folders, cartilhas e um e-book com orientações para professores integrarem os jogos e as tecnologias em sala.",
+   obs:""},
+  {id:"g-cnpq-m11", codigo:"M11", fomento:"f-cnpq-405203", continua:false, prazo:"2028-11-30", status:"A fazer",
+   descricao:"Consolidar o planejamento de uma startup vinculada à UFMA.",
+   obs:"Prazo longo, previsto para o final do projeto."},
+  {id:"g-cnpq-m12", codigo:"M12", fomento:"f-cnpq-405203", continua:true, prazo:"", status:"A fazer",
+   descricao:"Reuniões mensais da equipe e um encontro anual presencial com UnB, UFPI e IEMA.",
+   obs:"Contínua ao longo dos 36 meses de vigência."},
+  {id:"g-fap-e1", codigo:"E1", fomento:"f-fapema-bepp-10468", continua:false, prazo:"2026-11-30", status:"A fazer",
+   descricao:"Etapa metodológica: análise documental dos registros do MGC desde 2022 (atas, projetos institucionais, relatórios de atividades, visitação por município, fichas técnicas dos jogos, materiais expositivos, cadastro IBRAM e produção bibliográfica).",
+   obs:"Data estimada dentro da vigência de 12 meses. Ajustar conforme o cronograma da proposta."},
+  {id:"g-fap-e2", codigo:"E2", fomento:"f-fapema-bepp-10468", continua:false, prazo:"2027-01-31", status:"A fazer",
+   descricao:"Etapa metodológica: revisão sistemática da literatura 2020-2026, protocolo de Felizardo et al. (2017) e diretrizes PRISMA 2020, nas bases Portal Capes, SciELO, Google Scholar e ERIC.",
+   obs:"É a base do artigo da meta P1."},
+  {id:"g-fap-e3", codigo:"E3", fomento:"f-fapema-bepp-10468", continua:false, prazo:"2027-03-31", status:"A fazer",
+   descricao:"Etapa metodológica: análise de dados secundários das pesquisas em andamento e mapeamento documental das iniciativas do IEMA e do IFMA no Médio Mearim, a partir de fontes públicas.",
+   obs:""},
+  {id:"g-fap-e4", codigo:"E4", fomento:"f-fapema-bepp-10468", continua:false, prazo:"2027-05-31", status:"A fazer",
+   descricao:"Etapa metodológica: análise de conteúdo do corpus reunido (Bardin, 2016) e sistematização final em diálogo com o Plano Maranhão 2050.",
+   obs:""},
+  {id:"g-fap-p1", codigo:"P1", fomento:"f-fapema-bepp-10468", continua:false, prazo:"2027-03-31", status:"A fazer",
+   descricao:"Artigo de revisão sistemática sobre tecnologias lúdicas para divulgação e alfabetização científica em espaços não formais. Destino: Ensaio: Pesquisa em Educação em Ciências (Qualis A1).",
+   obs:"Coautoria com mestrandos. Decorre da etapa E2."},
+  {id:"g-fap-p2", codigo:"P2", fomento:"f-fapema-bepp-10468", continua:false, prazo:"2027-05-31", status:"A fazer",
+   descricao:"Artigo com a análise da experiência do MGC sob a perspectiva CTS. Destino: Revista Brasileira de Pesquisa em Educação em Ciências (Qualis A1).",
+   obs:""},
+  {id:"g-fap-p3", codigo:"P3", fomento:"f-fapema-bepp-10468", continua:false, prazo:"2027-06-30", status:"A fazer",
+   descricao:"Artigo de relato de experiência sobre as visitações de alunos do IFMA e do IEMA. Destino: Revista Educar Mais (Qualis A2).",
+   obs:""},
+  {id:"g-fap-p4", codigo:"P4", fomento:"f-fapema-bepp-10468", continua:false, prazo:"2027-07-30", status:"A fazer",
+   descricao:"Livro sobre a história do Museu Game Ciência.",
+   obs:"Cláusula 6 do termo: citar a FAPEMA em todo resultado divulgável e fornecer exemplares gratuitos da obra publicada."},
+  {id:"g-fap-p5", codigo:"P5", fomento:"f-fapema-bepp-10468", continua:false, prazo:"2027-07-30", status:"A fazer",
+   descricao:"Capítulos de livro sobre a contribuição do MGC na formação de estudantes do Médio Mearim.",
+   obs:""},
+  {id:"g-fap-p6", codigo:"P6", fomento:"f-fapema-bepp-10468", continua:false, prazo:"2027-07-30", status:"A fazer",
+   descricao:"Resumos apresentados em eventos científicos da área.",
+   obs:"Vincular aqui cada resumo registrado na aba Produção."},
+  {id:"g-fap-p7", codigo:"P7", fomento:"f-fapema-bepp-10468", continua:false, prazo:"2027-08-30", status:"A fazer",
+   descricao:"Relatório técnico-científico com a sistematização, apresentado à FAPEMA e disponibilizado publicamente.",
+   obs:"Subsidia o registro do MGC no IBRAM e a inserção no Guia Nacional de Centros e Museus de Ciências. Mesmo prazo do marco de 30/08/2027."},
+  {id:"g-fap-p8", codigo:"P8", fomento:"f-fapema-bepp-10468", continua:true, prazo:"", status:"A fazer",
+   descricao:"Reuniões mensais com a equipe do MGC e do PEDIC.",
+   obs:"Contínua ao longo dos 12 meses de vigência."}
+];
+
+let state = {itens:[], fomentos:JSON.parse(JSON.stringify(FOMENTO_PADRAO)), metas:JSON.parse(JSON.stringify(METAS_PADRAO))};
+let ui = {aba:"painel", busca:"", fStatus:"Todos", fTipo:"Todos", fFomento:"Todos", fomentoRel:"f-cnpq-405203",
+  editando:null, editandoMeta:null, fExecFomento:"Todos"};
 let semStorage = false;
 let gh = {owner:"", repo:"", path:"dados/producao.json", token:"", ultimoEnvio:""};
 
@@ -145,7 +234,7 @@ async function enviarGitHub(){
     const r = await fetch(ghUrl(), {method:"PUT", headers:ghHeaders(), body:JSON.stringify(corpo)});
     if(!r.ok) throw new Error("resposta " + r.status);
     gh.ultimoEnvio = new Date().toISOString(); salvarConfigGH();
-    ghStatus("Enviado. " + state.itens.length + " registros guardados no GitHub.");
+    ghStatus("Enviado. " + state.itens.length + " registros e " + state.metas.length + " metas guardados no GitHub.");
   }catch(e){ ghStatus("Não foi enviado: " + e.message + ". Confira o token e o nome do repositório.", true); }
 }
 
@@ -164,6 +253,8 @@ async function baixarGitHub(){
       ".\nEste aparelho tem " + state.itens.length + ".\n\nBaixar substitui o que está aqui. Continuar?")) { ghStatus("Cancelado."); return; }
     state.itens = remoto.itens;
     if(Array.isArray(remoto.fomentos) && remoto.fomentos.length) state.fomentos = remoto.fomentos;
+    if(Array.isArray(remoto.metas)) state.metas = remoto.metas;
+    normalizarItens();
     salvar();
     ghStatus("Baixado. " + state.itens.length + " registros carregados neste aparelho.");
   }catch(e){ ghStatus("Não foi baixado: " + e.message + ".", true); }
@@ -174,8 +265,10 @@ function carregar(){
     const bruto = localStorage.getItem(KEY);
     if(bruto){ const d = JSON.parse(bruto);
       if(Array.isArray(d.itens)) state.itens = d.itens;
-      if(Array.isArray(d.fomentos) && d.fomentos.length) state.fomentos = d.fomentos; }
+      if(Array.isArray(d.fomentos) && d.fomentos.length) state.fomentos = d.fomentos;
+      if(Array.isArray(d.metas)) state.metas = d.metas; }
   }catch(e){ semStorage = true; }
+  normalizarItens();
 }
 function salvar(){
   try{ localStorage.setItem(KEY, JSON.stringify({...state, atualizadoEm:new Date().toISOString()}));
@@ -198,7 +291,7 @@ function baixar(nome, conteudo, tipo){
 function novo(){
   ui.editando = {id:"i"+Date.now()+Math.random().toString(36).slice(2,6), titulo:"", tipo:TIPOS[0], autores:"",
     veiculo:"", ano:String(new Date().getFullYear()), qualis:"", link:"", status:"Escrevendo",
-    dataSubmissao:"", dataDecisao:"", prazo:"", fomentos:[], agradecimento:"Não", notas:""};
+    dataSubmissao:"", dataDecisao:"", prazo:"", fomentos:[], metas:[], agradecimento:"Não", notas:""};
   render();
 }
 function abrir(id){ const i = state.itens.find(x=>x.id===id); if(i){ ui.editando = JSON.parse(JSON.stringify(i)); render(); } }
@@ -278,7 +371,7 @@ function mostrarTexto(txt, nomeArquivo, tipo){
     </div></div>`;
 }
 function copiarSaida(){ const t = document.getElementById("saida"); t.select(); try{document.execCommand("copy")}catch(e){} }
-function fecharModal(){ ui.editando = null; document.getElementById("modal").innerHTML = ""; render(); }
+function fecharModal(){ ui.editando = null; ui.editandoMeta = null; document.getElementById("modal").innerHTML = ""; render(); }
 
 /* ============================ backup ============================ */
 function exportarJSON(){
@@ -298,6 +391,8 @@ function importarJSON(){
         if(!confirm("Isto substitui os "+state.itens.length+" registros atuais pelos "+d.itens.length+" do arquivo. Continuar?")) return;
         state.itens = d.itens;
         if(Array.isArray(d.fomentos) && d.fomentos.length) state.fomentos = d.fomentos;
+        if(Array.isArray(d.metas)) state.metas = d.metas;
+        normalizarItens();
         salvar();
       }catch(e){ alert("O arquivo não é um backup válido desta plataforma."); }
     };
@@ -306,8 +401,88 @@ function importarJSON(){
   el.click();
 }
 
+/* ============================ metas e execução ============================ */
+function hojeISO(){ const d=new Date(), p=n=>String(n).padStart(2,"0");
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate()); }
+function dataBR(iso){ return iso ? String(iso).slice(0,10).split("-").reverse().join("/") : "sem data"; }
+function diasAte(iso){ if(!iso) return null;
+  const h = new Date(); h.setHours(0,0,0,0);
+  const d = new Date(String(iso).slice(0,10)+"T00:00:00");
+  return Math.round((d-h)/86400000); }
+function normalizarItens(){
+  state.itens.forEach(i=>{
+    if(!Array.isArray(i.fomentos)) i.fomentos = [];
+    if(!Array.isArray(i.metas)) i.metas = [];
+  });
+}
+function metaPorId(id){ return state.metas.find(m=>m.id===id); }
+function itensDaMeta(id){ return state.itens.filter(i=>Array.isArray(i.metas) && i.metas.includes(id)); }
+/* metas contínuas nunca aparecem como atrasadas */
+function statusMeta(m){
+  if(m.status==="Concluída") return "Concluída";
+  if(m.continua) return m.status==="Atrasada" ? "Em andamento" : (m.status||"A fazer");
+  if(m.status==="Atrasada") return "Atrasada";
+  if(m.prazo && m.prazo < hojeISO()) return "Atrasada";
+  return m.status||"A fazer";
+}
+function tagMeta(s){ const c = CORES_META[s]||["#EEE","#555"];
+  return `<span class="tag" style="background:${c[0]};color:${c[1]}">${esc(s)}</span>`; }
+function opcoesStatus(m){ return m.continua ? STATUS_META.filter(s=>s!=="Atrasada") : STATUS_META; }
+function statusRapido(id, v){ const m = metaPorId(id); if(m){ m.status = v; salvar(); } }
+function novaMeta(){
+  ui.editandoMeta = {id:"g"+Date.now()+Math.random().toString(36).slice(2,6), codigo:"", descricao:"",
+    fomento:(ui.fExecFomento!=="Todos"?ui.fExecFomento:((state.fomentos[0]||{}).id||"")),
+    prazo:"", continua:false, status:"A fazer", obs:""};
+  render();
+}
+function editarMeta(id){ const m = metaPorId(id); if(m){ ui.editandoMeta = JSON.parse(JSON.stringify(m)); render(); } }
+function campoMeta(k,v){ ui.editandoMeta[k] = v; }
+function alternarContinua(v){
+  const m = ui.editandoMeta; m.continua = v;
+  if(v){ m.prazo = ""; if(m.status==="Atrasada") m.status = "Em andamento"; }
+  render();
+}
+function gravarMeta(){
+  const m = ui.editandoMeta;
+  if(!m.codigo.trim() && !m.descricao.trim()){ alert("Dê à meta ao menos um código ou uma descrição."); return; }
+  const existe = state.metas.some(x=>x.id===m.id);
+  state.metas = existe ? state.metas.map(x=>x.id===m.id?m:x) : state.metas.concat([m]);
+  ui.editandoMeta = null; salvar();
+}
+function excluirMeta(){
+  if(!confirm("Excluir esta meta? Os vínculos com a produção registrada serão desfeitos.")) return;
+  const id = ui.editandoMeta.id;
+  state.metas = state.metas.filter(x=>x.id!==id);
+  state.itens.forEach(i=>{ if(Array.isArray(i.metas)) i.metas = i.metas.filter(x=>x!==id); });
+  ui.editandoMeta = null; salvar();
+}
+function restaurarMetasPadrao(){
+  if(!confirm("Isto substitui as "+state.metas.length+" metas atuais pelas metas originais dos dois projetos. Os vínculos com a produção serão desfeitos. Continuar?")) return;
+  state.metas = JSON.parse(JSON.stringify(METAS_PADRAO));
+  const ids = state.metas.map(m=>m.id);
+  state.itens.forEach(i=>{ if(Array.isArray(i.metas)) i.metas = i.metas.filter(x=>ids.includes(x)); });
+  salvar();
+}
+/* vínculo entre meta e item da aba Produção */
+function vincularItem(metaId, itemId){
+  if(!itemId) return;
+  const i = state.itens.find(x=>x.id===itemId); if(!i) return;
+  if(!Array.isArray(i.metas)) i.metas = [];
+  if(!i.metas.includes(metaId)) i.metas.push(metaId);
+  salvar();
+}
+function desvincularItem(metaId, itemId){
+  const i = state.itens.find(x=>x.id===itemId); if(!i || !Array.isArray(i.metas)) return;
+  i.metas = i.metas.filter(x=>x!==metaId);
+  salvar();
+}
+function alternarMetaItem(id){
+  const l = ui.editando.metas || [];
+  ui.editando.metas = l.includes(id) ? l.filter(x=>x!==id) : l.concat([id]);
+  render();
+}
 /* ============================ telas ============================ */
-const ABAS = [["painel","Painel"],["producao","Produção"],["andamento","Em andamento"],
+const ABAS = [["painel","Painel"],["producao","Produção"],["andamento","Em andamento"],["execucao","Execução"],
   ["contas","Prestação de contas"],["fomentos","Fomentos"],["dados","Backup"]];
 
 function telaPainel(){
@@ -323,6 +498,25 @@ function telaPainel(){
     ${[["Total registrado",state.itens.length,"var(--ink)"],["Publicado ou aceito",c,"var(--green)"],
        ["Em andamento",a,"var(--navy)"],["Agradecimento pendente",p.length,"var(--stamp)"]]
       .map(m=>`<div class="card"><div class="num" style="color:${m[2]}">${m[1]}</div><div class="rot">${m[0]}</div></div>`).join("")}
+  </div>`;
+
+  const metasAtrasadas = state.metas.filter(x=>statusMeta(x)==="Atrasada");
+  const metasSemProd = state.metas.filter(x=>itensDaMeta(x.id).length===0);
+  h += `<div class="grid g2" style="margin-top:12px">
+    <div class="card" style="${metasAtrasadas.length?"border-color:var(--stamp)":""}">
+      <div class="num" style="color:${metasAtrasadas.length?"var(--stamp)":"var(--ink2)"}">${metasAtrasadas.length}</div>
+      <div class="rot">Metas atrasadas</div>
+      <div class="meta" style="margin-top:6px">${metasAtrasadas.length
+        ? esc(metasAtrasadas.slice(0,5).map(x=>x.codigo||"sem código").join(", ")) + (metasAtrasadas.length>5?" e outras":"")
+        : "Nenhuma meta com prazo vencido. Metas contínuas não entram nesta conta."}</div>
+      <button class="btn sm" style="margin-top:10px" onclick="ui.aba='execucao';render()">Abrir a aba Execução</button>
+    </div>
+    <div class="card" style="${metasSemProd.length?"border-color:var(--amber)":""}">
+      <div class="num" style="color:${metasSemProd.length?"var(--amber)":"var(--ink2)"}">${metasSemProd.length}</div>
+      <div class="rot">Metas sem produção vinculada</div>
+      <div class="meta" style="margin-top:6px">de ${state.metas.length} metas cadastradas nos projetos em execução</div>
+      <button class="btn sm" style="margin-top:10px" onclick="ui.aba='execucao';render()">Abrir a aba Execução</button>
+    </div>
   </div>`;
 
   if(p.length) h += `<div class="card" style="border-color:var(--stamp);margin-top:14px">
@@ -497,11 +691,157 @@ function telaDados(){
     <div style="border-top:1px solid var(--rule);margin-top:18px;padding-top:16px">
       <h2>Onde os dados ficam</h2>
       <p class="meta">Este arquivo guarda tudo no armazenamento local do navegador que você usa para abri-lo. Trocar de navegador, limpar dados de navegação ou usar janela anônima faz o registro sumir. Por isso: baixe o backup depois de cada sessão de cadastro.</p>
-      <p class="meta" style="margin-top:8px">Registros: <strong>${state.itens.length}</strong> · Fomentos: <strong>${state.fomentos.length}</strong></p>
+      <p class="meta" style="margin-top:8px">Registros: <strong>${state.itens.length}</strong> · Fomentos: <strong>${state.fomentos.length}</strong> · Metas: <strong>${state.metas.length}</strong></p>
     </div>
   </div>`;
 }
 
+function cartaoMarco(mk){
+  const d = diasAte(mk.data);
+  const perto = d < 90;                        /* menos de 90 dias: vermelho */
+  const cor = perto ? "var(--stamp)" : "var(--navy)";
+  const txt = d < 0 ? ("vencido há "+Math.abs(d)+" dias") : (d === 0 ? "é hoje" : ("faltam "+d+" dias"));
+  return `<div class="card" style="border-color:${cor}">
+    <div class="rot" style="margin:0 0 6px">${esc(mk.rot)}</div>
+    <div class="linha" style="align-items:baseline">
+      <div><span class="num" style="color:${cor}">${Math.abs(d)}</span>
+        <span class="rot" style="margin:0 0 0 8px">dias</span></div>
+      ${perto?`<span class="carimbo">${d<0?"Prazo vencido":"Prazo próximo"}</span>`:""}
+    </div>
+    <div class="rot" style="margin-top:6px;color:${cor}">${txt} · ${dataBR(mk.data)}</div>
+    <div class="meta" style="margin-top:8px">${esc(mk.nota)}</div>
+  </div>`;
+}
+
+function cardMeta(m){
+  const s = statusMeta(m);
+  const c = CORES_META[s] || ["#EEE","#555"];
+  const vinc = itensDaMeta(m.id);
+  const d = m.continua ? null : diasAte(m.prazo);
+  const prazoTxt = m.continua ? "Contínua durante toda a vigência"
+    : (m.prazo ? ("Prazo "+dataBR(m.prazo)+(d<0?" · vencido há "+Math.abs(d)+" dias":" · faltam "+d+" dias"))
+               : "Sem prazo definido");
+  const livres = state.itens.filter(i=>!(Array.isArray(i.metas) && i.metas.includes(m.id)));
+  let rodape;
+  if(!state.itens.length) rodape = `<p class="meta" style="margin:2px 0">Ainda não há produção registrada. Cadastre um item na aba Produção para poder vinculá-lo aqui.</p>`;
+  else if(livres.length) rodape = `<select style="max-width:440px;font-size:13px" onchange="vincularItem('${m.id}',this.value)">
+      <option value="">+ vincular um item já registrado na aba Produção</option>
+      ${livres.map(i=>`<option value="${i.id}">${esc((i.titulo||"(sem título)").slice(0,90))}</option>`).join("")}
+    </select>`;
+  else rodape = `<p class="meta" style="margin:2px 0">Toda a produção registrada já está vinculada a esta meta.</p>`;
+
+  return `<div class="item metacard" style="border-left-color:${c[1]}">
+    <div class="linha">
+      <div style="flex:1;min-width:220px">
+        <h3><span style="font-family:var(--data);font-size:12.5px;color:var(--ink2)">${esc(m.codigo)}</span>
+          ${esc(m.descricao||"(sem descrição)")}</h3>
+        <div class="meta">${esc(fom(m.fomento))} · ${esc(prazoTxt)}</div>
+        ${m.obs?`<div class="meta" style="font-style:italic">${esc(m.obs)}</div>`:""}
+      </div>
+      <div style="text-align:right;min-width:160px">
+        ${tagMeta(s)}
+        <div style="display:flex;gap:6px;margin-top:8px;justify-content:flex-end">
+          <select style="width:auto;font-size:12.5px;padding:4px 6px" onchange="statusRapido('${m.id}',this.value)">
+            ${opcoesStatus(m).map(o=>`<option ${o===(m.status||"A fazer")?"selected":""}>${esc(o)}</option>`).join("")}
+          </select>
+          <button class="btn sm" onclick="editarMeta('${m.id}')">Editar</button>
+        </div>
+      </div>
+    </div>
+    <div class="sep" style="flex-direction:column;align-items:stretch;gap:6px">
+      <div class="rot" style="margin:0">Produção vinculada: ${vinc.length}</div>
+      ${vinc.map(i=>`<div class="linha" style="gap:8px;align-items:center">
+        <div style="flex:1;min-width:180px;font-size:13.5px">${esc(i.titulo||"(sem título)")}
+          <div class="meta">${esc([i.tipo,i.veiculo,i.ano].filter(Boolean).join(" · "))}</div></div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">${tag(i.status)}
+          <button class="btn sm" onclick="abrir('${i.id}')">Abrir</button>
+          <button class="btn sm dan" onclick="desvincularItem('${m.id}','${i.id}')">Desvincular</button></div>
+      </div>`).join("")}
+      ${rodape}
+    </div>
+  </div>`;
+}
+
+function telaExecucao(){
+  const metas = state.metas.filter(m=>ui.fExecFomento==="Todos" || m.fomento===ui.fExecFomento);
+  const comPrazo = metas.filter(m=>!m.continua)
+    .sort((a,b)=>(a.prazo||"9999").localeCompare(b.prazo||"9999"));
+  const continuas = metas.filter(m=>m.continua);
+  const atrasadas = metas.filter(m=>statusMeta(m)==="Atrasada").length;
+  const concluidas = metas.filter(m=>statusMeta(m)==="Concluída").length;
+  const semProd = metas.filter(m=>itensDaMeta(m.id).length===0).length;
+
+  let h = `<div class="grid g2" style="margin-bottom:14px">${MARCOS.map(cartaoMarco).join("")}</div>`;
+
+  h += `<div class="grid g4 metricas" style="margin-bottom:14px">
+    ${[["Metas no filtro",metas.length,"var(--ink)"],["Concluídas",concluidas,"var(--green)"],
+       ["Atrasadas",atrasadas,"var(--stamp)"],["Sem produção vinculada",semProd,"var(--amber)"]]
+      .map(x=>`<div class="card"><div class="num" style="color:${x[2]}">${x[1]}</div><div class="rot">${x[0]}</div></div>`).join("")}
+  </div>`;
+
+  h += `<div class="grid g3" style="align-items:end;margin-bottom:14px">
+    <div><label>Filtrar por fomento</label>
+      <select onchange="ui.fExecFomento=this.value;render()">
+        <option value="Todos">Todos os fomentos</option>
+        ${state.fomentos.map(f=>`<option value="${f.id}" ${f.id===ui.fExecFomento?"selected":""}>${esc(f.agencia+" "+f.processo)}</option>`).join("")}
+      </select></div>
+    <div><button class="btn pri" onclick="novaMeta()">+ Adicionar meta</button></div>
+    <div><button class="btn" onclick="restaurarMetasPadrao()">Restaurar metas originais</button></div>
+  </div>`;
+
+  const secao = (titulo, nota, lista) => `<div style="margin-bottom:20px">
+    <div class="linha" style="align-items:baseline;margin-bottom:8px">
+      <h2 style="margin:0">${titulo}</h2>
+      <span class="rot">${lista.length} ${lista.length===1?"meta":"metas"}</span>
+    </div>
+    <p class="meta" style="margin:0 0 10px">${nota}</p>
+    ${lista.length?lista.map(cardMeta).join(""):`<div class="vazio"><p class="meta" style="margin:0">Nenhuma meta neste grupo.</p></div>`}
+  </div>`;
+
+  h += secao("Metas com prazo definido",
+    "Ordenadas pela data-limite. Passado o prazo sem conclusão, a meta é marcada como atrasada.", comPrazo);
+  h += secao("Metas contínuas",
+    "Atravessam toda a vigência do projeto e por isso nunca são contadas como atrasadas.", continuas);
+  return h;
+}
+
+function formularioMeta(){
+  const m = ui.editandoMeta; if(!m) return "";
+  return `<div class="modal" onclick="if(event.target===this)fecharModal()"><div class="box">
+    <h2>${state.metas.some(x=>x.id===m.id)?"Editar meta":"Nova meta"}</h2>
+    <div class="grid g2">
+      <div><label>Código</label><input value="${esc(m.codigo)}" oninput="campoMeta('codigo',this.value)" placeholder="ex.: M1, E2, P1"></div>
+      <div><label>Fomento</label>
+        <select onchange="campoMeta('fomento',this.value)">
+          ${state.fomentos.map(f=>`<option value="${f.id}" ${f.id===m.fomento?"selected":""}>${esc(f.agencia+" "+f.processo)}</option>`).join("")}
+        </select></div>
+      <div class="full"><label>Descrição da meta</label>
+        <textarea oninput="campoMeta('descricao',this.value)">${esc(m.descricao)}</textarea></div>
+      <div class="full"><label>Tipo de meta</label>
+        <label style="display:flex;gap:8px;align-items:center;font-family:var(--body);font-size:14px;
+          text-transform:none;letter-spacing:0;color:var(--ink);margin:0">
+          <input type="checkbox" style="width:auto;margin:0" ${m.continua?"checked":""} onchange="alternarContinua(this.checked)">
+          Meta contínua, atravessa toda a vigência e nunca é contada como atrasada
+        </label></div>
+      <div><label>Prazo</label>
+        <input type="date" value="${esc(m.prazo)}" ${m.continua?"disabled":""} oninput="campoMeta('prazo',this.value)"></div>
+      <div><label>Situação</label>
+        <select onchange="campoMeta('status',this.value)">
+          ${opcoesStatus(m).map(o=>`<option ${o===m.status?"selected":""}>${esc(o)}</option>`).join("")}
+        </select></div>
+      <div class="full"><label>Observação</label>
+        <textarea oninput="campoMeta('obs',this.value)">${esc(m.obs)}</textarea></div>
+    </div>
+    <p class="meta" style="margin-top:12px">Para vincular produção a esta meta, use a lista no rodapé do cartão da meta, na aba Execução, ou marque a meta ao editar o assento na aba Produção.</p>
+    <div class="linha" style="margin-top:14px">
+      <div style="display:flex;gap:8px">
+        <button class="btn pri" onclick="gravarMeta()">Salvar meta</button>
+        <button class="btn" onclick="fecharModal()">Cancelar</button>
+      </div>
+      ${state.metas.some(x=>x.id===m.id)?`<button class="btn dan" onclick="excluirMeta()">Excluir</button>`:""}
+    </div>
+  </div></div>`;
+}
 /* ============================ formulário ============================ */
 function formulario(){
   const e = ui.editando; if(!e) return "";
@@ -528,6 +868,12 @@ function formulario(){
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           ${state.fomentos.map(f=>`<button class="chip ${e.fomentos.includes(f.id)?"on":""}" onclick="alternarFomento('${f.id}')">${esc(f.agencia+" "+f.processo)}</button>`).join("")}
         </div></div>
+      <div class="full"><label>Metas atendidas (aba Execução)</label>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          ${state.metas.length?state.metas.map(m=>`<button class="chip ${(e.metas||[]).includes(m.id)?"on":""}"
+            title="${esc(m.descricao)}" onclick="alternarMetaItem('${m.id}')">${esc(m.codigo||"meta")} · ${esc(fom(m.fomento))}</button>`).join("")
+          :`<span class="meta">Nenhuma meta cadastrada ainda. Use a aba Execução.</span>`}
+        </div></div>
       <div class="full"><label>Observações</label>
         <textarea oninput="campoEdit('notas',this.value)">${esc(e.notas)}</textarea></div>
     </div>
@@ -547,10 +893,13 @@ function render(){
     `<button class="${ui.aba===k?"on":""}" onclick="ui.aba='${k}';render()">${r}</button>`).join("");
   document.getElementById("aviso").innerHTML = semStorage
     ? `<div class="aviso">O navegador bloqueou o armazenamento local. Nada será salvo ao fechar. Baixe o backup em JSON antes de sair.</div>` : "";
-  const telas = {painel:telaPainel, producao:telaProducao, andamento:telaAndamento,
+  const telas = {painel:telaPainel, producao:telaProducao, andamento:telaAndamento, execucao:telaExecucao,
     contas:telaContas, fomentos:telaFomentos, dados:telaDados};
   document.getElementById("app").innerHTML = telas[ui.aba]();
-  document.getElementById("modal").innerHTML = ui.editando ? formulario() : document.getElementById("modal").innerHTML.includes("saida") ? document.getElementById("modal").innerHTML : "";
+  const cxModal = document.getElementById("modal");
+  cxModal.innerHTML = ui.editando ? formulario()
+    : ui.editandoMeta ? formularioMeta()
+    : cxModal.innerHTML.includes("saida") ? cxModal.innerHTML : "";
 }
 carregar();
 carregarConfigGH();
