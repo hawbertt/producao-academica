@@ -97,16 +97,36 @@ const CORES = {
   "Aceito":["var(--green-soft)","var(--green)"], "Publicado":["var(--green-soft)","var(--green)"],
   "Recusado":["#EDEDED","#6B6B6B"]
 };
+const TIPOS_REGISTRO = ["Fomento externo","Projeto institucional","Aprovação ética"];
+const CORES_REGISTRO = {
+  "Fomento externo":["var(--navy-soft)","var(--navy)"],
+  "Projeto institucional":["var(--green-soft)","var(--green)"],
+  "Aprovação ética":["var(--amber-soft)","var(--amber)"]
+};
 const FOMENTO_PADRAO = [{
-  id:"f-cnpq-405203", agencia:"CNPq", nome:"Divulgação científica por tecnologias lúdicas",
+  id:"f-cnpq-405203", tipo:"Fomento externo", agencia:"CNPq", nome:"Divulgação científica por tecnologias lúdicas",
   processo:"405203/2025", chamada:"Chamada CNPq nº 44/2024, Faixa A",
-  inicio:"2025-11-18", fim:"2028-11-30",
+  inicio:"2025-11-18", fim:"2028-11-30", objetivos:"", nota:"",
   texto:"O autor agradece ao CNPq pelo apoio financeiro, Processo nº 405203/2025."
 },{
-  id:"f-fapema-bepp-10468", agencia:"FAPEMA", nome:"Tecnologias lúdicas e abordagem CTS no Museu Game Ciência para a divulgação e alfabetização científica na microrregião do Médio Mearim",
+  id:"f-fapema-bepp-10468", tipo:"Fomento externo", agencia:"FAPEMA", nome:"Tecnologias lúdicas e abordagem CTS no Museu Game Ciência para a divulgação e alfabetização científica na microrregião do Médio Mearim",
   processo:"BEPP-10468/26", chamada:"Edital 12/2026, Programa Maranhão Ciência, Bolsa de Produtividade (BEPP), Termo 4653/2026",
-  inicio:"2026-08-01", fim:"2027-07-30",
+  inicio:"2026-08-01", fim:"2027-07-30", objetivos:"", nota:"",
   texto:"O autor agradece à FAPEMA pela Bolsa de Produtividade, Processo BEPP-10468/26. Relatório Técnico Final até 30/08/2027, via Patronage."
+},{
+  id:"f-pedic-ufma", tipo:"Projeto institucional", agencia:"UFMA", nome:"Laboratório de Pesquisa em Ensino Digital para Ciência (PEDIC): focando na aprendizagem baseada em jogos",
+  processo:"PEDIC guarda-chuva", chamada:"Projeto de pesquisa institucional registrado na UFMA, Centro de Ciências de Bacabal (CCBa), Licenciatura em Ciências Naturais. Não é fomento externo.",
+  inicio:"2024-08-01", fim:"2027-08-31",
+  objetivos:"Objetivo geral: desenvolver jogos digitais e de tabuleiro e metodologias de ensino para uso nas aulas de Ciências e Química do ensino fundamental e médio, além de manter o Museu Game Ciência como espaço de divulgação e alfabetização científica, com prioridade na formação inicial e contínua de professores.\n\nO1. Promover espaço de debate e interação entre Universidade e escola.\nO2. Dar subsídios para professores trabalharem com tecnologias digitais em aula, com acompanhamento dos bolsistas.\nO3. Investigar os resultados da inserção dos jogos e tecnologias digitais, verificando pontos positivos e negativos da metodologia e o engajamento de discentes e professores.\nO4. Analisar os pontos de equilíbrio entre design de games e design instrucional nos jogos digitais para o ensino de Ciências.\nO5. Disponibilizar aos professores recursos de ensino ancorados na abordagem CTSA.",
+  nota:"PRAZO QUE REGE O RELATÓRIO FINAL. O registro na UFMA encerra em agosto de 2027, limite de 3 anos de vigência sem renovação, e é esta data que define a entrega do relatório final à UFMA (meta G12). Não confundir com o cronograma da aprovação ética, que vai até novembro de 2028. Data de início inferida do limite de 3 anos: confirmar a data exata do registro na UFMA.",
+  texto:"Projeto institucional, sem texto de agradecimento a agência de fomento. É o guarda-chuva do qual derivam o projeto CNPq 405203/2025-0 e a proposta FAPEMA BEPP-10468/26."
+},{
+  id:"f-cep-ufma-8347018", tipo:"Aprovação ética", agencia:"CEP/UFMA", nome:"Aprovação ética do projeto guarda-chuva PEDIC",
+  processo:"Parecer nº 8.347.018", chamada:"CAAE 93629024.6.0000.5087",
+  inicio:"2026-04-10", fim:"2028-11-30",
+  objetivos:"Participantes da pesquisa: Grupo I, docentes e discentes do ensino superior e da pós-graduação da equipe executora; Grupo II, docentes da educação básica; Grupo III, discentes da educação básica. Coleta mediante consentimento livre e esclarecido, com termo de assentimento para menores.\n\nInstrumentos de produção de dados: fichas, gravações de vídeo e áudio, notas de campo e entrevistas semiestruturadas; análise por Análise de Conteúdo ou software tipo MaxQDA, com suporte da Teoria da Ação Mediada.",
+  nota:"NÃO É O PRAZO DO RELATÓRIO FINAL. Parecer aprovado em 10/04/2026, com cronograma registrado na Plataforma Brasil até novembro de 2028. A diferença para o prazo da UFMA existe porque o CEP aprovou depois do projeto já em execução, e as datas tiveram que ser atualizadas lá. Quem rege a entrega do relatório final é o registro na UFMA, em agosto de 2027.",
+  texto:"Pesquisa aprovada pelo Comitê de Ética em Pesquisa da UFMA, Parecer nº 8.347.018, CAAE 93629024.6.0000.5087."
 }];
 
 const STATUS_META = ["A fazer","Em andamento","Concluída","Atrasada"];
@@ -117,6 +137,8 @@ const CORES_META = {
 const MARCOS = [
   {rot:"Relatório Técnico Final · FAPEMA", data:"2027-08-30",
    nota:"Envio exclusivo pelo bolsista, via Patronage. Prazo improrrogável (cláusulas 16 e 17 do termo)."},
+  {rot:"Relatório Final à UFMA · PEDIC", data:"2027-08-31",
+   nota:"Encerramento do registro do projeto guarda-chuva na UFMA (meta G12). É este o prazo do relatório, não o cronograma do CEP, que vai até novembro de 2028."},
   {rot:"Fim da vigência · CNPq", data:"2028-11-30",
    nota:"Relatório final ao término da vigência do Processo 405203/2025, na plataforma Carlos Chagas."}
 ];
@@ -192,12 +214,217 @@ const METAS_PADRAO = [
    obs:"Subsidia o registro do MGC no IBRAM e a inserção no Guia Nacional de Centros e Museus de Ciências. Mesmo prazo do marco de 30/08/2027."},
   {id:"g-fap-p8", codigo:"P8", fomento:"f-fapema-bepp-10468", continua:true, prazo:"", status:"A fazer",
    descricao:"Reuniões mensais com a equipe do MGC e do PEDIC.",
-   obs:"Contínua ao longo dos 12 meses de vigência."}
+   obs:"Contínua ao longo dos 12 meses de vigência."},
+  {id:"g-pedic-g1", codigo:"G1", fomento:"f-pedic-ufma", continua:true, prazo:"", status:"A fazer",
+   descricao:"Formação teórica da equipe na Teoria da Ação Mediada (Wertsch) e em Design de Games, com definição da função de cada membro.",
+   obs:"O resumo marca esta meta como contínua nos primeiros trimestres. Entrou como contínua; se quiser cobrá-la com data, desmarque o tipo contínua e ponha o prazo."},
+  {id:"g-pedic-g2", codigo:"G2", fomento:"f-pedic-ufma", continua:true, prazo:"", status:"A fazer",
+   descricao:"Divulgação científica pelo Museu Game Ciência: atividades museológicas, site e Instagram.",
+   obs:"Contínua durante toda a vigência do registro na UFMA."},
+  {id:"g-pedic-g3", codigo:"G3", fomento:"f-pedic-ufma", continua:false, prazo:"2026-11-30", status:"A fazer",
+   descricao:"Ajustes, melhorias e ampliação do jogo Planeta Química: uma aventura no cotidiano.",
+   obs:"Data estimada a partir do cronograma do CEP (fim do T4). Conferir no registro da UFMA."},
+  {id:"g-pedic-g4", codigo:"G4", fomento:"f-pedic-ufma", continua:false, prazo:"2027-05-31", status:"A fazer",
+   descricao:"Desenvolvimento de novos jogos digitais e de tabuleiro com temáticas socioambientais.",
+   obs:"Data estimada a partir do cronograma do CEP (fim do T6). Conferir no registro da UFMA."},
+  {id:"g-pedic-g5", codigo:"G5", fomento:"f-pedic-ufma", continua:true, prazo:"", status:"A fazer",
+   descricao:"Atualização periódica do site do MGC, reativação do site do PEDIC (pedic.ufma.br) e alimentação do canal do YouTube.",
+   obs:"Contínua durante toda a vigência do registro na UFMA."},
+  {id:"g-pedic-g6", codigo:"G6", fomento:"f-pedic-ufma", continua:true, prazo:"", status:"A fazer",
+   descricao:"Reuniões e grupos de estudo com discentes e professores da rede básica, com convite a professores da educação básica para ao menos um encontro mensal.",
+   obs:"Contínua durante toda a vigência do registro na UFMA."},
+  {id:"g-pedic-g7", codigo:"G7", fomento:"f-pedic-ufma", continua:false, prazo:"2027-05-31", status:"A fazer",
+   descricao:"Aplicação dos jogos no Museu Game Ciência e nas escolas parceiras de Bacabal, Alto Alegre e São Luís Gonzaga.",
+   obs:"Data estimada a partir do cronograma do CEP (fim do T6). Conferir no registro da UFMA."},
+  {id:"g-pedic-g8", codigo:"G8", fomento:"f-pedic-ufma", continua:false, prazo:"2027-02-28", status:"A fazer",
+   descricao:"Elaboração de sequências didáticas para aplicação dos jogos.",
+   obs:"Data estimada a partir do cronograma do CEP (fim do T5). Conferir no registro da UFMA."},
+  {id:"g-pedic-g9", codigo:"G9", fomento:"f-pedic-ufma", continua:false, prazo:"2027-05-31", status:"A fazer",
+   descricao:"Promoção de oficinas, minicursos, seminários e palestras no museu, nas escolas e em eventos.",
+   obs:"Data estimada a partir do cronograma do CEP (fim do T6). Conferir no registro da UFMA."},
+  {id:"g-pedic-g10", codigo:"G10", fomento:"f-pedic-ufma", continua:false, prazo:"2027-05-31", status:"A fazer",
+   descricao:"Apresentação de seminários internos pelos membros da equipe sobre suas pesquisas.",
+   obs:"Data estimada a partir do cronograma do CEP (fim do T6). Conferir no registro da UFMA."},
+  {id:"g-pedic-g11", codigo:"G11", fomento:"f-pedic-ufma", continua:false, prazo:"2027-06-30", status:"A fazer",
+   descricao:"Submissão e publicação de trabalhos em congressos e periódicos.",
+   obs:"Vincular aqui cada item registrado na aba Produção que derive do guarda-chuva."},
+  {id:"g-pedic-g12", codigo:"G12", fomento:"f-pedic-ufma", continua:false, prazo:"2027-08-31", status:"A fazer",
+   descricao:"Elaboração e apresentação do relatório final à UFMA.",
+   obs:"É o marco que encerra o registro na UFMA, em agosto de 2027. Use o modelo Relatório final institucional, na aba Prestação de contas, para montar o texto."}
 ];
 
-let state = {itens:[], fomentos:JSON.parse(JSON.stringify(FOMENTO_PADRAO)), metas:JSON.parse(JSON.stringify(METAS_PADRAO))};
+const SIT_PLANO = ["Em execução","Concluído","Interrompido"];
+const SIT_META_PLANO = ["Em execução","Cumprida","Parcialmente cumprida","Não cumprida"];
+const CORES_SIT_META = {
+  "Em execução":["var(--navy-soft)","var(--navy)"], "Cumprida":["var(--green-soft)","var(--green)"],
+  "Parcialmente cumprida":["var(--amber-soft)","var(--amber)"], "Não cumprida":["var(--stamp-soft)","var(--stamp)"]
+};
+const CICLOS = {"2025-2026":["2025-09-01","2026-08-31"], "2026-2027":["2026-09-01","2027-08-31"]};
+/* monta um plano de trabalho a partir do documento original, sem nenhum dado pessoal do bolsista */
+function planoPadrao(id, titulo, vinculo, ciclo, projetos, metas){
+  return {id:id, titulo:titulo, aluno:"", vinculo:vinculo, ciclo:ciclo,
+    inicio:CICLOS[ciclo][0], fim:CICLOS[ciclo][1], projetos:projetos,
+    situacao:"Em execução", resultados:"", notas:"",
+    metas:metas.map((t,n)=>({id:id+"-m"+(n+1), texto:t, situacao:"Em execução", justificativa:""}))};
+}
+const PLANOS_PADRAO = [
+  planoPadrao("p-2526-redes",
+    "Divulgação científica e os sentidos atribuídos nas redes sociais do Museu Game Ciência sob a perspectiva CTS",
+    "PIBIC", "2025-2026", ["f-pedic-ufma"], [
+    "Revisão bibliográfica",
+    "Participação nas reuniões do PEDIC",
+    "Elaboração e publicação contínua de conteúdos de Divulgação Científica nas redes sociais",
+    "Coleta e sistematização de dados de interação (comentários, curtidas, etc.)",
+    "Análise qualitativa das interações com base na Análise de Conteúdo e na Teoria da Ação Mediada",
+    "Discussão dos dados e validação das categorias com o grupo de pesquisa PEDIC",
+    "Sistematização dos resultados e elaboração do relatório final",
+    "Apresentação dos resultados em eventos acadêmicos ou científicos"]),
+  planoPadrao("p-2526-zerosmoke",
+    "Aprendizagem em saúde na perspectiva CTS por meio do jogo Zero Smoke no contexto do Museu Game Ciência",
+    "PIBIC", "2025-2026", ["f-pedic-ufma"], [
+    "Revisão bibliográfica",
+    "Participação nas reuniões do PEDIC e estudo teórico",
+    "Participação das atividades realizadas pelo Museu Game Ciência",
+    "Planejamento da sequência didática de aplicação",
+    "Aplicação do jogo no Museu Game Ciência e coleta de dados",
+    "Sistematização e análise de dados (Análise de Conteúdo)",
+    "Validação e discussão dos resultados com o grupo de pesquisa (PEDIC)",
+    "Escrita do relatório parcial",
+    "Escrita do relatório final e apresentação no SEMIC"]),
+  planoPadrao("p-2526-gameday",
+    "Atividades museológicas com jogos digitais para divulgação científica em saúde no Museu Game Ciência",
+    "PIBIC", "2025-2026", ["f-pedic-ufma"], [
+    "Revisão bibliográfica",
+    "Participação nas reuniões do PEDIC e estudo teórico",
+    "Participação das atividades no MGC",
+    "Planejamento das atividades museológicas",
+    "Aplicação dos jogos no Museu Game Ciência e coleta de dados",
+    "Sistematização e análise de dados",
+    "Validação e discussão dos resultados com o grupo de pesquisa (PEDIC)",
+    "Relatório parcial",
+    "Escrita do relatório final e apresentação no SEMIC"]),
+  planoPadrao("p-2526-robotica",
+    "Protótipos educativos para o ensino de Ciências com robótica e jogos",
+    "PIBIC", "2025-2026", ["f-pedic-ufma"], [
+    "Revisão bibliográfica",
+    "Participação nas reuniões do PEDIC e estudo teórico",
+    "Participação das atividades no MGC",
+    "Planejamento dos protótipos",
+    "Aplicação dos protótipos no Museu Game Ciência ou escola parceira e coleta de dados",
+    "Sistematização e análise de dados",
+    "Validação e discussão dos resultados com o grupo de pesquisa (PEDIC)",
+    "Relatório parcial",
+    "Escrita do relatório final e apresentação no SEMIC"]),
+  planoPadrao("p-2526-quadrinhos",
+    "Quadrinhos científicos: uma viagem pelo jogo Planeta Química numa abordagem CTS",
+    "PIBIC", "2025-2026", ["f-pedic-ufma"], [
+    "Reuniões de orientação",
+    "Pesquisa e planejamento inicial",
+    "Exploração e domínio de uma plataforma de criação de HQs",
+    "Desenvolvimento de personagens, ambiente e roteirização",
+    "Elaboração de um guia didático sobre experimentação investigativa",
+    "Revisão e feedback da execução da pesquisa",
+    "Publicação do material",
+    "Sistematização e análise dos dados",
+    "Escrita do relatório parcial",
+    "Escrita do relatório final e apresentação no SEMIC"]),
+  planoPadrao("p-2526-planetaquimica",
+    "O jogo Planeta Química em expansão com foco no design educacional para o ensino de Ciências",
+    "PIBIC", "2025-2026", ["f-pedic-ufma"], [
+    "Revisão bibliográfica",
+    "Participação nas reuniões do PEDIC",
+    "Participação em seminários",
+    "Elaboração do plano para o desenvolvimento de novas fases do jogo",
+    "Elaboração de estratégias para a divulgação científica",
+    "Desenvolvimento da mecânica do jogo",
+    "Apresentação do planejamento da pesquisa",
+    "Play-testes do jogo",
+    "Sistematização e análise dos dados",
+    "Escrita do relatório final e apresentação no SEMIC"]),
+  planoPadrao("p-2627-tabagismo",
+    "Tabagismo e o corpo humano: materiais lúdicos para educação em saúde e divulgação científica na perspectiva CTS",
+    "PIBIC", "2026-2027", ["f-cnpq-405203","f-pedic-ufma"], [
+    "Revisão bibliográfica (tabagismo, cigarro eletrônico, fisiologia humana, Educação em Saúde, CTS)",
+    "Participação nas reuniões do PEDIC e estudo teórico",
+    "Participação das atividades no Museu Game Ciência",
+    "Levantamento de conteúdos (doenças, fisiologia, campanhas, cigarro eletrônico, dados epidemiológicos)",
+    "Desenvolvimento da cartilha lúdica (design, diagramação, revisão científica)",
+    "Concepção e desenvolvimento do jogo de cartas (mecânicas, arte, regras, prototipagem)",
+    "Produção de conteúdos digitais para o perfil do MGC no Instagram",
+    "Testes internos e refinamento iterativo dos materiais (ciclos PBD)",
+    "Aplicação-teste da cartilha e do jogo de cartas com estudantes (escola e/ou MGC)",
+    "Sistematização e análise dos dados de validação",
+    "Relatório parcial",
+    "Escrita do relatório final e apresentação no SEMIC"]),
+  planoPadrao("p-2627-arduinoquimica",
+    "Protótipos didáticos com Arduino na perspectiva CTS para o ensino de reações químicas",
+    "PIBIC-EM", "2026-2027", ["f-cnpq-405203","f-pedic-ufma"], [
+    "Revisão bibliográfica (ensino de Química, robótica educacional, CTS)",
+    "Formação em Arduino, sensores e programação",
+    "Participação nas reuniões do PEDIC e estudo teórico",
+    "Participação das atividades no Museu Game Ciência",
+    "Desenvolvimento do módulo pH e neutralização",
+    "Desenvolvimento do módulo temperatura (reações endo e exotérmicas)",
+    "Desenvolvimento do módulo condutividade e eletrólitos",
+    "Integração Bluetooth e configuração do app para gráficos no celular",
+    "Modelagem e impressão 3D do case modular",
+    "Testes internos e refinamento iterativo do kit (ciclos PBD)",
+    "Aplicação-teste do kit com estudantes (escola e/ou Museu Game Ciência)",
+    "Sistematização e análise dos dados de validação",
+    "Relatório parcial",
+    "Escrita do relatório final e apresentação no SEMIC"]),
+  planoPadrao("p-2627-rv",
+    "Museu Game Ciência em realidade virtual como espaço de divulgação científica",
+    "PIBIC", "2026-2027", ["f-cnpq-405203","f-pedic-ufma"], [
+    "Revisão teórica (DBR, CTS, RV, divulgação científica)",
+    "Reuniões de orientação e participação no PEDIC",
+    "Participação das atividades no Museu Game Ciência",
+    "Planejamento e concepção do design virtual (layout, storyboard)",
+    "Produção de conteúdos audiovisuais e textuais",
+    "Desenvolvimento do ambiente virtual no Spatial (versões alpha e beta)",
+    "Implementação da dinâmica escape room educativo",
+    "Aplicação piloto e coleta de dados (validação)",
+    "Redesign e refinamento do ambiente virtual (ciclo DBR)",
+    "Sistematização e análise dos dados",
+    "Relatório parcial",
+    "Escrita do relatório final e apresentação no SEMIC"]),
+  planoPadrao("p-2627-parasitado",
+    "Parasitado: um jogo de tabuleiro para problematizar as parasitoses sob a perspectiva CTS",
+    "", "2026-2027", ["f-cnpq-405203","f-pedic-ufma"], [
+    "Revisão bibliográfica e aprofundamento teórico (CTS, DC, AC, Design de Games)",
+    "Participação nas reuniões do PEDIC e grupos de estudo",
+    "Participação das atividades no Museu Game Ciência",
+    "Planejamento e concepção do jogo (GDD, narrativa, mecânicas)",
+    "Desenvolvimento do jogo (tabuleiro, cartas, peças, regras, componentes)",
+    "Apresentação parcial ao PEDIC e refinamento do jogo",
+    "Validação do jogo (Museu Game Ciência, escolas e/ou eventos)",
+    "Sistematização e análise dos dados de validação",
+    "Relatório parcial",
+    "Escrita do relatório final e apresentação no SEMIC"]),
+  planoPadrao("p-2627-fisiovegetal",
+    "Protótipos didáticos com Arduino e Raspberry para o ensino de fisiologia vegetal: câmaras portáteis de transpiração e germinação monitorada",
+    "PIBIC", "2026-2027", ["f-cnpq-405203","f-pedic-ufma"], [
+    "Revisão bibliográfica sobre fisiologia vegetal, robótica educacional e ensino de Biologia",
+    "Formação em Arduino, eletrônica básica e programação",
+    "Participação nas reuniões do PEDIC e estudo teórico",
+    "Participação das atividades no Museu Game Ciência",
+    "Desenvolvimento do protótipo 1, câmara portátil de transpiração vegetal (Arduino)",
+    "Modelagem e impressão 3D dos cases de proteção",
+    "Desenvolvimento do protótipo 2, câmara de germinação com timelapse (Arduino, Raspberry Pi e câmera)",
+    "Testes e refinamento iterativo dos protótipos",
+    "Aplicação-teste dos protótipos com estudantes (escola parceira e/ou Museu Game Ciência)",
+    "Sistematização e análise dos dados de validação",
+    "Relatório parcial",
+    "Escrita do relatório final e apresentação no SEMIC"])
+];
+
+const VERSAO_SEMENTES = 2;
+let state = {itens:[], fomentos:JSON.parse(JSON.stringify(FOMENTO_PADRAO)),
+  metas:JSON.parse(JSON.stringify(METAS_PADRAO)), planos:JSON.parse(JSON.stringify(PLANOS_PADRAO)),
+  versaoSementes:0};   /* 0 faz a semeadura conferir o que falta; semear() marca como feita */
 let ui = {aba:"painel", busca:"", fStatus:"Todos", fTipo:"Todos", fFomento:"Todos", fomentoRel:"f-cnpq-405203",
-  editando:null, editandoMeta:null, fExecFomento:"Todos"};
+  editando:null, editandoMeta:null, editandoPlano:null, fExecFomento:"Todos",
+  fPlanoReg:"Todos", fPlanoCiclo:"Todos", planoAberto:"", modeloRel:"prestacao"};
 let semStorage = false;
 let gh = {owner:"", repo:"", path:"dados/producao.json", token:"", ultimoEnvio:""};
 
@@ -234,7 +461,7 @@ async function enviarGitHub(){
     const r = await fetch(ghUrl(), {method:"PUT", headers:ghHeaders(), body:JSON.stringify(corpo)});
     if(!r.ok) throw new Error("resposta " + r.status);
     gh.ultimoEnvio = new Date().toISOString(); salvarConfigGH();
-    ghStatus("Enviado. " + state.itens.length + " registros e " + state.metas.length + " metas guardados no GitHub.");
+    ghStatus("Enviado. " + state.itens.length + " registros, " + state.metas.length + " metas e " + state.planos.length + " planos guardados no GitHub.");
   }catch(e){ ghStatus("Não foi enviado: " + e.message + ". Confira o token e o nome do repositório.", true); }
 }
 
@@ -254,6 +481,8 @@ async function baixarGitHub(){
     state.itens = remoto.itens;
     if(Array.isArray(remoto.fomentos) && remoto.fomentos.length) state.fomentos = remoto.fomentos;
     if(Array.isArray(remoto.metas)) state.metas = remoto.metas;
+    if(Array.isArray(remoto.planos)) state.planos = remoto.planos;
+    if(typeof remoto.versaoSementes === "number") state.versaoSementes = remoto.versaoSementes;
     normalizarItens();
     salvar();
     ghStatus("Baixado. " + state.itens.length + " registros carregados neste aparelho.");
@@ -266,7 +495,9 @@ function carregar(){
     if(bruto){ const d = JSON.parse(bruto);
       if(Array.isArray(d.itens)) state.itens = d.itens;
       if(Array.isArray(d.fomentos) && d.fomentos.length) state.fomentos = d.fomentos;
-      if(Array.isArray(d.metas)) state.metas = d.metas; }
+      if(Array.isArray(d.metas)) state.metas = d.metas;
+      if(Array.isArray(d.planos)) state.planos = d.planos;
+      if(typeof d.versaoSementes === "number") state.versaoSementes = d.versaoSementes; }
   }catch(e){ semStorage = true; }
   normalizarItens();
 }
@@ -315,14 +546,19 @@ function excluir(){
 }
 
 /* ============================ relatórios ============================ */
+/* lista todos os vínculos de um item, não só o registro filtrado */
+function vinculosDoItem(i){
+  return (i.fomentos||[]).map(rotuloRegistro).join(" + ") || "sem vínculo";
+}
 function relatorio(){
-  const f = state.fomentos.find(x=>x.id===ui.fomentoRel); if(!f) return "";
+  const f = registro(ui.fomentoRel); if(!f) return "";
   const v = state.itens.filter(i=>i.fomentos.includes(f.id));
   const c = v.filter(i=>CONCLUIDOS.includes(i.status));
   const a = v.filter(i=>!CONCLUIDOS.includes(i.status) && i.status!=="Recusado");
   let t = "PRESTAÇÃO DE CONTAS - PRODUÇÃO VINCULADA\n";
-  t += f.agencia+" - Processo nº "+f.processo+"\n"+f.chamada+"\n";
+  t += f.agencia+" - "+f.processo+"\n"+f.tipo+". "+f.chamada+"\n";
   t += "Vigência: "+(f.inicio||"?")+" a "+(f.fim||"?")+"\n";
+  if(f.nota) t += "Prazo: "+f.nota+"\n";
   t += "Gerado em: "+new Date().toLocaleDateString("pt-BR")+"\n\n";
   t += "1. PRODUÇÃO CONCLUÍDA (aceita ou publicada): "+c.length+"\n\n";
   TIPOS.forEach(tp=>{
@@ -332,7 +568,7 @@ function relatorio(){
       t += "  "+(n+1)+". "+(i.autores||"[autores]")+". "+i.titulo+". "+(i.veiculo||"[veículo]")+", "+(i.ano||"s.d.")+".";
       if(i.qualis) t += " Qualis "+i.qualis+".";
       if(i.link) t += " Disponível em: "+i.link+".";
-      t += " [Agradecimento: "+i.agradecimento+"]\n";
+      t += "\n     Vínculos: "+vinculosDoItem(i)+". [Agradecimento: "+i.agradecimento+"]\n";
     });
     t += "\n";
   });
@@ -341,13 +577,158 @@ function relatorio(){
     t += "  "+(n+1)+". "+i.titulo+" ("+i.tipo+"). Situação: "+i.status;
     if(i.veiculo) t += ". Destino: "+i.veiculo;
     if(i.dataSubmissao) t += ". Submetido em "+i.dataSubmissao;
-    t += ".\n";
+    t += ".\n     Vínculos: "+vinculosDoItem(i)+".\n";
   });
-  const p = c.filter(i=>i.agradecimento!=="Sim");
-  t += "\n3. ITENS SEM AGRADECIMENTO REGISTRADO: "+p.length+"\n";
-  p.forEach((i,n)=>{ t += "  "+(n+1)+". "+i.titulo+" ("+(i.veiculo||"sem veículo")+")\n"; });
-  t += "\n4. TEXTO PADRÃO DE AGRADECIMENTO\n"+(f.texto||"[não definido]")+"\n";
+  const pl = planosDoRegistro(f.id);
+  t += "\n3. PLANOS DE TRABALHO VINCULADOS: "+pl.length+"\n\n";
+  pl.forEach((p,n)=>{
+    t += "  "+(n+1)+". "+p.titulo+"\n";
+    t += "     "+(p.vinculo||"vínculo não informado")+", "+(p.ciclo||"ciclo não informado")+". Situação: "+p.situacao+".\n";
+    t += "     Vínculos: "+(p.projetos.map(rotuloRegistro).join(" + ")||"nenhum")+".\n";
+  });
+  const p2 = c.filter(i=>i.agradecimento!=="Sim");
+  t += "\n4. ITENS SEM AGRADECIMENTO REGISTRADO: "+p2.length+"\n";
+  p2.forEach((i,n)=>{ t += "  "+(n+1)+". "+i.titulo+" ("+(i.veiculo||"sem veículo")+")\n"; });
+  t += "\n5. TEXTO PADRÃO DE AGRADECIMENTO\n"+(f.texto||"[não definido]")+"\n";
   return t;
+}
+
+/* modelo de fechamento institucional: metas, planos e produção derivada */
+function relatorioInstitucional(){
+  const f = registro(ui.fomentoRel); if(!f) return "";
+  const linha = c => c.repeat(70)+"\n";
+  let t = "RELATÓRIO FINAL - PROJETO INSTITUCIONAL\n"+linha("=");
+  t += f.nome+"\n";
+  t += f.agencia+" · "+f.processo+"\n";
+  t += "Vigência: "+(f.inicio||"?")+" a "+(f.fim||"?")+"\n";
+  if(f.nota) t += "\nPrazo: "+f.nota+"\n";
+  t += "Gerado em: "+new Date().toLocaleDateString("pt-BR")+"\n\n";
+  if(f.objetivos) t += "OBJETIVOS\n"+linha("-")+f.objetivos+"\n\n";
+
+  const metas = state.metas.filter(m=>m.fomento===f.id);
+  t += "1. METAS DO PROJETO: "+metas.length+"\n"+linha("-");
+  const cont = metas.filter(m=>m.continua), prz = metas.filter(m=>!m.continua);
+  const escreveMeta = m => {
+    let s = "  "+(m.codigo||"--")+". "+m.descricao+"\n";
+    s += "     Situação: "+statusMeta(m);
+    s += m.continua ? ". Meta contínua, sem prazo próprio." : (m.prazo?". Prazo: "+dataBR(m.prazo)+".":". Sem prazo definido.");
+    s += "\n";
+    if(m.obs) s += "     Justificativa / observação: "+m.obs+"\n";
+    const vi = itensDaMeta(m.id);
+    s += "     Produção vinculada: "+(vi.length?vi.map(i=>i.titulo+" ("+i.status+")").join("; "):"nenhuma")+"\n";
+    return s;
+  };
+  t += "\n1.1 Metas com prazo definido\n";
+  t += prz.length ? prz.map(escreveMeta).join("") : "  nenhuma\n";
+  t += "\n1.2 Metas contínuas\n";
+  t += cont.length ? cont.map(escreveMeta).join("") : "  nenhuma\n";
+
+  const pls = planosDoRegistro(f.id);
+  const fim = pls.filter(p=>p.situacao==="Concluído");
+  const andando = pls.filter(p=>p.situacao!=="Concluído");
+  t += "\n\n2. PLANOS DE TRABALHO CONCLUÍDOS NO PERÍODO: "+fim.length+"\n"+linha("-");
+  if(!fim.length) t += "  Nenhum plano marcado como concluído.\n";
+  fim.forEach((p,n)=>{
+    t += "\n  "+(n+1)+". "+p.titulo+"\n";
+    t += "     Bolsista: "+(p.aluno||"[não informado no plano]")+"\n";
+    t += "     Vínculo: "+(p.vinculo||"não informado")+" · Ciclo "+(p.ciclo||"não informado")+
+         " · Vigência "+dataBR(p.inicio)+" a "+dataBR(p.fim)+"\n";
+    t += "     Projetos vinculados: "+(p.projetos.map(rotuloRegistro).join(" + ")||"nenhum")+"\n";
+    t += "     Resultados: "+(p.resultados||"[a preencher]")+"\n";
+    t += "     Metas do plano:\n";
+    p.metas.forEach(m=>{
+      t += "       - "+m.texto+" | "+m.situacao;
+      if(m.justificativa) t += " | Justificativa: "+m.justificativa;
+      else if(m.situacao==="Não cumprida" || m.situacao==="Parcialmente cumprida") t += " | Justificativa: [a preencher]";
+      t += "\n";
+    });
+  });
+  if(andando.length){
+    t += "\n  Planos ainda em execução ou interrompidos: "+andando.length+"\n";
+    andando.forEach(p=>{ t += "   - "+p.titulo+" ("+p.situacao+", ciclo "+(p.ciclo||"?")+")\n"; });
+  }
+
+  const vinc = state.itens.filter(i=>i.fomentos.includes(f.id));
+  const idsExternos = state.fomentos.filter(x=>x.tipo==="Fomento externo").map(x=>x.id);
+  const porAgencia = ag => vinc.filter(i=>i.fomentos.some(id=>{ const r=registro(id); return r && r.agencia===ag; }));
+  const soGuardaChuva = vinc.filter(i=>!i.fomentos.some(id=>idsExternos.includes(id)));
+  const escreveItem = (i,n) => "  "+(n+1)+". "+(i.autores||"[autores]")+". "+i.titulo+". "+
+    (i.veiculo||"[veículo]")+", "+(i.ano||"s.d.")+". "+i.tipo+". Situação: "+i.status+".\n"+
+    "     Vínculos: "+vinculosDoItem(i)+".\n";
+  t += "\n\n3. PRODUÇÃO BIBLIOGRÁFICA VINCULADA: "+vinc.length+"\n"+linha("-");
+  t += "\n3.1 Derivada do projeto CNPq\n";
+  const cnpq = porAgencia("CNPq");
+  t += cnpq.length ? cnpq.map(escreveItem).join("") : "  nenhuma\n";
+  t += "\n3.2 Derivada da bolsa FAPEMA\n";
+  const fap = porAgencia("FAPEMA");
+  t += fap.length ? fap.map(escreveItem).join("") : "  nenhuma\n";
+  t += "\n3.3 Produzida apenas no guarda-chuva, sem fomento externo\n";
+  t += soGuardaChuva.length ? soGuardaChuva.map(escreveItem).join("") : "  nenhuma\n";
+  t += "\nObservação: um mesmo item pode aparecer em mais de uma seção quando tem vínculo múltiplo. ";
+  t += "Os planos de 2026-2027 pertencem ao CNPq e correm dentro do guarda-chuva do PEDIC, e constam aqui como produção derivada com indicação do vínculo duplo.\n";
+  return t;
+}
+
+function telaContas(){
+  const f = registro(ui.fomentoRel) || state.fomentos[0];
+  if(!f) return `<div class="vazio"><p class="meta">Cadastre um registro na aba Projetos e vínculos.</p></div>`;
+  ui.fomentoRel = f.id;
+  const v = state.itens.filter(i=>i.fomentos.includes(f.id));
+  const c = v.filter(i=>CONCLUIDOS.includes(i.status));
+  const s = c.filter(i=>i.agradecimento!=="Sim");
+  const pls = planosDoRegistro(f.id);
+  const inst = ui.modeloRel === "institucional";
+
+  return `<div class="grid g4" style="align-items:end;margin-bottom:14px">
+    <div><label>Registro a prestar contas</label>
+      <select onchange="ui.fomentoRel=this.value;render()">
+        ${state.fomentos.map(x=>`<option value="${x.id}" ${x.id===f.id?"selected":""}>${esc(rotuloRegistro(x.id))}</option>`).join("")}
+      </select></div>
+    <div><label>Modelo de relatório</label>
+      <select onchange="ui.modeloRel=this.value;render()">
+        <option value="prestacao" ${!inst?"selected":""}>Prestação de contas da produção</option>
+        <option value="institucional" ${inst?"selected":""}>Relatório final institucional</option>
+      </select></div>
+    <div><button class="btn pri" onclick='mostrarTexto(${inst?"relatorioInstitucional()":"relatorio()"},"${inst?"relatorio-final-institucional.txt":"relatorio-producao.txt"}")'>Gerar relatório</button></div>
+    <div><button class="btn" onclick='mostrarTexto(csv(),"producao.csv","text/csv")'>Exportar planilha (CSV)</button></div>
+  </div>
+  <p class="meta" style="margin:-6px 0 14px">${inst
+    ? "Reúne as metas do projeto com situação e justificativa, os planos de trabalho concluídos com seus resultados e a produção bibliográfica vinculada, separando o que deriva do CNPq e da FAPEMA."
+    : "Lista a produção vinculada a este registro, concluída e em andamento, com todos os vínculos de cada item e o texto de agradecimento."}</p>
+  <div class="card">
+    <div class="linha" style="margin-bottom:8px">
+      <div style="font-family:var(--display);font-size:21px;flex:1;min-width:220px">${esc(f.nome)}</div>
+      <span class="tag" style="background:${(CORES_REGISTRO[f.tipo]||["#EEE","#555"])[0]};color:${(CORES_REGISTRO[f.tipo]||["#EEE","#555"])[1]}">${esc(f.tipo)}</span>
+    </div>
+    <div style="font-family:var(--data);font-size:12.5px;color:var(--ink2)">${esc(f.agencia)} · ${esc(f.processo)} · ${esc(f.chamada)}</div>
+    <div style="font-family:var(--data);font-size:12.5px;color:var(--ink2)">Vigência ${esc(f.inicio)} a ${esc(f.fim)}</div>
+    ${f.nota?`<p class="meta" style="margin-top:8px;color:var(--stamp)">${esc(f.nota)}</p>`:""}
+    <div class="grid g4" style="margin:18px 0">
+      ${[["Itens vinculados",v.length,"var(--ink)"],["Concluídos",c.length,"var(--green)"],
+         ["Sem agradecimento",s.length,"var(--stamp)"],["Planos de trabalho",pls.length,"var(--navy)"]]
+        .map(m=>`<div style="border-left:3px solid ${m[2]};padding-left:10px">
+          <div class="num" style="font-size:26px;color:${m[2]}">${m[1]}</div><div class="rot">${m[0]}</div></div>`).join("")}
+    </div>
+    <div style="background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:12px">
+      <div class="rot" style="margin:0 0 6px">Texto de agradecimento a colar no artigo</div>
+      <div style="font-size:13.5px;line-height:1.5">${esc(f.texto)}</div>
+      <button class="btn sm" style="margin-top:10px" onclick='mostrarTexto(${JSON.stringify(f.texto||"")})'>Copiar texto</button>
+    </div>
+    <h2 style="margin:22px 0 8px">Itens vinculados</h2>
+    ${v.length?v.map(i=>`<div class="linha" style="border-top:1px solid var(--rule);padding:8px 0">
+      <div style="flex:1"><div style="font-size:14px">${esc(i.titulo)}</div>
+      <div class="meta">${esc(i.tipo)} · ${esc(i.veiculo)} · ${esc(i.ano)}</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px">${i.fomentos.map(tagRegistro).join("")}</div></div>
+      ${i.agradecimento==="Sim"?`<span class="carimbo ok">OK</span>`:`<span class="carimbo">Pendente</span>`}</div>`).join("")
+    :`<p class="meta">Nenhuma produção vinculada. Abra um item e marque o registro correspondente.</p>`}
+    <h2 style="margin:22px 0 8px">Planos de trabalho vinculados</h2>
+    ${pls.length?pls.map(p=>`<div class="linha" style="border-top:1px solid var(--rule);padding:8px 0">
+      <div style="flex:1"><div style="font-size:14px">${esc(p.titulo)}</div>
+      <div class="meta">${esc([p.vinculo,p.ciclo].filter(Boolean).join(" · "))}</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px">${p.projetos.map(tagRegistro).join("")}</div></div>
+      <span class="tag" style="background:#F4F4F0;color:var(--ink2)">${esc(p.situacao)}</span></div>`).join("")
+    :`<p class="meta">Nenhum plano de trabalho vinculado. Vincule na aba Orientações.</p>`}
+  </div>`;
 }
 function csv(){
   const cols = ["titulo","tipo","autores","veiculo","ano","qualis","status","dataSubmissao","dataDecisao","agradecimento","link","notas"];
@@ -371,7 +752,8 @@ function mostrarTexto(txt, nomeArquivo, tipo){
     </div></div>`;
 }
 function copiarSaida(){ const t = document.getElementById("saida"); t.select(); try{document.execCommand("copy")}catch(e){} }
-function fecharModal(){ ui.editando = null; ui.editandoMeta = null; document.getElementById("modal").innerHTML = ""; render(); }
+function fecharModal(){ ui.editando = null; ui.editandoMeta = null; ui.editandoPlano = null;
+  document.getElementById("modal").innerHTML = ""; render(); }
 
 /* ============================ backup ============================ */
 function exportarJSON(){
@@ -392,6 +774,8 @@ function importarJSON(){
         state.itens = d.itens;
         if(Array.isArray(d.fomentos) && d.fomentos.length) state.fomentos = d.fomentos;
         if(Array.isArray(d.metas)) state.metas = d.metas;
+        if(Array.isArray(d.planos)) state.planos = d.planos;
+        if(typeof d.versaoSementes === "number") state.versaoSementes = d.versaoSementes;
         normalizarItens();
         salvar();
       }catch(e){ alert("O arquivo não é um backup válido desta plataforma."); }
@@ -409,11 +793,102 @@ function diasAte(iso){ if(!iso) return null;
   const h = new Date(); h.setHours(0,0,0,0);
   const d = new Date(String(iso).slice(0,10)+"T00:00:00");
   return Math.round((d-h)/86400000); }
+/* ===== compatibilidade com backups antigos e semeadura dos dados iniciais ===== */
+function semear(){
+  /* acrescenta apenas o que ainda nao existe, por id, e roda uma unica vez por aparelho */
+  if(state.versaoSementes >= VERSAO_SEMENTES) return;
+  const idsF = state.fomentos.map(x=>x.id);
+  FOMENTO_PADRAO.forEach(f=>{ if(!idsF.includes(f.id)) state.fomentos.push(JSON.parse(JSON.stringify(f))); });
+  const idsM = state.metas.map(x=>x.id);
+  METAS_PADRAO.forEach(m=>{ if(!idsM.includes(m.id)) state.metas.push(JSON.parse(JSON.stringify(m))); });
+  const idsP = state.planos.map(x=>x.id);
+  PLANOS_PADRAO.forEach(p=>{ if(!idsP.includes(p.id)) state.planos.push(JSON.parse(JSON.stringify(p))); });
+  state.versaoSementes = VERSAO_SEMENTES;
+}
 function normalizarItens(){
   state.itens.forEach(i=>{
     if(!Array.isArray(i.fomentos)) i.fomentos = [];
     if(!Array.isArray(i.metas)) i.metas = [];
   });
+  if(!Array.isArray(state.fomentos)) state.fomentos = [];
+  state.fomentos.forEach(f=>{
+    if(!f.tipo) f.tipo = "Fomento externo";           /* registros antigos viram fomento externo */
+    if(f.objetivos == null) f.objetivos = "";
+    if(f.nota == null) f.nota = "";
+  });
+  if(!Array.isArray(state.metas)) state.metas = [];
+  if(!Array.isArray(state.planos)) state.planos = [];
+  state.planos.forEach(p=>{
+    if(!Array.isArray(p.projetos)) p.projetos = [];
+    if(!Array.isArray(p.metas)) p.metas = [];
+    p.metas.forEach((m,n)=>{
+      if(!m.id) m.id = p.id+"-m"+(n+1);
+      if(!m.situacao) m.situacao = "Em execução";
+      if(m.justificativa == null) m.justificativa = "";
+    });
+    ["aluno","vinculo","inicio","fim","resultados","notas","ciclo"].forEach(k=>{ if(p[k] == null) p[k] = ""; });
+    if(!p.situacao) p.situacao = "Em execução";
+  });
+  if(typeof state.versaoSementes !== "number") state.versaoSementes = 0;
+  semear();
+}
+
+/* ===== registros (projetos e vínculos) ===== */
+function registro(id){ return state.fomentos.find(f=>f.id===id); }
+function rotuloRegistro(id){ const f = registro(id); return f ? f.agencia+" "+f.processo : id; }
+function tagRegistro(id){
+  const f = registro(id);
+  const c = f && CORES_REGISTRO[f.tipo] ? CORES_REGISTRO[f.tipo] : ["var(--navy-soft)","var(--navy)"];
+  return `<span class="tag" style="background:${c[0]};color:${c[1]}">${esc(rotuloRegistro(id))}</span>`;
+}
+function registrosDoTipo(t){ return state.fomentos.filter(f=>f.tipo===t); }
+
+/* ===== planos de trabalho (aba Orientações) ===== */
+function planoPorId(id){ return state.planos.find(p=>p.id===id); }
+function contaMetasPlano(p, sit){ return p.metas.filter(m=>m.situacao===sit).length; }
+function planosDoRegistro(id){ return state.planos.filter(p=>p.projetos.includes(id)); }
+function novoPlano(){
+  const id = "p"+Date.now()+Math.random().toString(36).slice(2,6);
+  ui.editandoPlano = {id:id, titulo:"", aluno:"", vinculo:"PIBIC", ciclo:"", inicio:"", fim:"",
+    projetos:[], situacao:"Em execução", resultados:"", notas:"", metas:[]};
+  render();
+}
+function editarPlano(id){ const p = planoPorId(id); if(p){ ui.editandoPlano = JSON.parse(JSON.stringify(p)); render(); } }
+function campoPlano(k,v){ ui.editandoPlano[k] = v; }
+function alternarProjetoPlano(fid){
+  const l = ui.editandoPlano.projetos;
+  ui.editandoPlano.projetos = l.includes(fid) ? l.filter(x=>x!==fid) : l.concat([fid]);
+  render();
+}
+function addMetaPlano(){
+  const p = ui.editandoPlano;
+  p.metas.push({id:p.id+"-m"+(p.metas.length+1)+Math.random().toString(36).slice(2,4),
+    texto:"", situacao:"Em execução", justificativa:""});
+  render();
+}
+function campoMetaPlano(n,k,v){ ui.editandoPlano.metas[n][k] = v; }
+function removerMetaPlano(n){ ui.editandoPlano.metas.splice(n,1); render(); }
+function gravarPlano(){
+  const p = ui.editandoPlano;
+  if(!p.titulo.trim()){ alert("Dê um título ao plano de trabalho antes de salvar."); return; }
+  const existe = state.planos.some(x=>x.id===p.id);
+  state.planos = existe ? state.planos.map(x=>x.id===p.id?p:x) : state.planos.concat([p]);
+  ui.editandoPlano = null; salvar();
+}
+function excluirPlano(){
+  if(!confirm("Excluir este plano de trabalho e as metas dele?")) return;
+  state.planos = state.planos.filter(x=>x.id!==ui.editandoPlano.id);
+  ui.editandoPlano = null; salvar();
+}
+/* marcação rápida direto no cartão, sem abrir o formulário */
+function sitMetaPlano(planoId, n, v){ const p = planoPorId(planoId); if(p && p.metas[n]){ p.metas[n].situacao = v; salvar(); } }
+function justMetaPlano(planoId, n, v){ const p = planoPorId(planoId); if(p && p.metas[n]){ p.metas[n].justificativa = v; salvar(); } }
+function sitPlano(planoId, v){ const p = planoPorId(planoId); if(p){ p.situacao = v; salvar(); } }
+function restaurarPlanosPadrao(){
+  if(!confirm("Isto repõe os "+PLANOS_PADRAO.length+" planos originais extraídos dos documentos, substituindo os planos com o mesmo identificador. O que você marcou neles será perdido. Continuar?")) return;
+  const ids = PLANOS_PADRAO.map(p=>p.id);
+  state.planos = state.planos.filter(p=>!ids.includes(p.id)).concat(JSON.parse(JSON.stringify(PLANOS_PADRAO)));
+  salvar();
 }
 function metaPorId(id){ return state.metas.find(m=>m.id===id); }
 function itensDaMeta(id){ return state.itens.filter(i=>Array.isArray(i.metas) && i.metas.includes(id)); }
@@ -483,7 +958,7 @@ function alternarMetaItem(id){
 }
 /* ============================ telas ============================ */
 const ABAS = [["painel","Painel"],["producao","Produção"],["andamento","Em andamento"],["execucao","Execução"],
-  ["contas","Prestação de contas"],["fomentos","Fomentos"],["dados","Backup"]];
+  ["orientacoes","Orientações"],["contas","Prestação de contas"],["fomentos","Projetos e vínculos"],["dados","Backup"]];
 
 function telaPainel(){
   const c = state.itens.filter(i=>CONCLUIDOS.includes(i.status)).length;
@@ -494,7 +969,8 @@ function telaPainel(){
   const lista = Object.entries(anos).sort((x,y)=>y[0].localeCompare(x[0]));
   const prazos = state.itens.filter(i=>i.prazo).sort((x,y)=>x.prazo.localeCompare(y.prazo)).slice(0,8);
 
-  let h = `<div class="grid g4 metricas">
+  let h = `<div class="grid g3" style="margin-bottom:14px">${MARCOS.map(cartaoMarco).join("")}</div>`;
+  h += `<div class="grid g4 metricas">
     ${[["Total registrado",state.itens.length,"var(--ink)"],["Publicado ou aceito",c,"var(--green)"],
        ["Em andamento",a,"var(--navy)"],["Agradecimento pendente",p.length,"var(--stamp)"]]
       .map(m=>`<div class="card"><div class="num" style="color:${m[2]}">${m[1]}</div><div class="rot">${m[0]}</div></div>`).join("")}
@@ -602,64 +1078,241 @@ function telaAndamento(){
   }).join("")}</div>`;
 }
 
-function telaContas(){
-  const f = state.fomentos.find(x=>x.id===ui.fomentoRel) || state.fomentos[0];
-  if(!f) return `<div class="vazio"><p class="meta">Cadastre um fomento na aba Fomentos.</p></div>`;
-  ui.fomentoRel = f.id;
-  const v = state.itens.filter(i=>i.fomentos.includes(f.id));
-  const c = v.filter(i=>CONCLUIDOS.includes(i.status));
-  const s = c.filter(i=>i.agradecimento!=="Sim");
 
-  return `<div class="grid g3" style="align-items:end;margin-bottom:14px">
-    <div><label>Fomento a prestar contas</label>
-      <select onchange="ui.fomentoRel=this.value;render()">
-        ${state.fomentos.map(x=>`<option value="${x.id}" ${x.id===f.id?"selected":""}>${esc(x.agencia+" "+x.processo)}</option>`).join("")}
-      </select></div>
-    <div><button class="btn pri" onclick='mostrarTexto(relatorio(),"relatorio-producao.txt")'>Gerar relatório</button></div>
-    <div><button class="btn" onclick='mostrarTexto(csv(),"producao.csv","text/csv")'>Exportar planilha (CSV)</button></div>
-  </div>
-  <div class="card">
-    <div style="font-family:var(--display);font-size:21px">${esc(f.nome)}</div>
-    <div style="font-family:var(--data);font-size:12.5px;color:var(--ink2);margin-top:4px">${esc(f.agencia)} · Processo ${esc(f.processo)} · ${esc(f.chamada)}</div>
-    <div style="font-family:var(--data);font-size:12.5px;color:var(--ink2)">Vigência ${esc(f.inicio)} a ${esc(f.fim)}</div>
-    <div class="grid g3" style="margin:18px 0">
-      ${[["Vinculado",v.length,"var(--ink)"],["Concluído",c.length,"var(--green)"],["Sem agradecimento",s.length,"var(--stamp)"]]
-        .map(m=>`<div style="border-left:3px solid ${m[2]};padding-left:10px">
-          <div class="num" style="font-size:26px;color:${m[2]}">${m[1]}</div><div class="rot">${m[0]}</div></div>`).join("")}
+/* ============================ projetos e vínculos ============================ */
+function campoRegistro(id,k,v){ const f = registro(id); if(f){ f[k] = v; salvar(); } }
+
+function cartaoRegistro(f){
+  const c = CORES_REGISTRO[f.tipo] || ["var(--navy-soft)","var(--navy)"];
+  const campos = [["Agência ou unidade","agencia"],["Processo / identificação","processo"],
+    ["Nome do projeto","nome"],["Chamada, edital ou natureza do registro","chamada"],
+    ["Início","inicio"],["Fim","fim"]];
+  const vinc = state.itens.filter(i=>i.fomentos.includes(f.id)).length;
+  const pls = planosDoRegistro(f.id).length;
+  const mts = state.metas.filter(m=>m.fomento===f.id).length;
+  return `<div class="card" style="margin-bottom:12px;border-left:4px solid ${c[1]}">
+    <div class="linha" style="margin-bottom:10px">
+      <span class="tag" style="background:${c[0]};color:${c[1]}">${esc(f.tipo)}</span>
+      <span class="rot">${mts} metas · ${pls} planos · ${vinc} itens de produção</span>
     </div>
-    <div style="background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:12px">
-      <div class="rot" style="margin:0 0 6px">Texto de agradecimento a colar no artigo</div>
-      <div style="font-size:13.5px;line-height:1.5">${esc(f.texto)}</div>
-      <button class="btn sm" style="margin-top:10px" onclick='mostrarTexto(${JSON.stringify(f.texto)})'>Copiar texto</button>
+    <div class="grid g2">
+      <div><label>Tipo de registro</label>
+        <select onchange="campoRegistro('${f.id}','tipo',this.value)">
+          ${TIPOS_REGISTRO.map(t=>`<option ${t===f.tipo?"selected":""}>${esc(t)}</option>`).join("")}
+        </select></div>
+      <div></div>
+      ${campos.map(([r,k])=>`<div><label>${r}</label>
+        <input value="${esc(f[k]||"")}" onchange="campoRegistro('${f.id}','${k}',this.value)"></div>`).join("")}
+      <div class="full"><label>Objetivos e escopo</label>
+        <textarea onchange="campoRegistro('${f.id}','objetivos',this.value)">${esc(f.objetivos||"")}</textarea></div>
+      <div class="full"><label>Observação sobre o prazo</label>
+        <textarea onchange="campoRegistro('${f.id}','nota',this.value)">${esc(f.nota||"")}</textarea></div>
+      <div class="full"><label>Texto padrão de agradecimento</label>
+        <textarea onchange="campoRegistro('${f.id}','texto',this.value)">${esc(f.texto||"")}</textarea></div>
+      <div class="full"><button class="btn dan sm" onclick="removerFomento('${f.id}')">Remover registro</button></div>
     </div>
-    <h2 style="margin:22px 0 8px">Itens vinculados</h2>
-    ${v.length?v.map(i=>`<div class="linha" style="border-top:1px solid var(--rule);padding:8px 0">
-      <div style="flex:1"><div style="font-size:14px">${esc(i.titulo)}</div>
-      <div class="meta">${esc(i.tipo)} · ${esc(i.veiculo)} · ${esc(i.ano)}</div></div>
-      ${i.agradecimento==="Sim"?`<span class="carimbo ok">OK</span>`:`<span class="carimbo">Pendente</span>`}</div>`).join("")
-    :`<p class="meta">Nenhuma produção vinculada. Abra um item e marque o fomento correspondente.</p>`}
   </div>`;
 }
 
 function telaFomentos(){
-  const campos = [["Agência","agencia"],["Processo","processo"],["Nome do projeto","nome"],
-    ["Chamada / edital","chamada"],["Início","inicio"],["Fim","fim"]];
-  return state.fomentos.map((f,idx)=>`<div class="card" style="margin-bottom:12px"><div class="grid g2">
-    ${campos.map(([r,k])=>`<div><label>${r}</label>
-      <input value="${esc(f[k]||"")}" onchange="state.fomentos[${idx}].${k}=this.value;salvar()"></div>`).join("")}
-    <div class="full"><label>Texto padrão de agradecimento</label>
-      <textarea onchange="state.fomentos[${idx}].texto=this.value;salvar()">${esc(f.texto||"")}</textarea></div>
-    <div class="full"><button class="btn dan sm" onclick="removerFomento('${f.id}')">Remover fomento</button></div>
-  </div></div>`).join("") + `<button class="btn" onclick="addFomento()">+ Adicionar fomento</button>`;
+  let h = `<div class="card" style="border-color:var(--stamp);margin-bottom:16px">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+      <span class="carimbo">Prazos distintos</span>
+      <h2 style="margin:0">Não confundir os dois prazos do PEDIC</h2>
+    </div>
+    <p class="meta" style="margin:0 0 6px"><strong>Registro na UFMA, agosto de 2027:</strong> é o prazo que <strong>rege o relatório final</strong>.
+      O registro do projeto guarda-chuva encerra nessa data, no limite de 3 anos de vigência sem renovação, e é ela que define a entrega à UFMA (meta G12).</p>
+    <p class="meta" style="margin:0"><strong>Aprovação ética, novembro de 2028:</strong> é apenas o cronograma registrado na Plataforma Brasil,
+      no Parecer CEP/UFMA nº 8.347.018. A data é mais longa porque o CEP aprovou depois do projeto já em execução. <strong>Não estende o prazo do relatório.</strong></p>
+  </div>`;
+  TIPOS_REGISTRO.forEach(t=>{
+    const lista = registrosDoTipo(t);
+    const c = CORES_REGISTRO[t];
+    h += `<div style="margin-bottom:18px">
+      <div class="linha" style="align-items:baseline;margin-bottom:8px">
+        <h2 style="margin:0;color:${c[1]}">${esc(t)}</h2>
+        <span class="rot">${lista.length} ${lista.length===1?"registro":"registros"}</span>
+      </div>
+      ${lista.length?lista.map(cartaoRegistro).join(""):`<div class="vazio"><p class="meta" style="margin:0">Nenhum registro deste tipo.</p></div>`}
+    </div>`;
+  });
+  return h + `<button class="btn" onclick="addFomento()">+ Adicionar registro</button>`;
+}
+
+/* ============================ orientações ============================ */
+function cardPlano(p){
+  const aberto = ui.planoAberto === p.id;
+  const cum = contaMetasPlano(p,"Cumprida"), par = contaMetasPlano(p,"Parcialmente cumprida");
+  const nao = contaMetasPlano(p,"Não cumprida"), exe = contaMetasPlano(p,"Em execução");
+  const cor = p.situacao==="Concluído" ? "var(--green)" : p.situacao==="Interrompido" ? "var(--stamp)" : "var(--navy)";
+  return `<div class="item metacard" style="border-left-color:${cor}">
+    <div class="linha">
+      <div style="flex:1;min-width:240px">
+        <h3>${esc(p.titulo||"(sem título)")}</h3>
+        <div class="meta">${esc([p.vinculo||"vínculo não informado no plano",
+          (p.inicio||p.fim)?("vigência "+dataBR(p.inicio)+" a "+dataBR(p.fim)):""].filter(Boolean).join(" · "))}</div>
+        <div class="meta">Bolsista: ${p.aluno?esc(p.aluno):`<span style="color:var(--stamp)">não consta no documento, preencha em Editar</span>`}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">${p.projetos.map(tagRegistro).join("")}</div>
+      </div>
+      <div style="text-align:right;min-width:170px">
+        <select style="width:auto;font-size:12.5px;padding:4px 6px" onchange="sitPlano('${p.id}',this.value)">
+          ${SIT_PLANO.map(s=>`<option ${s===p.situacao?"selected":""}>${esc(s)}</option>`).join("")}
+        </select>
+        <div style="display:flex;gap:6px;margin-top:8px;justify-content:flex-end">
+          <button class="btn sm" onclick="ui.planoAberto='${aberto?"":p.id}';render()">${aberto?"Fechar metas":"Ver metas ("+p.metas.length+")"}</button>
+          <button class="btn sm" onclick="editarPlano('${p.id}')">Editar</button>
+        </div>
+      </div>
+    </div>
+    <div class="sep">
+      ${[["Cumpridas",cum,"var(--green)"],["Parciais",par,"var(--amber)"],
+         ["Não cumpridas",nao,"var(--stamp)"],["Em execução",exe,"var(--navy)"]]
+        .map(x=>`<span class="tag" style="background:#F4F4F0;color:${x[2]}">${x[0]}: ${x[1]}</span>`).join("")}
+    </div>
+    ${aberto?`<div class="sep" style="flex-direction:column;align-items:stretch;gap:8px">
+      <div class="rot" style="margin:0">Metas propostas no plano</div>
+      ${p.metas.length?p.metas.map((m,n)=>{
+        const c = CORES_SIT_META[m.situacao] || ["#EEE","#555"];
+        return `<div style="border-left:3px solid ${c[1]};padding:6px 0 6px 10px">
+          <div style="font-size:13.5px;margin-bottom:5px">${esc(m.texto)}</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <select style="width:auto;font-size:12.5px;padding:4px 6px" onchange="sitMetaPlano('${p.id}',${n},this.value)">
+              ${SIT_META_PLANO.map(s=>`<option ${s===m.situacao?"selected":""}>${esc(s)}</option>`).join("")}
+            </select>
+            <input style="flex:1;min-width:200px;font-size:13px;padding:5px 8px"
+              placeholder="justificativa, obrigatória quando não cumprida ou parcial"
+              value="${esc(m.justificativa)}" onchange="justMetaPlano('${p.id}',${n},this.value)">
+          </div>
+        </div>`;
+      }).join(""):`<p class="meta" style="margin:0">Nenhuma meta cadastrada neste plano. Use Editar para acrescentar.</p>`}
+      ${p.resultados?`<div><div class="rot" style="margin:6px 0 2px">Resultados registrados</div>
+        <div style="font-size:13.5px">${esc(p.resultados)}</div></div>`:""}
+    </div>`:""}
+  </div>`;
+}
+
+function telaOrientacoes(){
+  const planos = state.planos
+    .filter(p=>ui.fPlanoReg==="Todos" || p.projetos.includes(ui.fPlanoReg))
+    .filter(p=>ui.fPlanoCiclo==="Todos" || (p.ciclo||"sem ciclo")===ui.fPlanoCiclo);
+  const ciclos = [...new Set(state.planos.map(p=>p.ciclo||"sem ciclo"))].sort();
+  const totMetas = planos.reduce((s,p)=>s+p.metas.length,0);
+  const semNome = planos.filter(p=>!p.aluno).length;
+
+  let h = `<div class="grid g4 metricas" style="margin-bottom:14px">
+    ${[["Planos no filtro",planos.length,"var(--ink)"],
+       ["Concluídos",planos.filter(p=>p.situacao==="Concluído").length,"var(--green)"],
+       ["Metas propostas",totMetas,"var(--navy)"],
+       ["Sem bolsista informado",semNome,"var(--stamp)"]]
+      .map(x=>`<div class="card"><div class="num" style="color:${x[2]}">${x[1]}</div><div class="rot">${x[0]}</div></div>`).join("")}
+  </div>`;
+
+  if(semNome) h += `<div class="card" style="border-color:var(--stamp);margin-bottom:14px">
+    <p class="meta" style="margin:0"><strong>Os documentos originais não trazem o nome do bolsista.</strong>
+    Todos os planos em <span style="font-family:var(--data)">privado/</span> identificam apenas o orientador e o título do plano,
+    então o campo Bolsista ficou em branco de propósito. Preencha em Editar, se quiser que apareça no relatório.
+    Nenhum CPF, matrícula, endereço ou telefone foi copiado dos documentos.</p></div>`;
+
+  h += `<div class="grid g4" style="align-items:end;margin-bottom:14px">
+    <div><label>Filtrar por registro</label>
+      <select onchange="ui.fPlanoReg=this.value;render()">
+        <option value="Todos">Todos os registros</option>
+        ${state.fomentos.map(f=>`<option value="${f.id}" ${f.id===ui.fPlanoReg?"selected":""}>${esc(rotuloRegistro(f.id))}</option>`).join("")}
+      </select></div>
+    <div><label>Filtrar por ciclo</label>
+      <select onchange="ui.fPlanoCiclo=this.value;render()">
+        <option value="Todos">Todos os ciclos</option>
+        ${ciclos.map(c=>`<option value="${esc(c)}" ${c===ui.fPlanoCiclo?"selected":""}>${esc(c)}</option>`).join("")}
+      </select></div>
+    <div><button class="btn pri" onclick="novoPlano()">+ Adicionar plano</button></div>
+    <div><button class="btn" onclick="restaurarPlanosPadrao()">Restaurar planos originais</button></div>
+  </div>`;
+
+  if(!planos.length) return h + `<div class="vazio">
+    <div style="font-family:var(--display);font-size:19px;margin-bottom:6px">Nenhum plano neste filtro.</div>
+    <button class="btn pri" onclick="novoPlano()">+ Adicionar plano</button></div>`;
+
+  ciclos.forEach(c=>{
+    const g = planos.filter(p=>(p.ciclo||"sem ciclo")===c);
+    if(!g.length) return;
+    const duplo = g.filter(p=>p.projetos.length>1).length;
+    h += `<div style="margin-bottom:20px">
+      <div class="linha" style="align-items:baseline;margin-bottom:8px">
+        <h2 style="margin:0">Ciclo ${esc(c)}</h2>
+        <span class="rot">${g.length} ${g.length===1?"plano":"planos"}${duplo?" · "+duplo+" com vínculo múltiplo":""}</span>
+      </div>
+      ${g.map(cardPlano).join("")}
+    </div>`;
+  });
+  return h;
+}
+
+function formularioPlano(){
+  const p = ui.editandoPlano; if(!p) return "";
+  return `<div class="modal" onclick="if(event.target===this)fecharModal()"><div class="box">
+    <h2>${state.planos.some(x=>x.id===p.id)?"Editar plano de trabalho":"Novo plano de trabalho"}</h2>
+    <div class="grid g2">
+      <div class="full"><label>Título do plano</label>
+        <input value="${esc(p.titulo)}" oninput="campoPlano('titulo',this.value)"></div>
+      <div><label>Bolsista (não consta nos documentos)</label>
+        <input value="${esc(p.aluno)}" oninput="campoPlano('aluno',this.value)" placeholder="preencha se quiser que apareça no relatório"></div>
+      <div><label>Tipo de vínculo</label>
+        <input value="${esc(p.vinculo)}" oninput="campoPlano('vinculo',this.value)" placeholder="ex.: PIBIC, PIBIC-EM, voluntário"></div>
+      <div><label>Ciclo</label>
+        <input value="${esc(p.ciclo)}" oninput="campoPlano('ciclo',this.value)" placeholder="ex.: 2026-2027"></div>
+      <div><label>Situação</label>
+        <select onchange="campoPlano('situacao',this.value)">
+          ${SIT_PLANO.map(s=>`<option ${s===p.situacao?"selected":""}>${esc(s)}</option>`).join("")}
+        </select></div>
+      <div><label>Início da vigência</label>
+        <input type="date" value="${esc(p.inicio)}" oninput="campoPlano('inicio',this.value)"></div>
+      <div><label>Fim da vigência</label>
+        <input type="date" value="${esc(p.fim)}" oninput="campoPlano('fim',this.value)"></div>
+      <div class="full"><label>Projetos e vínculos (pode marcar mais de um)</label>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          ${state.fomentos.map(f=>`<button class="chip ${p.projetos.includes(f.id)?"on":""}"
+            title="${esc(f.nome)}" onclick="alternarProjetoPlano('${f.id}')">${esc(rotuloRegistro(f.id))}</button>`).join("")}
+        </div>
+        <p class="meta" style="margin:6px 0 0">Os planos de 2026-2027 pertencem ao CNPq e também correm dentro do guarda-chuva do PEDIC: marque os dois.</p></div>
+      <div class="full"><label>Resultados obtidos no período</label>
+        <textarea oninput="campoPlano('resultados',this.value)">${esc(p.resultados)}</textarea></div>
+      <div class="full"><label>Observações</label>
+        <textarea oninput="campoPlano('notas',this.value)">${esc(p.notas)}</textarea></div>
+    </div>
+    <div class="linha" style="align-items:baseline;margin:18px 0 8px">
+      <h2 style="margin:0">Metas propostas no plano</h2>
+      <button class="btn sm" onclick="addMetaPlano()">+ Acrescentar meta</button>
+    </div>
+    ${p.metas.map((m,n)=>`<div style="border-top:1px solid var(--rule);padding-top:8px;margin-bottom:8px">
+      <input style="margin-bottom:6px" value="${esc(m.texto)}" oninput="campoMetaPlano(${n},'texto',this.value)" placeholder="descrição da meta">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <select style="width:auto;font-size:13px;padding:5px 8px" onchange="campoMetaPlano(${n},'situacao',this.value);render()">
+          ${SIT_META_PLANO.map(s=>`<option ${s===m.situacao?"selected":""}>${esc(s)}</option>`).join("")}
+        </select>
+        <input style="flex:1;min-width:180px;font-size:13px;padding:5px 8px" placeholder="justificativa"
+          value="${esc(m.justificativa)}" oninput="campoMetaPlano(${n},'justificativa',this.value)">
+        <button class="btn dan sm" onclick="removerMetaPlano(${n})">Remover</button>
+      </div>
+    </div>`).join("")}
+    <div class="linha" style="margin-top:18px">
+      <div style="display:flex;gap:8px">
+        <button class="btn pri" onclick="gravarPlano()">Salvar plano</button>
+        <button class="btn" onclick="fecharModal()">Cancelar</button>
+      </div>
+      ${state.planos.some(x=>x.id===p.id)?`<button class="btn dan" onclick="excluirPlano()">Excluir</button>`:""}
+    </div>
+  </div></div>`;
 }
 function addFomento(){
-  state.fomentos.push({id:"f"+Date.now(),agencia:"",nome:"",processo:"",chamada:"",inicio:"",fim:"",texto:""});
+  state.fomentos.push({id:"f"+Date.now(),tipo:"Fomento externo",agencia:"",nome:"",processo:"",
+    chamada:"",inicio:"",fim:"",objetivos:"",nota:"",texto:""});
   salvar();
 }
 function removerFomento(id){
-  if(!confirm("Remover este fomento? Os assentos vinculados a ele perdem o vínculo.")) return;
+  if(!confirm("Remover este registro? Os assentos, as metas e os planos vinculados a ele perdem o vínculo.")) return;
   state.fomentos = state.fomentos.filter(x=>x.id!==id);
   state.itens.forEach(i=>{ i.fomentos = i.fomentos.filter(x=>x!==id); });
+  state.planos.forEach(p=>{ p.projetos = p.projetos.filter(x=>x!==id); });
   salvar();
 }
 
@@ -691,7 +1344,7 @@ function telaDados(){
     <div style="border-top:1px solid var(--rule);margin-top:18px;padding-top:16px">
       <h2>Onde os dados ficam</h2>
       <p class="meta">Este arquivo guarda tudo no armazenamento local do navegador que você usa para abri-lo. Trocar de navegador, limpar dados de navegação ou usar janela anônima faz o registro sumir. Por isso: baixe o backup depois de cada sessão de cadastro.</p>
-      <p class="meta" style="margin-top:8px">Registros: <strong>${state.itens.length}</strong> · Fomentos: <strong>${state.fomentos.length}</strong> · Metas: <strong>${state.metas.length}</strong></p>
+      <p class="meta" style="margin-top:8px">Registros de produção: <strong>${state.itens.length}</strong> · Projetos e vínculos: <strong>${state.fomentos.length}</strong> · Metas: <strong>${state.metas.length}</strong> · Planos de trabalho: <strong>${state.planos.length}</strong></p>
     </div>
   </div>`;
 }
@@ -771,7 +1424,7 @@ function telaExecucao(){
   const concluidas = metas.filter(m=>statusMeta(m)==="Concluída").length;
   const semProd = metas.filter(m=>itensDaMeta(m.id).length===0).length;
 
-  let h = `<div class="grid g2" style="margin-bottom:14px">${MARCOS.map(cartaoMarco).join("")}</div>`;
+  let h = `<div class="grid g3" style="margin-bottom:14px">${MARCOS.map(cartaoMarco).join("")}</div>`;
 
   h += `<div class="grid g4 metricas" style="margin-bottom:14px">
     ${[["Metas no filtro",metas.length,"var(--ink)"],["Concluídas",concluidas,"var(--green)"],
@@ -780,9 +1433,9 @@ function telaExecucao(){
   </div>`;
 
   h += `<div class="grid g3" style="align-items:end;margin-bottom:14px">
-    <div><label>Filtrar por fomento</label>
+    <div><label>Filtrar por registro</label>
       <select onchange="ui.fExecFomento=this.value;render()">
-        <option value="Todos">Todos os fomentos</option>
+        <option value="Todos">Todos os registros</option>
         ${state.fomentos.map(f=>`<option value="${f.id}" ${f.id===ui.fExecFomento?"selected":""}>${esc(f.agencia+" "+f.processo)}</option>`).join("")}
       </select></div>
     <div><button class="btn pri" onclick="novaMeta()">+ Adicionar meta</button></div>
@@ -864,10 +1517,12 @@ function formulario(){
       ${inp("Prazo a observar","prazo","date")}
       ${sel("Agradecimento no texto","agradecimento",["Não","Sim","Não se aplica"])}
       ${inp("DOI ou link","link","",true)}
-      <div class="full"><label>Fomentos vinculados</label>
+      <div class="full"><label>Projetos e vínculos (pode marcar mais de um)</label>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          ${state.fomentos.map(f=>`<button class="chip ${e.fomentos.includes(f.id)?"on":""}" onclick="alternarFomento('${f.id}')">${esc(f.agencia+" "+f.processo)}</button>`).join("")}
-        </div></div>
+          ${state.fomentos.map(f=>`<button class="chip ${e.fomentos.includes(f.id)?"on":""}"
+            title="${esc(f.tipo+": "+f.nome)}" onclick="alternarFomento('${f.id}')">${esc(f.agencia+" "+f.processo)}</button>`).join("")}
+        </div>
+        <p class="meta" style="margin:6px 0 0">Um item pode pertencer a mais de um registro ao mesmo tempo, por exemplo ao CNPq e ao guarda-chuva do PEDIC.</p></div>
       <div class="full"><label>Metas atendidas (aba Execução)</label>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           ${state.metas.length?state.metas.map(m=>`<button class="chip ${(e.metas||[]).includes(m.id)?"on":""}"
@@ -894,11 +1549,12 @@ function render(){
   document.getElementById("aviso").innerHTML = semStorage
     ? `<div class="aviso">O navegador bloqueou o armazenamento local. Nada será salvo ao fechar. Baixe o backup em JSON antes de sair.</div>` : "";
   const telas = {painel:telaPainel, producao:telaProducao, andamento:telaAndamento, execucao:telaExecucao,
-    contas:telaContas, fomentos:telaFomentos, dados:telaDados};
+    orientacoes:telaOrientacoes, contas:telaContas, fomentos:telaFomentos, dados:telaDados};
   document.getElementById("app").innerHTML = telas[ui.aba]();
   const cxModal = document.getElementById("modal");
   cxModal.innerHTML = ui.editando ? formulario()
     : ui.editandoMeta ? formularioMeta()
+    : ui.editandoPlano ? formularioPlano()
     : cxModal.innerHTML.includes("saida") ? cxModal.innerHTML : "";
 }
 carregar();
