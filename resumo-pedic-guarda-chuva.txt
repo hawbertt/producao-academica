@@ -1,0 +1,72 @@
+PROJETO PEDIC (GUARDA-CHUVA) - RESUMO PARA GESTÃO (sem dados pessoais)
+
+IDENTIFICAÇÃO
+Título: Laboratório de Pesquisa em Ensino Digital para Ciência (PEDIC): focando na
+  aprendizagem baseada em jogos
+Tipo: Projeto de pesquisa institucional registrado na UFMA (não é fomento externo)
+Unidade: UFMA, Centro de Ciências de Bacabal (CCBa), Licenciatura em Ciências Naturais
+Papel: projeto guarda-chuva do qual derivam o projeto CNPq 405203/2025-0 e a proposta
+  FAPEMA BEPP-10468/26, e ao qual estão vinculados os planos de trabalho de orientação.
+
+DOIS PRAZOS DISTINTOS, NÃO CONFUNDIR
+1. Registro na UFMA: encerra em agosto de 2027, limite de 3 anos de vigência sem renovação.
+   É esta data que define a entrega do RELATÓRIO FINAL À UFMA.
+2. Aprovação ética: Parecer CEP/UFMA nº 8.347.018, CAAE 93629024.6.0000.5087, aprovado em
+   10/04/2026, com cronograma registrado na Plataforma Brasil até novembro de 2028.
+   A diferença existe porque o CEP aprovou depois do projeto já em execução na UFMA, e as
+   datas tiveram que ser atualizadas lá.
+
+OBJETIVO GERAL
+Desenvolver jogos digitais e de tabuleiro e metodologias de ensino para uso destes nas aulas de
+Ciências e Química do ensino fundamental e médio, além de manter o Museu Game Ciência como
+espaço de divulgação e alfabetização científica, com prioridade na formação inicial e contínua
+de professores.
+
+OBJETIVOS ESPECÍFICOS
+O1. Promover espaço de debate e interação entre Universidade e escola.
+O2. Dar subsídios para professores trabalharem com tecnologias digitais em aula, com
+    acompanhamento dos bolsistas.
+O3. Investigar os resultados da inserção dos jogos e tecnologias digitais, verificando pontos
+    positivos e negativos da metodologia e o engajamento de discentes e professores.
+O4. Analisar os pontos de equilíbrio entre design de games e design instrucional nos jogos
+    digitais para o ensino de Ciências.
+O5. Disponibilizar aos professores recursos de ensino ancorados na abordagem CTSA.
+
+METAS DE EXECUÇÃO (codificadas G, para não colidir com as metas do CNPq e da FAPEMA)
+G1. Formação teórica da equipe na Teoria da Ação Mediada (Wertsch) e em Design de Games;
+    definição da função de cada membro. Contínuo nos primeiros trimestres.
+G2. Divulgação científica pelo MGC: atividades museológicas, site e Instagram. Contínuo.
+G3. Ajustes, melhorias e ampliação do jogo "Planeta Química: uma aventura no cotidiano".
+G4. Desenvolvimento de novos jogos digitais e de tabuleiro com temáticas socioambientais.
+G5. Atualização periódica do site do MGC, reativação do site do PEDIC (pedic.ufma.br) e
+    alimentação do canal do YouTube. Contínuo.
+G6. Reuniões e grupos de estudo com discentes e professores da rede básica, com convite a
+    professores da educação básica para ao menos um encontro mensal. Contínuo.
+G7. Aplicação dos jogos no MGC e nas escolas parceiras de Bacabal, Alto Alegre e
+    São Luís Gonzaga.
+G8. Elaboração de sequências didáticas para aplicação dos jogos.
+G9. Promoção de oficinas, minicursos, seminários e palestras no museu, escolas e eventos.
+G10. Apresentação de seminários internos pelos membros da equipe sobre suas pesquisas.
+G11. Submissão e publicação de trabalhos em congressos e periódicos.
+G12. Elaboração e apresentação do RELATÓRIO FINAL à UFMA, até agosto de 2027.
+
+PARTICIPANTES DA PESQUISA (para fins de relatório e conformidade ética)
+Grupo I: docentes e discentes do ensino superior e da pós-graduação da equipe executora.
+Grupo II: docentes da educação básica.
+Grupo III: discentes da educação básica.
+Coleta mediante consentimento livre e esclarecido, com termo de assentimento para menores.
+
+INSTRUMENTOS DE PRODUÇÃO DE DADOS
+Fichas, gravações de vídeo e áudio, notas de campo e entrevistas semiestruturadas; análise por
+Análise de Conteúdo ou software tipo MaxQDA, com suporte da Teoria da Ação Mediada.
+
+CRONOGRAMA APROVADO NO CEP (referência; a execução na UFMA encerra em agosto de 2027)
+T1 dez/2025-fev/2026 | T2 mar-mai/2026 | T3 jun-ago/2026 | T4 set-nov/2026
+T5 dez/2026-fev/2027 | T6 mar-mai/2027 | T7 jun-ago/2027 (encerramento na UFMA)
+T8 set-nov/2027 | T9 dez/2027-fev/2028 | T10 mar-mai/2028 | T11 jun-ago/2028
+T12 set-nov/2028 (relatório final na Plataforma Brasil)
+
+OBSERVAÇÃO PARA O RELATÓRIO DE 2027
+Os planos de trabalho de 2026-2027 foram vinculados ao projeto CNPq 405203/2025-0, mas
+executados dentro do guarda-chuva do PEDIC. No relatório final à UFMA devem constar como
+produção derivada, com a devida indicação do vínculo duplo.
