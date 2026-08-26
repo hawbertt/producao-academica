@@ -3,83 +3,156 @@
 <title>Livro de assentos - Produção acadêmica</title>
 <style>
   :root{
-    --paper:#E7E9E1; --card:#FFFFFF; --ink:#15191C; --ink2:#4A5259; --rule:#C6CBBE;
-    --navy:#22406B; --navy-soft:#E3E9F2; --stamp:#9E2B2B; --stamp-soft:#F5E4E4;
-    --green:#2F6B4F; --green-soft:#E1EEE7; --amber:#8A6212; --amber-soft:#F6EBD3;
-    --display:Georgia,"Iowan Old Style","Times New Roman",serif;
-    --body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    --data:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    /* paleta do Museu Game Ciência */
+    --paper:#F7F6F2; --card:#FFFFFF; --ink:#14161A; --ink2:#5B6169; --rule:#E2E0D9;
+    --navy:#123A6B; --amber:#B5820A; --vinho:#8E2652; --grafite:#4A5259;
+    --stamp:#D9531E; --green:#1F7A5A;
+    --navy-soft:#E8EEF6; --amber-soft:#F7EEDA; --vinho-soft:#F6E8EE;
+    --grafite-soft:#EDEEEF; --stamp-soft:#FBE9E1; --green-soft:#E3F0EB;
+    /* a fonte pesada em caixa alta existe só para a marca do topo */
+    --marca:"Arial Black","Arial Bold","Franklin Gothic Heavy",Impact,system-ui,sans-serif;
+    --body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --display:var(--body); --data:var(--body);
+    --lateral:220px;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px}
-  header{background:var(--card);border-bottom:1px solid var(--rule);padding:16px 20px}
-  .wrap{max-width:1000px;margin:0 auto}
-  .eyebrow{font-family:var(--data);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink2)}
-  h1{font-family:var(--display);font-size:27px;margin:2px 0 0;line-height:1.15}
-  h2{font-family:var(--display);font-size:19px;margin:0 0 10px}
-  h3{font-family:var(--display);font-size:16.5px;margin:0;line-height:1.3;font-weight:600}
-  nav{display:flex;gap:4px;margin-top:14px;overflow-x:auto;padding-bottom:4px}
-  nav button{padding:6px 12px;border-radius:3px;white-space:nowrap;font-family:var(--data);font-size:11.5px;
-    letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:1px solid transparent;background:none;color:var(--ink2)}
-  nav button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
-  main{padding:22px 20px 60px}
-  .card{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:16px}
-  .grid{display:grid;gap:12px}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45}
+  h1,h2,h3{font-family:var(--body);font-weight:600;margin:0}
+  h1{font-size:22px;line-height:1.2}
+  h2{font-size:17px;margin-bottom:10px}
+  h3{font-size:15.5px;line-height:1.35}
+
+  /* ---------- estrutura: barra lateral fixa ---------- */
+  .app{display:flex;min-height:100vh}
+  .lateral{width:var(--lateral);flex:0 0 var(--lateral);background:var(--card);
+    border-right:1px solid var(--rule);position:fixed;top:0;bottom:0;left:0;
+    display:flex;flex-direction:column;padding:20px 0 16px;overflow-y:auto}
+  .marca{font-family:var(--marca);font-weight:900;text-transform:uppercase;letter-spacing:.13em;
+    font-size:13px;line-height:1.35;color:var(--navy);padding:0 18px 2px}
+  .marca-sub{font-size:11.5px;color:var(--ink2);padding:0 18px 18px;letter-spacing:.01em}
+  .destinos{display:flex;flex-direction:column;gap:1px;padding:0 10px}
+  .destino{display:block;width:100%;text-align:left;padding:9px 12px;border-radius:4px;border:none;
+    background:none;cursor:pointer;font-family:var(--body);font-size:14.5px;color:var(--ink2)}
+  .destino:hover{background:var(--paper);color:var(--ink)}
+  .destino.on{background:var(--navy);color:#fff;font-weight:600}
+  .lateral hr{border:none;border-top:1px solid var(--rule);margin:14px 12px}
+  .lateral .pe{margin-top:auto}
+  .conteudo{flex:1;min-width:0;margin-left:var(--lateral)}
+  .topo{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:18px 26px 0}
+  .wrap{max-width:1060px;margin:0 auto;padding:0}
+  main{padding:14px 26px 64px}
+  .abrir-menu{display:none}
+
+  @media(max-width:899px){
+    .app{display:block}
+    .lateral{position:relative;width:auto;flex:none;border-right:none;border-bottom:1px solid var(--rule);
+      padding:14px 0 10px}
+    .lateral .destinos,.lateral hr,.lateral .pe{display:none}
+    .lateral.aberta .destinos,.lateral.aberta hr,.lateral.aberta .pe{display:flex;flex-direction:column}
+    .lateral .pe{margin-top:8px}
+    .conteudo{margin-left:0}
+    .abrir-menu{display:inline-block;position:absolute;top:14px;right:18px}
+    .marca-sub{padding-bottom:8px}
+    .topo{padding:14px 18px 0}
+    main{padding:12px 18px 48px}
+  }
+
+  /* ---------- superfícies ---------- */
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:5px;padding:18px}
+  .grid{display:grid;gap:14px}
   .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
-  @media(max-width:720px){.g2,.g3,.g4{grid-template-columns:1fr}.g4.metricas{grid-template-columns:1fr 1fr}}
-  .num{font-family:var(--display);font-size:33px;line-height:1}
-  .rot{font-family:var(--data);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink2);margin-top:6px}
-  label{display:block;font-family:var(--data);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:4px}
-  input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--rule);border-radius:3px;background:#FCFCFA;
-    color:var(--ink);font-family:var(--body);font-size:14px;outline:none}
+  @media(max-width:820px){.g2,.g3,.g4{grid-template-columns:1fr}.g4.metricas{grid-template-columns:1fr 1fr}}
+  .full{grid-column:1/-1}
+  @media(max-width:820px){.full{grid-column:1}}
+
+  /* números e rótulos: rótulo em caixa normal, o dado é que pesa */
+  .num{font-family:var(--body);font-size:30px;font-weight:650;line-height:1;letter-spacing:-.01em}
+  .rot{font-size:12.5px;color:var(--ink2);margin-top:5px}
+  .meta{font-size:13px;color:var(--ink2);margin-top:3px}
+  .secao{font-size:12px;color:var(--ink2);letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px}
+
+  label{display:block;font-size:12.5px;color:var(--ink2);margin-bottom:5px}
+  input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--rule);border-radius:4px;
+    background:#FCFCFA;color:var(--ink);font-family:var(--body);font-size:14px;outline:none}
   textarea{min-height:70px;resize:vertical}
   input:focus,select:focus,textarea:focus{border-color:var(--navy);box-shadow:0 0 0 2px var(--navy-soft)}
-  .btn{padding:9px 15px;border-radius:3px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--rule);background:#fff;color:var(--ink);font-family:var(--body)}
+
+  .btn{padding:8px 14px;border-radius:4px;font-size:14px;font-weight:550;cursor:pointer;
+    border:1px solid var(--rule);background:#fff;color:var(--ink);font-family:var(--body)}
+  .btn:hover{border-color:var(--ink2)}
   .btn.pri{background:var(--navy);color:#fff;border-color:var(--navy)}
-  .btn.dan{color:var(--stamp);border-color:var(--stamp)}
+  .btn.dan{color:var(--stamp);border-color:#EAD3C6}
   .btn.sm{padding:5px 10px;font-size:12.5px}
-  .tag{display:inline-block;padding:2px 8px;border-radius:2px;font-family:var(--data);font-size:11px;letter-spacing:.04em;text-transform:uppercase}
-  .carimbo{display:inline-block;padding:3px 8px;border:2px solid var(--stamp);color:var(--stamp);font-family:var(--display);
-    font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transform:rotate(-3deg);opacity:.85;border-radius:2px;white-space:nowrap}
+  .btn.liso{border-color:transparent;background:none;color:var(--navy);padding-left:0}
+
+  .tag{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:3px;font-size:12px}
+  .carimbo{display:inline-block;padding:2px 8px;border:1px solid var(--stamp);color:var(--stamp);
+    font-size:11.5px;font-weight:600;border-radius:3px;white-space:nowrap}
   .carimbo.ok{border-color:var(--green);color:var(--green)}
-  .item{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--rule);border-radius:3px;padding:14px;cursor:pointer;margin-bottom:8px}
-  .item:hover{border-color:var(--navy)}
+  .marc{flex:none;vertical-align:-1px}
+  .comarca{display:inline-flex;align-items:center;gap:7px}
+
+  .item{background:var(--card);border:1px solid var(--rule);border-radius:5px;padding:15px;
+    cursor:pointer;margin-bottom:9px}
+  .item:hover{border-color:var(--ink2)}
   .metacard{cursor:default}
   .metacard:hover{border-color:var(--rule)}
-  .linha{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
-  .meta{font-size:12.5px;color:var(--ink2);margin-top:3px}
-  .sep{border-top:1px solid var(--rule);padding-top:8px;margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .vazio{border:1px dashed var(--rule);border-radius:4px;background:var(--card);padding:34px;text-align:center}
-  .modal{position:fixed;inset:0;background:rgba(20,24,28,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
-  .modal .box{background:var(--card);border-radius:6px;width:100%;max-width:720px;max-height:92vh;overflow-y:auto;padding:20px}
-  .col{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:12px}
-  .mini{border:1px solid var(--rule);border-radius:3px;background:#FCFCFA;padding:10px;cursor:pointer;margin-bottom:8px}
-  .barra{height:14px;background:var(--navy);border-radius:2px;min-width:14px}
-  .chip{padding:6px 10px;border-radius:3px;cursor:pointer;font-family:var(--data);font-size:12px;border:1px solid var(--rule);background:#fff;color:var(--ink2)}
+  .linha{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:flex-start}
+  .sep{border-top:1px solid var(--rule);padding-top:9px;margin-top:11px;display:flex;gap:8px;
+    align-items:center;flex-wrap:wrap}
+  .vazio{border:1px dashed var(--rule);border-radius:5px;background:var(--card);padding:30px;text-align:center}
+  .col{background:var(--card);border:1px solid var(--rule);border-radius:5px;padding:12px}
+  .mini{border:1px solid var(--rule);border-radius:4px;background:#FCFCFA;padding:10px;cursor:pointer;margin-bottom:8px}
+  .barra{height:12px;background:var(--navy);border-radius:2px;min-width:12px}
+  .chip{padding:6px 11px;border-radius:4px;cursor:pointer;font-size:13px;border:1px solid var(--rule);
+    background:#fff;color:var(--ink2);display:inline-flex;align-items:center;gap:6px}
   .chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
-  .aviso{background:var(--stamp-soft);color:var(--stamp);padding:8px 20px;font-size:13px}
-  .salvo{font-family:var(--data);font-size:11px;color:var(--ink2)}
-  .full{grid-column:1/-1}
-  @media(max-width:720px){.full{grid-column:1}}
+  .aviso{background:var(--stamp-soft);color:var(--stamp);padding:9px 26px;font-size:13.5px}
+  .salvo{font-size:12px;color:var(--ink2)}
+
+  .modal{position:fixed;inset:0;background:rgba(20,22,26,.4);display:flex;align-items:center;
+    justify-content:center;padding:16px;z-index:50}
+  .modal .box{background:var(--card);border-radius:6px;width:100%;max-width:740px;max-height:92vh;
+    overflow-y:auto;padding:22px}
+
+  /* ---------- tela Hoje ---------- */
+  .tl{width:100%;height:auto;display:block}
+  .tl text{font-family:var(--body)}
+  /* a agenda usa tamanho e espaço para separar o urgente do histórico, não mais bordas */
+  .ag{display:flex;align-items:baseline;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule)}
+  .ag:last-child{border-bottom:none}
+  .ag .quando{flex:0 0 128px;font-size:13px;color:var(--ink2)}
+  .ag .oque{flex:1;min-width:200px}
+  .ag.perto{padding:12px 0}
+  .ag.perto .oque{font-size:16.5px;font-weight:550}
+  .ag.perto .quando{font-weight:600}
+  .ag.longe .oque{font-size:14px;color:var(--ink2)}
+  .ag .dias{font-size:12.5px;white-space:nowrap}
+  .vencido{color:var(--stamp)} .proximo{color:var(--amber)} .neutro{color:var(--ink2)}
 </style>
 
-<header>
-  <div class="wrap">
-    <div class="linha">
-      <div>
-        <div class="eyebrow">Registro de produção acadêmica</div>
-        <h1>Livro de assentos</h1>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center">
+<div class="app">
+  <aside class="lateral" id="lateral">
+    <div class="marca">Museu Game Ciência</div>
+    <div class="marca-sub">Livro de assentos · produção e execução</div>
+    <button class="btn sm abrir-menu" onclick="ui.menuAberto=!ui.menuAberto;render()">Menu</button>
+    <nav class="destinos" id="destinos"></nav>
+    <hr>
+    <nav class="destinos pe" id="destinos-pe"></nav>
+  </aside>
+  <div class="conteudo">
+    <div class="topo">
+      <h1 id="titulo"></h1>
+      <div style="display:flex;gap:10px;align-items:center">
         <span class="salvo" id="salvo"></span>
         <button class="btn pri" onclick="novo()">+ Registrar produção</button>
       </div>
     </div>
-    <nav id="nav"></nav>
+    <div id="aviso"></div>
+    <main><div class="wrap" id="app"></div></main>
   </div>
-</header>
-<div id="aviso"></div>
-<main><div class="wrap" id="app"></div></main>
+</div>
 <div id="modal"></div>
 <input type="file" id="arquivo" accept=".json" style="display:none">
 
@@ -97,11 +170,34 @@ const CORES = {
   "Aceito":["var(--green-soft)","var(--green)"], "Publicado":["var(--green-soft)","var(--green)"],
   "Recusado":["#EDEDED","#6B6B6B"]
 };
-const TIPOS_REGISTRO = ["Fomento externo","Projeto institucional","Aprovação ética"];
-const CORES_REGISTRO = {
-  "Fomento externo":["var(--navy-soft)","var(--navy)"],
-  "Projeto institucional":["var(--green-soft)","var(--green)"],
-  "Aprovação ética":["var(--amber-soft)","var(--amber)"]
+const TIPOS_REGISTRO = ["Fomento externo","Projeto institucional","Aprovação ética","Extensão"];
+/* Forma e cor fixas por projeto. O marcador acompanha o projeto em toda a interface.
+   As cores de status (alerta e concluído) nunca entram aqui. */
+const PROJ_MARCA = {
+  "f-pedic-ufma":        {forma:"quadrado",  cor:"#123A6B"},
+  "f-cnpq-405203":       {forma:"triangulo", cor:"#B5820A"},
+  "f-fapema-bepp-10468": {forma:"circulo",   cor:"#8E2652"}
+};
+const MARCA_OUTROS = {forma:"xis", cor:"#4A5259"};   /* extensão e demais vínculos */
+function marcaDe(id){ return PROJ_MARCA[id] || MARCA_OUTROS; }
+function marcador(id, t){
+  const m = marcaDe(id), s = t || 12, c = s/2;
+  let d;
+  if(m.forma === "quadrado")       d = `<rect x="1.5" y="1.5" width="${s-3}" height="${s-3}" fill="${m.cor}"/>`;
+  else if(m.forma === "circulo")   d = `<circle cx="${c}" cy="${c}" r="${c-1.4}" fill="${m.cor}"/>`;
+  else if(m.forma === "triangulo") d = `<polygon points="${c},1.2 ${s-1},${s-1.4} 1,${s-1.4}" fill="${m.cor}"/>`;
+  else                             d = `<path d="M2.4 2.4 L${s-2.4} ${s-2.4} M${s-2.4} 2.4 L2.4 ${s-2.4}" stroke="${m.cor}" stroke-width="2.2" stroke-linecap="round" fill="none"/>`;
+  return `<svg class="marc" width="${s}" height="${s}" viewBox="0 0 ${s} ${s}" aria-hidden="true">${d}</svg>`;
+}
+/* nome do projeto sempre precedido do marcador */
+function comMarca(id, texto, t){
+  return `<span class="comarca">${marcador(id,t)}<span>${esc(texto == null ? rotuloRegistro(id) : texto)}</span></span>`;
+}
+const CORES_REGISTRO = {   /* o tipo é rótulo neutro: a identidade vem da forma e da cor do marcador */
+  "Fomento externo":["var(--grafite-soft)","var(--grafite)"],
+  "Projeto institucional":["var(--grafite-soft)","var(--grafite)"],
+  "Aprovação ética":["var(--grafite-soft)","var(--grafite)"],
+  "Extensão":["var(--grafite-soft)","var(--grafite)"]
 };
 const FOMENTO_PADRAO = [{
   id:"f-cnpq-405203", tipo:"Fomento externo", agencia:"CNPq", nome:"Divulgação científica por tecnologias lúdicas",
@@ -422,9 +518,10 @@ const VERSAO_SEMENTES = 2;
 let state = {itens:[], fomentos:JSON.parse(JSON.stringify(FOMENTO_PADRAO)),
   metas:JSON.parse(JSON.stringify(METAS_PADRAO)), planos:JSON.parse(JSON.stringify(PLANOS_PADRAO)),
   versaoSementes:0};   /* 0 faz a semeadura conferir o que falta; semear() marca como feita */
-let ui = {aba:"painel", busca:"", fStatus:"Todos", fTipo:"Todos", fFomento:"Todos", fomentoRel:"f-cnpq-405203",
+let ui = {aba:"hoje", busca:"", fStatus:"Todos", fTipo:"Todos", fFomento:"Todos", fomentoRel:"f-cnpq-405203",
   editando:null, editandoMeta:null, editandoPlano:null, fExecFomento:"Todos",
-  fPlanoReg:"Todos", fPlanoCiclo:"Todos", planoAberto:"", modeloRel:"prestacao"};
+  fPlanoReg:"Todos", fPlanoCiclo:"Todos", planoAberto:"", modeloRel:"prestacao",
+  projetoAberto:"", projAba:"metas", prodVista:"lista", fRapido:"Todos", menuAberto:false};
 let semStorage = false;
 let gh = {owner:"", repo:"", path:"dados/producao.json", token:"", ultimoEnvio:""};
 
@@ -815,6 +912,9 @@ function normalizarItens(){
     if(!f.tipo) f.tipo = "Fomento externo";           /* registros antigos viram fomento externo */
     if(f.objetivos == null) f.objetivos = "";
     if(f.nota == null) f.nota = "";
+    /* campos de extensão, presentes em todos para o formulário não quebrar */
+    ["periodo","publico","parceiros"].forEach(k=>{ if(f[k] == null) f[k] = ""; });
+    if(!Array.isArray(f.acoes)) f.acoes = [];
   });
   if(!Array.isArray(state.metas)) state.metas = [];
   if(!Array.isArray(state.planos)) state.planos = [];
@@ -837,9 +937,7 @@ function normalizarItens(){
 function registro(id){ return state.fomentos.find(f=>f.id===id); }
 function rotuloRegistro(id){ const f = registro(id); return f ? f.agencia+" "+f.processo : id; }
 function tagRegistro(id){
-  const f = registro(id);
-  const c = f && CORES_REGISTRO[f.tipo] ? CORES_REGISTRO[f.tipo] : ["var(--navy-soft)","var(--navy)"];
-  return `<span class="tag" style="background:${c[0]};color:${c[1]}">${esc(rotuloRegistro(id))}</span>`;
+  return `<span class="tag" style="background:var(--paper);color:var(--ink2)">${marcador(id,11)}${esc(rotuloRegistro(id))}</span>`;
 }
 function registrosDoTipo(t){ return state.fomentos.filter(f=>f.tipo===t); }
 
@@ -957,108 +1055,236 @@ function alternarMetaItem(id){
   render();
 }
 /* ============================ telas ============================ */
-const ABAS = [["painel","Painel"],["producao","Produção"],["andamento","Em andamento"],["execucao","Execução"],
-  ["orientacoes","Orientações"],["contas","Prestação de contas"],["fomentos","Projetos e vínculos"],["dados","Backup"]];
+const DESTINOS = [["hoje","Hoje"],["projetos","Projetos"],["producao","Produção"],
+  ["orientacoes","Orientações"],["contas","Prestação de contas"]];
+const DESTINOS_PE = [["dados","Sincronização e backup"]];
 
-function telaPainel(){
-  const c = state.itens.filter(i=>CONCLUIDOS.includes(i.status)).length;
-  const a = state.itens.filter(i=>!CONCLUIDOS.includes(i.status) && i.status!=="Recusado").length;
-  const p = pendentes();
-  const anos = {};
-  state.itens.filter(i=>CONCLUIDOS.includes(i.status)).forEach(i=>{ const k=i.ano||"s/ano"; anos[k]=(anos[k]||0)+1; });
-  const lista = Object.entries(anos).sort((x,y)=>y[0].localeCompare(x[0]));
-  const prazos = state.itens.filter(i=>i.prazo).sort((x,y)=>x.prazo.localeCompare(y.prazo)).slice(0,8);
+/* ============================ tela Hoje ============================ */
+const ORDEM_PROJETOS = ["f-pedic-ufma","f-cnpq-405203","f-fapema-bepp-10468"];
+const NOME_CURTO = {"f-pedic-ufma":"PEDIC","f-cnpq-405203":"CNPq","f-fapema-bepp-10468":"FAPEMA"};
 
-  let h = `<div class="grid g3" style="margin-bottom:14px">${MARCOS.map(cartaoMarco).join("")}</div>`;
-  h += `<div class="grid g4 metricas">
-    ${[["Total registrado",state.itens.length,"var(--ink)"],["Publicado ou aceito",c,"var(--green)"],
-       ["Em andamento",a,"var(--navy)"],["Agradecimento pendente",p.length,"var(--stamp)"]]
-      .map(m=>`<div class="card"><div class="num" style="color:${m[2]}">${m[1]}</div><div class="rot">${m[0]}</div></div>`).join("")}
+function projetoDoMarco(mk){
+  if(/FAPEMA/i.test(mk.rot)) return "f-fapema-bepp-10468";
+  if(/UFMA|PEDIC/i.test(mk.rot)) return "f-pedic-ufma";
+  if(/CNPq/i.test(mk.rot)) return "f-cnpq-405203";
+  return "";
+}
+function classeUrgencia(d){ return d < 0 ? "vencido" : d < 90 ? "proximo" : "neutro"; }
+function textoDias(d){
+  if(d < 0) return "vencido há " + Math.abs(d) + " dias";
+  if(d === 0) return "é hoje";
+  return "faltam " + d + " dias";
+}
+
+/* linha do tempo em SVG puro, sem biblioteca externa */
+function linhaDoTempo(){
+  const L = 132, R = 26, W = 1000, topo = 44, alt = 24, gap = 30;
+  const faixas = ORDEM_PROJETOS.map(id=>{
+    const f = registro(id);
+    return {id:id, nome:NOME_CURTO[id] || rotuloRegistro(id),
+      inicio:(f && f.inicio) || "", fim:(f && f.fim) || "", cor:marcaDe(id).cor};
+  });
+  const datas = [];
+  faixas.forEach(x=>{ if(x.inicio) datas.push(x.inicio); if(x.fim) datas.push(x.fim); });
+  MARCOS.forEach(m=>datas.push(m.data));
+  datas.push(hojeISO());
+  const ms = s => new Date(String(s).slice(0,10)+"T00:00:00").getTime();
+  let t0 = Math.min(...datas.map(ms)), t1 = Math.max(...datas.map(ms));
+  const folga = (t1 - t0) * 0.04; t0 -= folga; t1 += folga;
+  const x = s => L + (ms(s) - t0) / (t1 - t0) * (W - L - R);
+  const H = topo + faixas.length * (alt + gap) + 16;
+
+  let s = `<svg class="tl" viewBox="0 0 ${W} ${H}" role="img" aria-label="Linha do tempo dos três projetos">`;
+  /* anos */
+  const a0 = new Date(t0).getFullYear(), a1 = new Date(t1).getFullYear();
+  for(let a = a0; a <= a1; a++){
+    const d = a+"-01-01"; if(ms(d) < t0 || ms(d) > t1) continue;
+    s += `<line x1="${x(d)}" y1="${topo-16}" x2="${x(d)}" y2="${H-16}" stroke="var(--rule)" stroke-width="1"/>`;
+    s += `<text x="${x(d)+5}" y="${H-4}" font-size="11.5" fill="var(--ink2)">${a}</text>`;
+  }
+  /* faixas dos projetos */
+  faixas.forEach((fx,n)=>{
+    const y = topo + n * (alt + gap);
+    s += `<g>${marcadorSVG(fx.id, 6, y + alt/2 - 5, 11)}`;
+    s += `<text x="24" y="${y + alt/2 + 4}" font-size="12.5" fill="var(--ink)">${esc(fx.nome)}</text>`;
+    if(fx.inicio && fx.fim){
+      const xi = x(fx.inicio), xf = x(fx.fim);
+      s += `<rect x="${xi}" y="${y}" width="${Math.max(2,xf-xi)}" height="${alt}" rx="3"
+             fill="${fx.cor}" fill-opacity="0.16" stroke="${fx.cor}" stroke-opacity="0.55"/>`;
+      s += `<text x="${xi+6}" y="${y+alt-7}" font-size="10.5" fill="var(--ink2)">${dataBR(fx.inicio)}</text>`;
+      s += `<text x="${xf-6}" y="${y+alt-7}" font-size="10.5" fill="var(--ink2)" text-anchor="end">${dataBR(fx.fim)}</text>`;
+    } else {
+      s += `<text x="${L}" y="${y+alt-7}" font-size="11" fill="var(--ink2)">registro sem vigência preenchida</text>`;
+    }
+    s += `</g>`;
+  });
+  /* pinos nomeados nos prazos */
+  MARCOS.forEach(mk=>{
+    const pid = projetoDoMarco(mk);
+    const n = faixas.findIndex(f=>f.id === pid); if(n < 0) return;
+    const y = topo + n * (alt + gap), px = x(mk.data), cor = faixas[n].cor;
+    s += `<line x1="${px}" y1="${y-9}" x2="${px}" y2="${y+alt+4}" stroke="${cor}" stroke-width="1.6"/>`;
+    s += `<circle cx="${px}" cy="${y-11}" r="3.4" fill="${cor}"/>`;
+    const rotulo = mk.rot.split("·")[0].trim();
+    const fim = px > W * 0.72;
+    s += `<text x="${fim?px-7:px+7}" y="${y+alt+16}" font-size="11.5" fill="var(--ink)" ${fim?'text-anchor="end"':""}>${esc(rotulo)}</text>`;
+    s += `<text x="${fim?px-7:px+7}" y="${y+alt+29}" font-size="10.5" fill="var(--ink2)" ${fim?'text-anchor="end"':""}>${dataBR(mk.data)}</text>`;
+  });
+  /* marcador de hoje */
+  const hx = x(hojeISO());
+  s += `<line x1="${hx}" y1="${topo-22}" x2="${hx}" y2="${H-16}" stroke="var(--ink)" stroke-width="1.4"/>`;
+  s += `<text x="${hx+5}" y="${topo-26}" font-size="11.5" font-weight="600" fill="var(--ink)">hoje, ${dataBR(hojeISO())}</text>`;
+  return s + `</svg>`;
+}
+/* marcador do projeto desenhado dentro do SVG da linha do tempo */
+function marcadorSVG(id, px, py, s){
+  const m = marcaDe(id), c = s/2;
+  if(m.forma === "quadrado")       return `<rect x="${px}" y="${py}" width="${s}" height="${s}" fill="${m.cor}"/>`;
+  if(m.forma === "circulo")        return `<circle cx="${px+c}" cy="${py+c}" r="${c}" fill="${m.cor}"/>`;
+  if(m.forma === "triangulo")      return `<polygon points="${px+c},${py} ${px+s},${py+s} ${px},${py+s}" fill="${m.cor}"/>`;
+  return `<path d="M${px} ${py} L${px+s} ${py+s} M${px+s} ${py} L${px} ${py+s}" stroke="${m.cor}" stroke-width="2" fill="none"/>`;
+}
+
+/* lista única: metas com prazo, relatórios e prazos de submissão, ordenada por data */
+function agenda(){
+  const linhas = [];
+  MARCOS.forEach(mk=>linhas.push({data:mk.data, proj:projetoDoMarco(mk), rotulo:"Relatório",
+    titulo:mk.rot.replace(" · "," — "), acao:""}));
+  state.metas.filter(m=>!m.continua && m.prazo && statusMeta(m) !== "Concluída").forEach(m=>{
+    linhas.push({data:m.prazo, proj:m.fomento, rotulo:"Meta",
+      titulo:(m.codigo ? m.codigo+". " : "")+m.descricao,
+      acao:`irParaProjeto('${m.fomento}','metas')`});
+  });
+  state.itens.filter(i=>i.prazo).forEach(i=>{
+    linhas.push({data:i.prazo, proj:i.fomentos[0] || "", rotulo:"Prazo de submissão",
+      titulo:i.titulo || "(sem título)", acao:`abrir('${i.id}')`});
+  });
+  return linhas.sort((a,b)=>a.data.localeCompare(b.data));
+}
+
+/* planos encerrando sem desfecho ou sem justificativa nas metas */
+function planosPendentes(){
+  return state.planos.filter(p=>{
+    const d = diasAte(p.fim);
+    if(d === null || d > 90) return false;
+    return p.metas.some(m=>
+      ((m.situacao === "Não cumprida" || m.situacao === "Parcialmente cumprida") && !String(m.justificativa).trim())
+      || m.situacao === "Em execução");
+  });
+}
+
+function telaHoje(){
+  const semAgrad = pendentes();
+  const metasSemProd = state.metas.filter(m=>itensDaMeta(m.id).length === 0);
+  const planosSem = planosPendentes();
+  const lista = agenda();
+
+  let h = `<div class="card" style="margin-bottom:26px">
+    <div class="secao">Os três projetos no tempo</div>
+    ${linhaDoTempo()}
   </div>`;
 
-  const metasAtrasadas = state.metas.filter(x=>statusMeta(x)==="Atrasada");
-  const metasSemProd = state.metas.filter(x=>itensDaMeta(x.id).length===0);
-  h += `<div class="grid g2" style="margin-top:12px">
-    <div class="card" style="${metasAtrasadas.length?"border-color:var(--stamp)":""}">
-      <div class="num" style="color:${metasAtrasadas.length?"var(--stamp)":"var(--ink2)"}">${metasAtrasadas.length}</div>
-      <div class="rot">Metas atrasadas</div>
-      <div class="meta" style="margin-top:6px">${metasAtrasadas.length
-        ? esc(metasAtrasadas.slice(0,5).map(x=>x.codigo||"sem código").join(", ")) + (metasAtrasadas.length>5?" e outras":"")
-        : "Nenhuma meta com prazo vencido. Metas contínuas não entram nesta conta."}</div>
-      <button class="btn sm" style="margin-top:10px" onclick="ui.aba='execucao';render()">Abrir a aba Execução</button>
+  h += `<div style="margin-bottom:30px">
+    <div class="secao">O que vem pela frente</div>
+    ${lista.length ? lista.map(l=>{
+      const d = diasAte(l.data), cls = classeUrgencia(d);
+      return `<div class="ag ${d < 90 ? "perto" : "longe"}" ${l.acao?`onclick="${l.acao}" style="cursor:pointer"`:""}>
+        <div class="quando ${cls}">${dataBR(l.data)}</div>
+        <div class="oque">${l.proj ? comMarca(l.proj, null, 11) : ""}
+          <div style="margin-top:2px">${esc(l.titulo)}</div>
+          <div class="meta" style="margin-top:1px">${esc(l.rotulo)}</div></div>
+        <div class="dias ${cls}">${textoDias(d)}</div>
+      </div>`;
+    }).join("") : `<p class="meta">Nenhum prazo à vista.</p>`}
+  </div>`;
+
+  const bloco = (titulo, n, corpo, vazio) => `<div class="card">
+    <div class="linha" style="align-items:baseline;margin-bottom:10px">
+      <h2 style="margin:0">${titulo}</h2>
+      <span class="num" style="font-size:24px;color:${n?"var(--stamp)":"var(--ink2)"}">${n}</span>
     </div>
-    <div class="card" style="${metasSemProd.length?"border-color:var(--amber)":""}">
-      <div class="num" style="color:${metasSemProd.length?"var(--amber)":"var(--ink2)"}">${metasSemProd.length}</div>
-      <div class="rot">Metas sem produção vinculada</div>
-      <div class="meta" style="margin-top:6px">de ${state.metas.length} metas cadastradas nos projetos em execução</div>
-      <button class="btn sm" style="margin-top:10px" onclick="ui.aba='execucao';render()">Abrir a aba Execução</button>
-    </div>
+    ${n ? corpo : `<p class="meta" style="margin:0">${vazio}</p>`}
   </div>`;
 
-  if(p.length) h += `<div class="card" style="border-color:var(--stamp);margin-top:14px">
-    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
-      <span class="carimbo">Verificar antes do relatório</span>
-      <h2 style="margin:0">Produção com fomento e sem agradecimento confirmado</h2></div>
-    ${p.map(i=>`<div class="linha" style="border-top:1px solid var(--rule);padding-top:8px;margin-top:8px">
-      <div><div style="font-weight:600">${esc(i.titulo)}</div>
-      <div class="meta">${esc(i.veiculo)} · ${esc(i.ano)} · ${esc(i.fomentos.map(fom).join(", "))}</div></div>
-      <button class="btn sm" onclick="abrir('${i.id}')">Abrir</button></div>`).join("")}
-  </div>`;
-
-  h += `<div class="grid g2" style="margin-top:14px">
-    <div class="card"><h2>Concluído por ano</h2>
-      ${lista.length?lista.map(([ano,n])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
-        <span style="font-family:var(--data);font-size:12.5px;width:46px">${esc(ano)}</span>
-        <div class="barra" style="width:${Math.min(100,n*22)}%"></div>
-        <span style="font-family:var(--data);font-size:12.5px">${n}</span></div>`).join("")
-      :`<p class="meta">Nada concluído ainda. Registre um item e marque como publicado ou aceito.</p>`}</div>
-    <div class="card"><h2>Próximos prazos</h2>
-      ${prazos.length?prazos.map(i=>`<div style="display:flex;gap:10px;margin-bottom:8px">
-        <span style="font-family:var(--data);font-size:12.5px;color:var(--stamp)">${esc(i.prazo)}</span>
-        <span style="font-size:13.5px">${esc(i.titulo)}</span></div>`).join("")
-      :`<p class="meta">Nenhum prazo anotado. O campo Prazo serve para data-limite de chamada ou de revisão.</p>`}</div>
-  </div>`;
+  h += `<div class="secao">Pendências</div><div class="grid g3">`;
+  h += bloco("Produção sem agradecimento", semAgrad.length,
+    semAgrad.slice(0,5).map(i=>`<div class="ag" onclick="abrir('${i.id}')" style="cursor:pointer;padding:7px 0">
+      <div class="oque"><div>${esc(i.titulo)}</div>
+      <div class="meta">${esc(i.fomentos.map(rotuloRegistro).join(", "))}</div></div></div>`).join("")
+      + (semAgrad.length>5?`<p class="meta">e mais ${semAgrad.length-5}</p>`:""),
+    "Tudo com fomento já tem agradecimento confirmado.");
+  h += bloco("Metas sem produção vinculada", metasSemProd.length,
+    metasSemProd.slice(0,5).map(m=>`<div class="ag" onclick="irParaProjeto('${m.fomento}','metas')" style="cursor:pointer;padding:7px 0">
+      <div class="oque">${comMarca(m.fomento,(m.codigo||"meta"),11)}
+      <div class="meta">${esc(String(m.descricao).slice(0,70))}</div></div></div>`).join("")
+      + (metasSemProd.length>5?`<p class="meta">e mais ${metasSemProd.length-5}</p>`:""),
+    "Toda meta tem ao menos um item de produção vinculado.");
+  h += bloco("Planos encerrando sem justificativa", planosSem.length,
+    planosSem.slice(0,5).map(p=>`<div class="ag" onclick="irParaPlano('${p.id}')" style="cursor:pointer;padding:7px 0">
+      <div class="oque"><div>${esc(String(p.titulo).slice(0,60))}</div>
+      <div class="meta">encerra ${dataBR(p.fim)}</div></div></div>`).join("")
+      + (planosSem.length>5?`<p class="meta">e mais ${planosSem.length-5}</p>`:""),
+    "Nenhum plano encerrando com meta sem desfecho.");
+  h += `</div>`;
   return h;
 }
 
 function telaProducao(){
   const b = ui.busca.trim().toLowerCase();
+  const rapido = i => ui.fRapido === "Todos" ? true
+    : ui.fRapido === "Em andamento" ? (!CONCLUIDOS.includes(i.status) && i.status !== "Recusado")
+    : ui.fRapido === "Concluído" ? CONCLUIDOS.includes(i.status)
+    : i.status === "Recusado";
   const f = state.itens
-    .filter(i=>ui.fStatus==="Todos"||i.status===ui.fStatus)
-    .filter(i=>ui.fTipo==="Todos"||i.tipo===ui.fTipo)
-    .filter(i=>ui.fFomento==="Todos"||i.fomentos.includes(ui.fFomento))
-    .filter(i=>!b||((i.titulo+" "+i.autores+" "+i.veiculo+" "+i.notas).toLowerCase().includes(b)))
-    .sort((x,y)=>(y.ano||"").localeCompare(x.ano||"")||x.titulo.localeCompare(y.titulo));
+    .filter(rapido)
+    .filter(i=>ui.fStatus === "Todos" || i.status === ui.fStatus)
+    .filter(i=>ui.fTipo === "Todos" || i.tipo === ui.fTipo)
+    .filter(i=>ui.fFomento === "Todos" || i.fomentos.includes(ui.fFomento))
+    .filter(i=>!b || ((i.titulo+" "+i.autores+" "+i.veiculo+" "+i.notas).toLowerCase().includes(b)))
+    .sort((x,y)=>(y.ano||"").localeCompare(x.ano||"") || x.titulo.localeCompare(y.titulo));
 
-  let h = `<div class="grid g4" style="margin-bottom:14px">
+  /* a antiga aba Em andamento virou este filtro, e o quadro virou uma vista da mesma tela */
+  let h = `<div class="linha" style="margin-bottom:14px;align-items:center">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${["Todos","Em andamento","Concluído","Recusado"].map(r=>
+        `<button class="chip ${ui.fRapido===r?"on":""}" onclick="ui.fRapido='${r}';render()">${r}</button>`).join("")}
+    </div>
+    <div style="display:flex;gap:8px">
+      ${[["lista","Lista"],["quadro","Quadro"]].map(([k,r])=>
+        `<button class="chip ${ui.prodVista===k?"on":""}" onclick="ui.prodVista='${k}';render()">${r}</button>`).join("")}
+    </div>
+  </div>`;
+
+  if(ui.prodVista === "quadro") return h + telaAndamento();
+
+  h += `<div class="grid g4" style="margin-bottom:18px">
     <input placeholder="Buscar título, autor, veículo" value="${esc(ui.busca)}" oninput="ui.busca=this.value;render();document.querySelector('input[placeholder^=Buscar]').focus()">
     <select onchange="ui.fStatus=this.value;render()">${["Todos"].concat(STATUS).map(s=>`<option ${s===ui.fStatus?"selected":""}>${s}</option>`).join("")}</select>
     <select onchange="ui.fTipo=this.value;render()">${["Todos"].concat(TIPOS).map(s=>`<option ${s===ui.fTipo?"selected":""}>${s}</option>`).join("")}</select>
-    <select onchange="ui.fFomento=this.value;render()"><option value="Todos">Todos os fomentos</option>
-      ${state.fomentos.map(x=>`<option value="${x.id}" ${x.id===ui.fFomento?"selected":""}>${esc(x.agencia+" "+x.processo)}</option>`).join("")}</select>
+    <select onchange="ui.fFomento=this.value;render()"><option value="Todos">Todos os projetos</option>
+      ${state.fomentos.map(x=>`<option value="${x.id}" ${x.id===ui.fFomento?"selected":""}>${esc(rotuloRegistro(x.id))}</option>`).join("")}</select>
   </div>`;
 
   if(!f.length) return h + `<div class="vazio">
-    <div style="font-family:var(--display);font-size:19px;margin-bottom:6px">Nenhum assento aqui.</div>
+    <div style="font-size:18px;margin-bottom:6px">Nenhum assento aqui.</div>
     <p class="meta" style="margin-bottom:14px">Comece pelo que já está publicado neste ano, depois volte no histórico.</p>
     <button class="btn pri" onclick="novo()">+ Registrar produção</button></div>`;
 
   h += f.map(i=>{
-    const cor = CORES[i.status]?CORES[i.status][1]:"var(--rule)";
-    const rodape = (i.fomentos.length||i.agradecimento==="Sim") ? `<div class="sep">
-      ${i.fomentos.map(x=>`<span class="tag" style="background:var(--navy-soft);color:var(--navy)">${esc(fom(x))}</span>`).join("")}
-      ${i.agradecimento==="Sim"?`<span class="carimbo ok">Agradecimento incluído</span>`
-        :(i.fomentos.length&&CONCLUIDOS.includes(i.status)?`<span class="carimbo">Sem agradecimento</span>`:"")}
+    const rodape = (i.fomentos.length || i.agradecimento === "Sim") ? `<div class="sep">
+      ${i.fomentos.map(tagRegistro).join("")}
+      ${i.agradecimento === "Sim" ? `<span class="carimbo ok">Agradecimento incluído</span>`
+        : (i.fomentos.length && CONCLUIDOS.includes(i.status) ? `<span class="carimbo">Sem agradecimento</span>` : "")}
     </div>` : "";
-    return `<div class="item" style="border-left-color:${cor}" onclick="abrir('${i.id}')">
+    return `<div class="item" onclick="abrir('${i.id}')">
       <div class="linha">
         <div style="flex:1;min-width:200px">
-          <h3>${esc(i.titulo||"(sem título)")}</h3>
+          <h3>${esc(i.titulo || "(sem título)")}</h3>
           <div class="meta">${esc(i.autores)}</div>
           <div class="meta">${esc([i.veiculo,i.ano,i.qualis?"Qualis "+i.qualis:""].filter(Boolean).join(" · "))}</div>
         </div>
         <div style="text-align:right">${tag(i.status)}
-          <div class="rot" style="margin-top:6px">${esc(i.tipo)}</div></div>
+          <div class="meta" style="margin-top:6px">${esc(i.tipo)}</div></div>
       </div>${rodape}</div>`;
   }).join("");
   return h;
@@ -1083,26 +1309,43 @@ function telaAndamento(){
 function campoRegistro(id,k,v){ const f = registro(id); if(f){ f[k] = v; salvar(); } }
 
 function cartaoRegistro(f){
-  const c = CORES_REGISTRO[f.tipo] || ["var(--navy-soft)","var(--navy)"];
   const campos = [["Agência ou unidade","agencia"],["Processo / identificação","processo"],
     ["Nome do projeto","nome"],["Chamada, edital ou natureza do registro","chamada"],
     ["Início","inicio"],["Fim","fim"]];
-  const vinc = state.itens.filter(i=>i.fomentos.includes(f.id)).length;
-  const pls = planosDoRegistro(f.id).length;
-  const mts = state.metas.filter(m=>m.fomento===f.id).length;
-  return `<div class="card" style="margin-bottom:12px;border-left:4px solid ${c[1]}">
-    <div class="linha" style="margin-bottom:10px">
-      <span class="tag" style="background:${c[0]};color:${c[1]}">${esc(f.tipo)}</span>
-      <span class="rot">${mts} metas · ${pls} planos · ${vinc} itens de produção</span>
-    </div>
+  const ext = f.tipo === "Extensão";
+  return `<div class="card">
     <div class="grid g2">
       <div><label>Tipo de registro</label>
         <select onchange="campoRegistro('${f.id}','tipo',this.value)">
           ${TIPOS_REGISTRO.map(t=>`<option ${t===f.tipo?"selected":""}>${esc(t)}</option>`).join("")}
         </select></div>
-      <div></div>
+      <div><label>Marcador na interface</label>
+        <div style="padding:8px 0">${comMarca(f.id, marcaDe(f.id).forma + ", fixo por projeto", 13)}</div></div>
       ${campos.map(([r,k])=>`<div><label>${r}</label>
         <input value="${esc(f[k]||"")}" onchange="campoRegistro('${f.id}','${k}',this.value)"></div>`).join("")}
+      ${ext ? `
+      <div class="full" style="border-top:1px solid var(--rule);padding-top:14px;margin-top:4px">
+        <div class="secao">Campos de extensão</div></div>
+      <div><label>Período</label>
+        <input value="${esc(f.periodo||"")}" onchange="campoRegistro('${f.id}','periodo',this.value)"
+          placeholder="ex.: março a novembro de 2027"></div>
+      <div><label>Público atendido</label>
+        <input value="${esc(f.publico||"")}" onchange="campoRegistro('${f.id}','publico',this.value)"
+          placeholder="ex.: estudantes da rede municipal de Bacabal"></div>
+      <div class="full"><label>Parceiros</label>
+        <textarea onchange="campoRegistro('${f.id}','parceiros',this.value)">${esc(f.parceiros||"")}</textarea></div>
+      <div class="full">
+        <div class="linha" style="align-items:baseline;margin-bottom:8px">
+          <label style="margin:0">Ações realizadas</label>
+          <button class="btn sm" onclick="addAcao('${f.id}')">+ Acrescentar ação</button>
+        </div>
+        ${(f.acoes||[]).length ? (f.acoes||[]).map((a,n)=>`<div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+          <input type="date" style="flex:0 0 160px" value="${esc(a.data||"")}" onchange="campoAcao('${f.id}',${n},'data',this.value)">
+          <input style="flex:1;min-width:200px" placeholder="o que foi realizado" value="${esc(a.texto||"")}"
+            onchange="campoAcao('${f.id}',${n},'texto',this.value)">
+          <button class="btn dan sm" onclick="removerAcao('${f.id}',${n})">Remover</button>
+        </div>`).join("") : `<p class="meta" style="margin:0">Nenhuma ação registrada.</p>`}
+      </div>` : ""}
       <div class="full"><label>Objetivos e escopo</label>
         <textarea onchange="campoRegistro('${f.id}','objetivos',this.value)">${esc(f.objetivos||"")}</textarea></div>
       <div class="full"><label>Observação sobre o prazo</label>
@@ -1113,30 +1356,113 @@ function cartaoRegistro(f){
     </div>
   </div>`;
 }
+function addAcao(id){
+  const f = registro(id); if(!f) return;
+  if(!Array.isArray(f.acoes)) f.acoes = [];
+  f.acoes.push({data:"", texto:""}); salvar();
+}
+function campoAcao(id, n, k, v){ const f = registro(id); if(f && f.acoes && f.acoes[n]){ f.acoes[n][k] = v; salvar(); } }
+function removerAcao(id, n){ const f = registro(id); if(f && f.acoes){ f.acoes.splice(n,1); salvar(); } }
 
-function telaFomentos(){
-  let h = `<div class="card" style="border-color:var(--stamp);margin-bottom:16px">
-    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
-      <span class="carimbo">Prazos distintos</span>
-      <h2 style="margin:0">Não confundir os dois prazos do PEDIC</h2>
-    </div>
-    <p class="meta" style="margin:0 0 6px"><strong>Registro na UFMA, agosto de 2027:</strong> é o prazo que <strong>rege o relatório final</strong>.
-      O registro do projeto guarda-chuva encerra nessa data, no limite de 3 anos de vigência sem renovação, e é ela que define a entrega à UFMA (meta G12).</p>
-    <p class="meta" style="margin:0"><strong>Aprovação ética, novembro de 2028:</strong> é apenas o cronograma registrado na Plataforma Brasil,
-      no Parecer CEP/UFMA nº 8.347.018. A data é mais longa porque o CEP aprovou depois do projeto já em execução. <strong>Não estende o prazo do relatório.</strong></p>
+/* ============================ Projetos ============================ */
+function irParaProjeto(id, aba){
+  ui.aba = "projetos"; ui.projetoAberto = id; ui.projAba = aba || "metas";
+  ui.fExecFomento = id; ui.menuAberto = false; render();
+}
+function irParaPlano(id){ ui.aba = "orientacoes"; ui.planoAberto = id; ui.menuAberto = false; render(); }
+
+function telaProjetos(){
+  const aberto = ui.projetoAberto && registro(ui.projetoAberto);
+  if(aberto) return telaProjetoDetalhe(aberto);
+
+  let h = `<div class="card" style="margin-bottom:24px">
+    <h2>Dois prazos distintos no PEDIC</h2>
+    <p class="meta" style="margin:0 0 6px"><strong style="color:var(--ink)">Registro na UFMA, agosto de 2027.</strong>
+      É o prazo que rege o relatório final. O registro do guarda-chuva encerra nessa data, no limite de 3 anos sem renovação (meta G12).</p>
+    <p class="meta" style="margin:0"><strong style="color:var(--ink)">Aprovação ética, novembro de 2028.</strong>
+      É apenas o cronograma na Plataforma Brasil, do Parecer CEP/UFMA nº 8.347.018. Não estende o prazo do relatório.</p>
   </div>`;
+
   TIPOS_REGISTRO.forEach(t=>{
     const lista = registrosDoTipo(t);
-    const c = CORES_REGISTRO[t];
-    h += `<div style="margin-bottom:18px">
-      <div class="linha" style="align-items:baseline;margin-bottom:8px">
-        <h2 style="margin:0;color:${c[1]}">${esc(t)}</h2>
-        <span class="rot">${lista.length} ${lista.length===1?"registro":"registros"}</span>
+    h += `<div style="margin-bottom:26px">
+      <div class="linha" style="align-items:baseline;margin-bottom:10px">
+        <h2 style="margin:0">${esc(t)}</h2>
+        <span class="meta">${lista.length} ${lista.length === 1 ? "registro" : "registros"}</span>
       </div>
-      ${lista.length?lista.map(cartaoRegistro).join(""):`<div class="vazio"><p class="meta" style="margin:0">Nenhum registro deste tipo.</p></div>`}
+      ${lista.length ? lista.map(f=>{
+        const nm = state.metas.filter(m=>m.fomento === f.id).length;
+        const np = planosDoRegistro(f.id).length;
+        const ni = state.itens.filter(i=>i.fomentos.includes(f.id)).length;
+        return `<div class="item" onclick="irParaProjeto('${f.id}','metas')">
+          <div class="linha">
+            <div style="flex:1;min-width:220px">
+              <h3>${comMarca(f.id, f.nome, 13)}</h3>
+              <div class="meta">${esc(f.agencia)} · ${esc(f.processo)}${f.inicio||f.fim?" · vigência "+dataBR(f.inicio)+" a "+dataBR(f.fim):""}</div>
+            </div>
+            <div class="meta" style="text-align:right;min-width:180px">
+              ${nm} metas · ${np} planos · ${ni} itens</div>
+          </div></div>`;
+      }).join("") : `<div class="vazio"><p class="meta" style="margin:0">Nenhum registro deste tipo.</p></div>`}
     </div>`;
   });
   return h + `<button class="btn" onclick="addFomento()">+ Adicionar registro</button>`;
+}
+
+function telaProjetoDetalhe(f){
+  const secoes = [["metas","Metas"],["planos","Planos de trabalho"],["producao","Produção"],["dados","Dados do registro"]];
+  const nm = state.metas.filter(m=>m.fomento === f.id);
+  const pls = planosDoRegistro(f.id);
+  const its = state.itens.filter(i=>i.fomentos.includes(f.id));
+  const cnt = {metas:nm.length, planos:pls.length, producao:its.length, dados:""};
+
+  let h = `<button class="btn liso sm" onclick="ui.projetoAberto='';render()">← todos os projetos</button>
+  <div style="margin:10px 0 6px">
+    <h2 style="font-size:21px;margin:0">${comMarca(f.id, f.nome, 14)}</h2>
+    <div class="meta">${esc(f.tipo)} · ${esc(f.agencia)} · ${esc(f.processo)}</div>
+    <div class="meta">${esc(f.chamada || "")}</div>
+    <div class="meta">Vigência ${dataBR(f.inicio)} a ${dataBR(f.fim)}</div>
+  </div>`;
+  if(f.nota) h += `<p class="meta" style="color:var(--stamp);max-width:70ch;margin-bottom:14px">${esc(f.nota)}</p>`;
+
+  h += `<div style="display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 20px">
+    ${secoes.map(([k,r])=>`<button class="chip ${ui.projAba===k?"on":""}" onclick="ui.projAba='${k}';render()">
+      ${esc(r)}${cnt[k]!==""?` <span style="opacity:.7">${cnt[k]}</span>`:""}</button>`).join("")}
+  </div>`;
+
+  if(ui.projAba === "metas") h += metasDoProjeto(f);
+  else if(ui.projAba === "planos") h += planosDoProjeto(f, pls);
+  else if(ui.projAba === "producao") h += producaoDoProjeto(f, its);
+  else h += cartaoRegistro(f);
+  return h;
+}
+
+function planosDoProjeto(f, pls){
+  if(!pls.length) return `<div class="vazio"><p class="meta" style="margin:0">
+    Nenhum plano de trabalho vinculado a este registro. Vincule na tela Orientações.</p></div>`;
+  return pls.map(p=>`<div class="item" onclick="irParaPlano('${p.id}')">
+    <div class="linha">
+      <div style="flex:1;min-width:220px">
+        <h3>${esc(p.titulo)}</h3>
+        <div class="meta">${esc([p.vinculo, p.ciclo].filter(Boolean).join(" · "))} · vigência ${dataBR(p.inicio)} a ${dataBR(p.fim)}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">${p.projetos.map(tagRegistro).join("")}</div>
+      </div>
+      <span class="meta">${esc(p.situacao)}</span>
+    </div></div>`).join("");
+}
+
+function producaoDoProjeto(f, its){
+  if(!its.length) return `<div class="vazio"><p class="meta" style="margin:0">
+    Nenhuma produção vinculada. Abra um item na tela Produção e marque este registro.</p></div>`;
+  return its.map(i=>`<div class="item" onclick="abrir('${i.id}')">
+    <div class="linha">
+      <div style="flex:1;min-width:220px">
+        <h3>${esc(i.titulo || "(sem título)")}</h3>
+        <div class="meta">${esc([i.tipo, i.veiculo, i.ano].filter(Boolean).join(" · "))}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">${i.fomentos.map(tagRegistro).join("")}</div>
+      </div>
+      <div style="text-align:right">${tag(i.status)}</div>
+    </div></div>`).join("");
 }
 
 /* ============================ orientações ============================ */
@@ -1376,20 +1702,20 @@ function cardMeta(m){
                : "Sem prazo definido");
   const livres = state.itens.filter(i=>!(Array.isArray(i.metas) && i.metas.includes(m.id)));
   let rodape;
-  if(!state.itens.length) rodape = `<p class="meta" style="margin:2px 0">Ainda não há produção registrada. Cadastre um item na aba Produção para poder vinculá-lo aqui.</p>`;
+  if(!state.itens.length) rodape = `<p class="meta" style="margin:2px 0">Ainda não há produção registrada. Cadastre um item na tela Produção para poder vinculá-lo aqui.</p>`;
   else if(livres.length) rodape = `<select style="max-width:440px;font-size:13px" onchange="vincularItem('${m.id}',this.value)">
-      <option value="">+ vincular um item já registrado na aba Produção</option>
+      <option value="">+ vincular um item já registrado na tela Produção</option>
       ${livres.map(i=>`<option value="${i.id}">${esc((i.titulo||"(sem título)").slice(0,90))}</option>`).join("")}
     </select>`;
   else rodape = `<p class="meta" style="margin:2px 0">Toda a produção registrada já está vinculada a esta meta.</p>`;
 
-  return `<div class="item metacard" style="border-left-color:${c[1]}">
+  return `<div class="item metacard">
     <div class="linha">
       <div style="flex:1;min-width:220px">
-        <h3><span style="font-family:var(--data);font-size:12.5px;color:var(--ink2)">${esc(m.codigo)}</span>
-          ${esc(m.descricao||"(sem descrição)")}</h3>
-        <div class="meta">${esc(fom(m.fomento))} · ${esc(prazoTxt)}</div>
-        ${m.obs?`<div class="meta" style="font-style:italic">${esc(m.obs)}</div>`:""}
+        <h3>${comMarca(m.fomento, m.codigo || "meta", 12)}</h3>
+        <div style="margin-top:4px">${esc(m.descricao || "(sem descrição)")}</div>
+        <div class="meta">${esc(prazoTxt)}</div>
+        ${m.obs?`<div class="meta">${esc(m.obs)}</div>`:""}
       </div>
       <div style="text-align:right;min-width:160px">
         ${tagMeta(s)}
@@ -1402,7 +1728,7 @@ function cardMeta(m){
       </div>
     </div>
     <div class="sep" style="flex-direction:column;align-items:stretch;gap:6px">
-      <div class="rot" style="margin:0">Produção vinculada: ${vinc.length}</div>
+      <div class="meta" style="margin:0">Produção vinculada: ${vinc.length}</div>
       ${vinc.map(i=>`<div class="linha" style="gap:8px;align-items:center">
         <div style="flex:1;min-width:180px;font-size:13.5px">${esc(i.titulo||"(sem título)")}
           <div class="meta">${esc([i.tipo,i.veiculo,i.ano].filter(Boolean).join(" · "))}</div></div>
@@ -1415,40 +1741,34 @@ function cardMeta(m){
   </div>`;
 }
 
-function telaExecucao(){
-  const metas = state.metas.filter(m=>ui.fExecFomento==="Todos" || m.fomento===ui.fExecFomento);
-  const comPrazo = metas.filter(m=>!m.continua)
-    .sort((a,b)=>(a.prazo||"9999").localeCompare(b.prazo||"9999"));
+/* metas de um projeto: era a antiga aba Execução, agora vive dentro do projeto */
+function metasDoProjeto(f){
+  const metas = state.metas.filter(m=>m.fomento === f.id);
+  const comPrazo = metas.filter(m=>!m.continua).sort((a,b)=>(a.prazo||"9999").localeCompare(b.prazo||"9999"));
   const continuas = metas.filter(m=>m.continua);
-  const atrasadas = metas.filter(m=>statusMeta(m)==="Atrasada").length;
-  const concluidas = metas.filter(m=>statusMeta(m)==="Concluída").length;
-  const semProd = metas.filter(m=>itensDaMeta(m.id).length===0).length;
+  const atrasadas = metas.filter(m=>statusMeta(m) === "Atrasada").length;
+  const concluidas = metas.filter(m=>statusMeta(m) === "Concluída").length;
+  const semProd = metas.filter(m=>itensDaMeta(m.id).length === 0).length;
 
-  let h = `<div class="grid g3" style="margin-bottom:14px">${MARCOS.map(cartaoMarco).join("")}</div>`;
-
-  h += `<div class="grid g4 metricas" style="margin-bottom:14px">
-    ${[["Metas no filtro",metas.length,"var(--ink)"],["Concluídas",concluidas,"var(--green)"],
-       ["Atrasadas",atrasadas,"var(--stamp)"],["Sem produção vinculada",semProd,"var(--amber)"]]
+  let h = `<div class="grid g4 metricas" style="margin-bottom:22px">
+    ${[["Metas",metas.length,"var(--ink)"],["Concluídas",concluidas,"var(--green)"],
+       ["Atrasadas",atrasadas,atrasadas?"var(--stamp)":"var(--ink2)"],
+       ["Sem produção vinculada",semProd,semProd?"var(--amber)":"var(--ink2)"]]
       .map(x=>`<div class="card"><div class="num" style="color:${x[2]}">${x[1]}</div><div class="rot">${x[0]}</div></div>`).join("")}
   </div>`;
 
-  h += `<div class="grid g3" style="align-items:end;margin-bottom:14px">
-    <div><label>Filtrar por registro</label>
-      <select onchange="ui.fExecFomento=this.value;render()">
-        <option value="Todos">Todos os registros</option>
-        ${state.fomentos.map(f=>`<option value="${f.id}" ${f.id===ui.fExecFomento?"selected":""}>${esc(f.agencia+" "+f.processo)}</option>`).join("")}
-      </select></div>
-    <div><button class="btn pri" onclick="novaMeta()">+ Adicionar meta</button></div>
-    <div><button class="btn" onclick="restaurarMetasPadrao()">Restaurar metas originais</button></div>
+  h += `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+    <button class="btn pri" onclick="novaMeta()">+ Adicionar meta</button>
+    <button class="btn" onclick="restaurarMetasPadrao()">Restaurar metas originais</button>
   </div>`;
 
-  const secao = (titulo, nota, lista) => `<div style="margin-bottom:20px">
-    <div class="linha" style="align-items:baseline;margin-bottom:8px">
+  const secao = (titulo, nota, lista) => `<div style="margin-bottom:26px">
+    <div class="linha" style="align-items:baseline;margin-bottom:6px">
       <h2 style="margin:0">${titulo}</h2>
-      <span class="rot">${lista.length} ${lista.length===1?"meta":"metas"}</span>
+      <span class="meta">${lista.length} ${lista.length === 1 ? "meta" : "metas"}</span>
     </div>
-    <p class="meta" style="margin:0 0 10px">${nota}</p>
-    ${lista.length?lista.map(cardMeta).join(""):`<div class="vazio"><p class="meta" style="margin:0">Nenhuma meta neste grupo.</p></div>`}
+    <p class="meta" style="margin:0 0 12px">${nota}</p>
+    ${lista.length ? lista.map(cardMeta).join("") : `<div class="vazio"><p class="meta" style="margin:0">Nenhuma meta neste grupo.</p></div>`}
   </div>`;
 
   h += secao("Metas com prazo definido",
@@ -1544,18 +1864,36 @@ function formulario(){
 
 /* ============================ render ============================ */
 function render(){
-  document.getElementById("nav").innerHTML = ABAS.map(([k,r])=>
-    `<button class="${ui.aba===k?"on":""}" onclick="ui.aba='${k}';render()">${r}</button>`).join("");
+  const pinta = (lista, alvo) => document.getElementById(alvo).innerHTML = lista.map(([k,r])=>
+    `<button class="destino ${ui.aba===k?"on":""}" onclick="irPara('${k}')">${r}</button>`).join("");
+  pinta(DESTINOS, "destinos");
+  pinta(DESTINOS_PE, "destinos-pe");
+  document.getElementById("lateral").className = "lateral" + (ui.menuAberto ? " aberta" : "");
+  document.getElementById("titulo").textContent = tituloDoDestino();
   document.getElementById("aviso").innerHTML = semStorage
     ? `<div class="aviso">O navegador bloqueou o armazenamento local. Nada será salvo ao fechar. Baixe o backup em JSON antes de sair.</div>` : "";
-  const telas = {painel:telaPainel, producao:telaProducao, andamento:telaAndamento, execucao:telaExecucao,
-    orientacoes:telaOrientacoes, contas:telaContas, fomentos:telaFomentos, dados:telaDados};
-  document.getElementById("app").innerHTML = telas[ui.aba]();
+  const telas = {hoje:telaHoje, projetos:telaProjetos, producao:telaProducao,
+    orientacoes:telaOrientacoes, contas:telaContas, dados:telaDados};
+  document.getElementById("app").innerHTML = (telas[ui.aba] || telaHoje)();
   const cxModal = document.getElementById("modal");
   cxModal.innerHTML = ui.editando ? formulario()
     : ui.editandoMeta ? formularioMeta()
     : ui.editandoPlano ? formularioPlano()
     : cxModal.innerHTML.includes("saida") ? cxModal.innerHTML : "";
+}
+function irPara(k){
+  ui.aba = k;
+  if(k !== "projetos") ui.projetoAberto = "";
+  ui.menuAberto = false;
+  render();
+}
+function tituloDoDestino(){
+  if(ui.aba === "projetos" && ui.projetoAberto){
+    const f = registro(ui.projetoAberto);
+    if(f) return f.agencia + " " + f.processo;
+  }
+  const achado = DESTINOS.concat(DESTINOS_PE).find(([k])=>k === ui.aba);
+  return achado ? achado[1] : "Hoje";
 }
 carregar();
 carregarConfigGH();
