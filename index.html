@@ -171,9 +171,12 @@
   .rodape .cols{display:flex;gap:44px;flex-wrap:wrap;max-width:1060px;margin:0 auto}
   .rodape h4{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.7);
     margin:0 0 12px;font-weight:700}
-  /* placa branca: as logos das agências são azuis e sumiriam no preto */
-  .placa{background:#fff;border-radius:10px;padding:8px 14px;display:inline-flex;align-items:center;gap:18px}
+  .placa{display:inline-flex;align-items:center;gap:24px;flex-wrap:wrap}
   .placa img{height:40px;width:auto;display:block}
+  /* marcas quase quadradas precisam de mais altura para equilibrar com os logotipos horizontais */
+  .placa img.alta{height:54px}
+  /* as logos das agências são azul-escuro: viram branco chapado, como no rodapé do site */
+  .placa img.branca{filter:brightness(0) invert(1)}
   .marca-ufma{font-family:var(--marca);font-weight:900;font-size:19px;letter-spacing:.06em;color:#1C1C1C}
   .rodape .credito{border-top:1px solid rgba(255,255,255,.16);margin:22px auto 0;padding-top:14px;
     font-size:12px;color:rgba(255,255,255,.62);max-width:1060px}
@@ -213,15 +216,15 @@
         <div>
           <h4>Realização</h4>
           <div class="placa">
-            <img src="img/logo-pedic.png" alt="PEDIC">
-            <img src="img/logo-ufma.png" alt="UFMA" onerror="semLogo(this)">
+            <img class="alta" src="img/logo-pedic.png" alt="PEDIC">
+            <img class="alta" src="img/logo-ufma.png" alt="UFMA" onerror="semLogo(this)">
           </div>
         </div>
         <div>
           <h4>Apoio</h4>
           <div class="placa">
-            <img src="img/logo-cnpq.png" alt="CNPq">
-            <img src="img/logo-fapema.png" alt="FAPEMA">
+            <img class="branca" src="img/logo-cnpq.png" alt="CNPq">
+            <img class="branca" src="img/logo-fapema.png" alt="FAPEMA">
           </div>
         </div>
       </div>
