@@ -168,7 +168,8 @@
 
   /* ---------- rodapé preto ---------- */
   .rodape{background:#1C1C1C;color:#fff;padding:30px 26px 20px;margin-top:28px}
-  .rodape .cols{display:flex;gap:44px;flex-wrap:wrap;max-width:1060px;margin:0 auto}
+  .rodape .cols{display:flex;gap:44px;flex-wrap:wrap;max-width:1060px;margin:0 auto;
+    justify-content:center;text-align:center}
   .rodape h4{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.7);
     margin:0 0 12px;font-weight:700}
   .placa{display:inline-flex;align-items:center;gap:24px;flex-wrap:wrap}
@@ -241,7 +242,17 @@
 const KEY = "producao-academica-v1";
 const TIPOS = ["Artigo em periódico","Capítulo de livro","Livro / organização","Trabalho completo em anais",
   "Resumo expandido","Resumo simples","Relatório técnico","Produto educacional","Software / jogo",
-  "Palestra / minicurso","Orientação concluída","Outro"];
+  "Palestra / minicurso","Organização de evento","Parecer ad hoc",
+  "Tese de doutorado concluída","Dissertação de mestrado concluída","TCC (graduação) concluído",
+  "Iniciação científica concluída","Outro"];
+/* A ordem acima manda no agrupamento do relatório: os quatro níveis de orientação
+   saem em sequência, do doutorado à iniciação científica.
+   Tipos gravados em versões antigas nunca somem: entram no fim da lista. */
+function tiposComLegado(){
+  const l = TIPOS.slice();
+  state.itens.forEach(i=>{ if(i.tipo && !l.includes(i.tipo)) l.push(i.tipo); });
+  return l;
+}
 const STATUS = ["Escrevendo","A submeter","Submetido","Em revisão","Aceito","Publicado","Recusado"];
 const CONCLUIDOS = ["Aceito","Publicado"];
 const CORES = {
@@ -250,7 +261,7 @@ const CORES = {
   "Aceito":["var(--green-soft)","var(--green)"], "Publicado":["var(--green-soft)","var(--green)"],
   "Recusado":["#EDEDED","#6B6B6B"]
 };
-const TIPOS_REGISTRO = ["Fomento externo","Projeto institucional","Aprovação ética","Extensão"];
+const TIPOS_REGISTRO = ["Fomento externo","Projeto institucional","Extensão"];
 /* Forma e cor fixas por projeto. O marcador acompanha o projeto em toda a interface.
    As cores de status (alerta e concluído) nunca entram aqui. */
 const PROJ_MARCA = {
@@ -334,7 +345,6 @@ function comMarca(id, texto, t){
 const CORES_REGISTRO = {   /* o tipo é rótulo neutro: a identidade vem da forma e da cor do marcador */
   "Fomento externo":["var(--grafite-soft)","var(--grafite)"],
   "Projeto institucional":["var(--grafite-soft)","var(--grafite)"],
-  "Aprovação ética":["var(--grafite-soft)","var(--grafite)"],
   "Extensão":["var(--grafite-soft)","var(--grafite)"]
 };
 const FOMENTO_PADRAO = [{
@@ -351,16 +361,11 @@ const FOMENTO_PADRAO = [{
   id:"f-pedic-ufma", tipo:"Projeto institucional", agencia:"UFMA", nome:"Laboratório de Pesquisa em Ensino Digital para Ciência (PEDIC): focando na aprendizagem baseada em jogos",
   processo:"PEDIC guarda-chuva", chamada:"Projeto de pesquisa institucional registrado na UFMA, Centro de Ciências de Bacabal (CCBa), Licenciatura em Ciências Naturais. Não é fomento externo.",
   inicio:"2024-08-01", fim:"2027-08-31",
+  cepParecer:"Parecer CEP/UFMA nº 8.347.018", caae:"93629024.6.0000.5087",
+  cepAprovacao:"2026-04-10", cepLimite:"2028-11-30",
   objetivos:"Objetivo geral: desenvolver jogos digitais e de tabuleiro e metodologias de ensino para uso nas aulas de Ciências e Química do ensino fundamental e médio, além de manter o Museu Game Ciência como espaço de divulgação e alfabetização científica, com prioridade na formação inicial e contínua de professores.\n\nO1. Promover espaço de debate e interação entre Universidade e escola.\nO2. Dar subsídios para professores trabalharem com tecnologias digitais em aula, com acompanhamento dos bolsistas.\nO3. Investigar os resultados da inserção dos jogos e tecnologias digitais, verificando pontos positivos e negativos da metodologia e o engajamento de discentes e professores.\nO4. Analisar os pontos de equilíbrio entre design de games e design instrucional nos jogos digitais para o ensino de Ciências.\nO5. Disponibilizar aos professores recursos de ensino ancorados na abordagem CTSA.",
   nota:"PRAZO QUE REGE O RELATÓRIO FINAL. O registro na UFMA encerra em agosto de 2027, limite de 3 anos de vigência sem renovação, e é esta data que define a entrega do relatório final à UFMA (meta G12). Não confundir com o cronograma da aprovação ética, que vai até novembro de 2028. Data de início inferida do limite de 3 anos: confirmar a data exata do registro na UFMA.",
   texto:"Projeto institucional, sem texto de agradecimento a agência de fomento. É o guarda-chuva do qual derivam o projeto CNPq 405203/2025-0 e a proposta FAPEMA BEPP-10468/26."
-},{
-  id:"f-cep-ufma-8347018", tipo:"Aprovação ética", agencia:"CEP/UFMA", nome:"Aprovação ética do projeto guarda-chuva PEDIC",
-  processo:"Parecer nº 8.347.018", chamada:"CAAE 93629024.6.0000.5087",
-  inicio:"2026-04-10", fim:"2028-11-30",
-  objetivos:"Participantes da pesquisa: Grupo I, docentes e discentes do ensino superior e da pós-graduação da equipe executora; Grupo II, docentes da educação básica; Grupo III, discentes da educação básica. Coleta mediante consentimento livre e esclarecido, com termo de assentimento para menores.\n\nInstrumentos de produção de dados: fichas, gravações de vídeo e áudio, notas de campo e entrevistas semiestruturadas; análise por Análise de Conteúdo ou software tipo MaxQDA, com suporte da Teoria da Ação Mediada.",
-  nota:"NÃO É O PRAZO DO RELATÓRIO FINAL. Parecer aprovado em 10/04/2026, com cronograma registrado na Plataforma Brasil até novembro de 2028. A diferença para o prazo da UFMA existe porque o CEP aprovou depois do projeto já em execução, e as datas tiveram que ser atualizadas lá. Quem rege a entrega do relatório final é o registro na UFMA, em agosto de 2027.",
-  texto:"Pesquisa aprovada pelo Comitê de Ética em Pesquisa da UFMA, Parecer nº 8.347.018, CAAE 93629024.6.0000.5087."
 }];
 
 const STATUS_META = ["A fazer","Em andamento","Concluída","Atrasada"];
@@ -785,6 +790,13 @@ function excluir(){
 function vinculosDoItem(i){
   return (i.fomentos||[]).map(rotuloRegistro).join(" + ") || "sem vínculo";
 }
+/* identificação ética no cabeçalho: exigida em submissão de artigo e em prestação de contas */
+function linhaEtica(f){
+  if(!f.cepParecer && !f.caae) return "";
+  let s = "Aprovação ética: " + [f.cepParecer, f.caae ? "CAAE " + f.caae : ""].filter(Boolean).join(", ");
+  if(f.cepAprovacao) s += ", aprovado em " + dataBR(f.cepAprovacao);
+  return s + ".\n";
+}
 function relatorio(){
   const f = registro(ui.fomentoRel); if(!f) return "";
   const v = state.itens.filter(i=>i.fomentos.includes(f.id));
@@ -792,11 +804,12 @@ function relatorio(){
   const a = v.filter(i=>!CONCLUIDOS.includes(i.status) && i.status!=="Recusado");
   let t = "PRESTAÇÃO DE CONTAS - PRODUÇÃO VINCULADA\n";
   t += f.agencia+" - "+f.processo+"\n"+f.tipo+". "+f.chamada+"\n";
+  t += linhaEtica(f);
   t += "Vigência: "+(f.inicio||"?")+" a "+(f.fim||"?")+"\n";
   if(f.nota) t += "Prazo: "+f.nota+"\n";
   t += "Gerado em: "+new Date().toLocaleDateString("pt-BR")+"\n\n";
   t += "1. PRODUÇÃO CONCLUÍDA (aceita ou publicada): "+c.length+"\n\n";
-  TIPOS.forEach(tp=>{
+  tiposComLegado().forEach(tp=>{
     const g = c.filter(i=>i.tipo===tp); if(!g.length) return;
     t += tp.toUpperCase()+"\n";
     g.sort((x,y)=>(y.ano||"").localeCompare(x.ano||"")).forEach((i,n)=>{
@@ -835,6 +848,7 @@ function relatorioInstitucional(){
   let t = "RELATÓRIO FINAL - PROJETO INSTITUCIONAL\n"+linha("=");
   t += f.nome+"\n";
   t += f.agencia+" · "+f.processo+"\n";
+  t += linhaEtica(f);
   t += "Vigência: "+(f.inicio||"?")+" a "+(f.fim||"?")+"\n";
   if(f.nota) t += "\nPrazo: "+f.nota+"\n";
   t += "Gerado em: "+new Date().toLocaleDateString("pt-BR")+"\n\n";
@@ -1040,6 +1054,43 @@ function semear(){
   PLANOS_PADRAO.forEach(p=>{ if(!idsP.includes(p.id)) state.planos.push(JSON.parse(JSON.stringify(p))); });
   state.versaoSementes = VERSAO_SEMENTES;
 }
+/* backup antigo com aprovação ética como registro próprio: vira atributo do projeto */
+function migrarAprovacaoEtica(){
+  const velhos = state.fomentos.filter(f=>f.tipo === "Aprovação ética");
+  if(!velhos.length) return;
+  velhos.forEach(v=>{
+    const alvo = state.fomentos.find(f=>f.id === "f-pedic-ufma" && f.id !== v.id)
+      || state.fomentos.find(f=>f.tipo === "Projeto institucional" && f.id !== v.id);
+    if(!alvo){
+      /* sem projeto institucional para receber: o próprio registro vira o projeto, nada se perde */
+      v.tipo = "Projeto institucional";
+      if(!v.cepParecer) v.cepParecer = v.processo || "";
+      if(!v.caae) v.caae = String(v.chamada || "").replace(/^CAAE\s*/i, "");
+      if(!v.cepAprovacao) v.cepAprovacao = v.inicio || "";
+      if(!v.cepLimite) v.cepLimite = v.fim || "";
+      return;
+    }
+    if(!alvo.cepParecer) alvo.cepParecer = v.cepParecer || v.processo || "";
+    if(!alvo.caae) alvo.caae = v.caae || String(v.chamada || "").replace(/^CAAE\s*/i, "");
+    if(!alvo.cepAprovacao) alvo.cepAprovacao = v.cepAprovacao || v.inicio || "";
+    if(!alvo.cepLimite) alvo.cepLimite = v.cepLimite || v.fim || "";
+    /* o que estivesse vinculado ao registro avulso passa para o projeto */
+    state.itens.forEach(i=>{
+      if(i.fomentos.includes(v.id)){
+        i.fomentos = i.fomentos.filter(x=>x !== v.id);
+        if(!i.fomentos.includes(alvo.id)) i.fomentos.push(alvo.id);
+      }
+    });
+    state.planos.forEach(p=>{
+      if(p.projetos.includes(v.id)){
+        p.projetos = p.projetos.filter(x=>x !== v.id);
+        if(!p.projetos.includes(alvo.id)) p.projetos.push(alvo.id);
+      }
+    });
+    state.metas.forEach(m=>{ if(m.fomento === v.id) m.fomento = alvo.id; });
+    state.fomentos = state.fomentos.filter(f=>f.id !== v.id);
+  });
+}
 function normalizarItens(){
   state.itens.forEach(i=>{
     if(!Array.isArray(i.fomentos)) i.fomentos = [];
@@ -1052,8 +1103,11 @@ function normalizarItens(){
     if(f.nota == null) f.nota = "";
     /* campos de extensão, presentes em todos para o formulário não quebrar */
     ["periodo","publico","parceiros"].forEach(k=>{ if(f[k] == null) f[k] = ""; });
+    /* aprovação ética é atributo do projeto, opcional em todos */
+    ["cepParecer","caae","cepAprovacao","cepLimite"].forEach(k=>{ if(f[k] == null) f[k] = ""; });
     if(!Array.isArray(f.acoes)) f.acoes = [];
   });
+  migrarAprovacaoEtica();
   if(!Array.isArray(state.metas)) state.metas = [];
   if(!Array.isArray(state.planos)) state.planos = [];
   state.planos.forEach(p=>{
@@ -1403,7 +1457,7 @@ function telaProducao(){
   h += `<div class="grid g4" style="margin-bottom:14px">
     <input placeholder="Buscar título, autor, veículo" value="${esc(ui.busca)}" oninput="ui.busca=this.value;render();document.querySelector('input[placeholder^=Buscar]').focus()">
     <select onchange="ui.fStatus=this.value;render()">${["Todos"].concat(STATUS).map(s=>`<option ${s===ui.fStatus?"selected":""}>${s}</option>`).join("")}</select>
-    <select onchange="ui.fTipo=this.value;render()">${["Todos"].concat(TIPOS).map(s=>`<option ${s===ui.fTipo?"selected":""}>${s}</option>`).join("")}</select>
+    <select onchange="ui.fTipo=this.value;render()">${["Todos"].concat(tiposComLegado()).map(s=>`<option ${s===ui.fTipo?"selected":""}>${s}</option>`).join("")}</select>
     <select onchange="ui.fFomento=this.value;render()"><option value="Todos">Todos os projetos</option>
       ${state.fomentos.map(x=>`<option value="${x.id}" ${x.id===ui.fFomento?"selected":""}>${esc(rotuloRegistro(x.id))}</option>`).join("")}</select>
   </div>`;
@@ -1485,6 +1539,21 @@ function cartaoRegistro(f){
           <button class="btn dan sm" onclick="removerAcao('${f.id}',${n})">Remover</button>
         </div>`).join("") : `<p class="meta" style="margin:0">Nenhuma ação registrada.</p>`}
       </div>` : ""}
+      <div class="full" style="border-top:1px solid var(--fio);padding-top:14px;margin-top:4px">
+        <div class="secao">Aprovação ética</div></div>
+      <div><label>Número do parecer do CEP</label>
+        <input value="${esc(f.cepParecer||"")}" onchange="campoRegistro('${f.id}','cepParecer',this.value)"
+          placeholder="ex.: Parecer CEP/UFMA nº 8.347.018"></div>
+      <div><label>CAAE</label>
+        <input value="${esc(f.caae||"")}" onchange="campoRegistro('${f.id}','caae',this.value)"
+          placeholder="ex.: 93629024.6.0000.5087"></div>
+      <div><label>Data de aprovação</label>
+        <input type="date" value="${esc(f.cepAprovacao||"")}" onchange="campoRegistro('${f.id}','cepAprovacao',this.value)"></div>
+      <div><label>Data-limite do cronograma na Plataforma Brasil</label>
+        <input type="date" value="${esc(f.cepLimite||"")}" onchange="campoRegistro('${f.id}','cepLimite',this.value)"></div>
+      ${f.cepLimite ? `<div class="full"><p class="meta" style="margin:0;color:var(--stamp)">
+        Esta data é apenas do cronograma na Plataforma Brasil. Não estende o prazo do relatório à UFMA,
+        que continua sendo agosto de 2027.</p></div>` : ""}
       <div class="full"><label>Objetivos e escopo</label>
         <textarea onchange="campoRegistro('${f.id}','objetivos',this.value)">${esc(f.objetivos||"")}</textarea></div>
       <div class="full"><label>Observação sobre o prazo</label>
@@ -1964,7 +2033,7 @@ function formulario(){
     <div class="grid g2">
       ${inp("Título","titulo","",true)}
       ${inp("Autores (na ordem da publicação)","autores","",true)}
-      ${sel("Tipo","tipo",TIPOS)}
+      ${sel("Tipo","tipo",tiposComLegado())}
       ${sel("Situação","status",STATUS)}
       ${inp("Periódico, evento ou editora","veiculo","",true)}
       ${inp("Ano","ano")}
