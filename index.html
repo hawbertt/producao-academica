@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Livro de assentos - Produção acadêmica</title>
@@ -29,28 +32,42 @@
   h3{font-size:14px;line-height:1.35}
 
   .app{display:flex;min-height:100vh}
-  /* ---------- barra lateral branca, com a logo do museu ---------- */
-  .lateral{width:var(--lateral);flex:0 0 var(--lateral);background:#fff;border-right:1px solid var(--rule);
+  /* ---------- barra lateral escura, com a logo do museu ---------- */
+  .lateral{width:var(--lateral);flex:0 0 var(--lateral);background:#141414;border-right:none;
     position:fixed;top:0;bottom:0;left:0;display:flex;flex-direction:column;padding:20px 0 14px;overflow-y:auto}
-  .logo-lateral{width:calc(100% - 32px);max-width:158px;height:auto;margin:0 16px 18px;display:block}
+  /* a logo tem letra preta: sobre o fundo escuro ela é invertida para branco */
+  .logo-lateral{width:calc(100% - 32px);max-width:158px;height:auto;margin:0 16px 18px;display:block;
+    filter:brightness(0) invert(1)}
   .destinos{display:flex;flex-direction:column;gap:3px;padding:0 12px}
   /* item ativo: pílula totalmente arredondada em mostarda com texto preto, como no menu do site */
-  .destino{display:block;width:100%;text-align:left;padding:8px 14px;border-radius:999px;border:none;
-    background:none;cursor:pointer;font-family:var(--body);font-size:13.5px;color:var(--ink2)}
-  .destino:hover{background:#F6F6F6;color:var(--ink)}
+  .destino{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:8px 14px;
+    border-radius:999px;border:none;background:none;cursor:pointer;font-family:var(--body);
+    font-size:13.5px;font-weight:400;color:#B9B9B9}
+  .destino .ic{flex:none}
+  .destino:hover{background:rgba(255,255,255,.07);color:#fff}
   .destino.on{background:var(--mostarda);color:#1C1C1C;font-weight:700}
-  .lateral hr{border:none;border-top:1px solid var(--rule);margin:12px 16px}
+  .lateral hr{border:none;border-top:1px solid rgba(255,255,255,.14);margin:12px 16px}
   .lateral .pe{margin-top:auto}
   .conteudo{flex:1;min-width:0;margin-left:var(--lateral);display:flex;flex-direction:column}
 
-  /* ---------- faixa de seção de largura total ---------- */
-  .faixa-secao{padding:30px 26px 26px;text-align:center}
+  /* ---------- faixa de seção: título à esquerda, ação à direita ---------- */
+  .faixa-secao{padding:26px 30px;display:flex;align-items:center;justify-content:space-between;
+    gap:20px;flex-wrap:wrap}
+  .faixa-secao .textos{min-width:0}
   .faixa-secao .nome{font-family:var(--marca);font-weight:900;text-transform:uppercase;letter-spacing:.015em;
-    font-size:38px;line-height:1.05;margin:0}
-  .faixa-secao .sub{font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-top:8px;opacity:.92}
-  @media(max-width:640px){.faixa-secao .nome{font-size:27px}}
-  .acoes-topo{padding:18px 26px 0}
-  .acoes-topo .wrap{display:flex;justify-content:flex-end;align-items:center;gap:12px}
+    font-size:34px;line-height:1.05;margin:0}
+  .faixa-secao .sub{font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-top:6px;opacity:.92}
+  .faixa-secao .direita{display:flex;align-items:center;gap:14px}
+  /* vazio, o indicador nao pode gerar recuo antes do botao */
+  .faixa-secao .salvo:empty{display:none}
+  .faixa-secao .btn-faixa{padding:9px 18px;border-radius:999px;border:none;cursor:pointer;
+    font-family:var(--body);font-size:13.5px;font-weight:700;white-space:nowrap}
+  /* abaixo de 640px a ação desce para uma linha própria, alinhada à esquerda */
+  @media(max-width:640px){
+    .faixa-secao{flex-direction:column;align-items:flex-start;gap:14px}
+    .faixa-secao .nome{font-size:26px}
+    .faixa-secao .direita{width:100%;justify-content:flex-start}
+  }
 
   /* marca d'água das quatro formas do controle, atrás do conteúdo */
   main{flex:1;padding:20px 26px 44px}
@@ -59,13 +76,14 @@
 
   @media(max-width:899px){
     .app{display:block}
-    .lateral{position:relative;width:auto;flex:none;border-right:none;border-bottom:1px solid var(--rule);padding:14px 0 10px}
+    .lateral{position:relative;width:auto;flex:none;border-right:none;
+      border-bottom:1px solid rgba(255,255,255,.14);padding:14px 0 10px}
     .lateral .destinos,.lateral hr,.lateral .pe{display:none}
     .lateral.aberta .destinos,.lateral.aberta hr,.lateral.aberta .pe{display:flex;flex-direction:column}
     .lateral .pe{margin-top:8px}
     .conteudo{margin-left:0}
     .abrir-menu{display:inline-block;position:absolute;top:16px;right:18px}
-    .acoes-topo{padding:12px 16px 0} main{padding:14px 16px 32px}
+    main{padding:14px 16px 32px}
     .faixa-secao{padding:22px 16px}
   }
 
@@ -195,6 +213,8 @@
   .ag.longe .oque{color:var(--ink2)}
   .vencido{color:var(--stamp)} .proximo{color:var(--amber)} .neutro{color:var(--ink2)}
 </style>
+</head>
+<body>
 
 <div class="app">
   <aside class="lateral" id="lateral">
@@ -206,10 +226,6 @@
   </aside>
   <div class="conteudo">
     <div id="faixa"></div>
-    <div class="acoes-topo"><div class="wrap">
-      <span class="salvo" id="salvo"></span>
-      <button class="btn pri" onclick="novo()">+ Registrar produção</button>
-    </div></div>
     <div id="aviso"></div>
     <main><div class="wrap" id="app"></div></main>
     <footer class="rodape">
@@ -1251,6 +1267,21 @@ function alternarMetaItem(id){
 const DESTINOS = [["hoje","Hoje"],["projetos","Projetos"],["producao","Produção"],
   ["orientacoes","Orientações"],["contas","Prestação de contas"]];
 const DESTINOS_PE = [["dados","Sincronização e backup"]];
+/* ícones da navegação, desenhados à mão em SVG, herdando a cor do item pelo currentColor */
+const ICONES = {
+  hoje:`<path d="M2.6 8.4 9 3.1l6.4 5.3"/><path d="M4.4 7.9V15a.8.8 0 0 0 .8.8h2.7v-4.3h2.2v4.3h2.7a.8.8 0 0 0 .8-.8V7.9"/>`,
+  projetos:`<path d="M2.6 5.4a1.1 1.1 0 0 1 1.1-1.1h2.9l1.5 1.8h6.2a1.1 1.1 0 0 1 1.1 1.1v6.6a1.1 1.1 0 0 1-1.1 1.1H3.7a1.1 1.1 0 0 1-1.1-1.1z"/>`,
+  producao:`<path d="M9 5.5v9.1"/><path d="M9 5.5C7.6 4.4 5.8 3.9 3.3 4v8.8c2.5-.1 4.3.4 5.7 1.5 1.4-1.1 3.2-1.6 5.7-1.5V4c-2.5-.1-4.3.4-5.7 1.5z"/>`,
+  orientacoes:`<circle cx="6.9" cy="6.5" r="2.3"/><path d="M2.7 15.1c0-2.3 1.9-4 4.2-4s4.2 1.7 4.2 4"/><path d="M12.3 4.4a2.3 2.3 0 0 1 0 4.4"/><path d="M13.2 11.4c1.4.5 2.4 1.8 2.4 3.7"/>`,
+  contas:`<circle cx="9" cy="9" r="6.3"/><path d="M9 5.1v7.8"/><path d="M11 7c-.4-.6-1.1-1-2-1-1.1 0-2 .6-2 1.5 0 2.2 4 1.2 4 3.4 0 .9-.9 1.5-2 1.5-.9 0-1.6-.4-2-1"/>`,
+  dados:`<path d="M13.3 14.1H5.6a3.2 3.2 0 0 1-.5-6.4 4.2 4.2 0 0 1 8-1 3 3 0 0 1 .2 7.4z"/>`
+};
+function icone(k){
+  const d = ICONES[k];
+  if(!d) return "";
+  return `<svg class="ic" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor"
+    stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+}
 
 /* ============================ tela Hoje ============================ */
 const ORDEM_PROJETOS = ["f-pedic-ufma","f-cnpq-405203","f-fapema-bepp-10468"];
@@ -2071,12 +2102,18 @@ function formulario(){
 /* ============================ render ============================ */
 /* faixa de seção: nome em branco sobre a cor da seção, com subtítulo */
 const SECOES = {
-  hoje:        {nome:"Hoje", cor:"#E0A231", texto:"#1C1C1C", sub:"Prazos, ritmo e pendências dos três projetos"},
-  projetos:    {nome:"Projetos", cor:"#22B04D", texto:"#FFFFFF", sub:"Fomento, guarda-chuva, ética e extensão"},
-  producao:    {nome:"Produção", cor:"#4285F4", texto:"#FFFFFF", sub:"Livro de assentos da produção acadêmica"},
-  orientacoes: {nome:"Orientações", cor:"#E53935", texto:"#FFFFFF", sub:"Planos de trabalho e metas dos bolsistas"},
-  contas:      {nome:"Prestação de contas", cor:"#1C1C1C", texto:"#FFFFFF", sub:"Relatórios para as agências e para a UFMA"},
-  dados:       {nome:"Sincronização e backup", cor:"#1C1C1C", texto:"#FFFFFF", sub:"GitHub, exportação e restauração"}
+  hoje:        {nome:"Hoje", cor:"#E0A231", texto:"#1C1C1C", sub:"Prazos, ritmo e pendências dos três projetos",
+                acaoRotulo:"+ Registrar produção", acaoFuncao:"novo()"},
+  projetos:    {nome:"Projetos", cor:"#22B04D", texto:"#FFFFFF", sub:"Fomento, guarda-chuva, ética e extensão",
+                acaoRotulo:"", acaoFuncao:""},
+  producao:    {nome:"Produção", cor:"#4285F4", texto:"#FFFFFF", sub:"Livro de assentos da produção acadêmica",
+                acaoRotulo:"+ Registrar produção", acaoFuncao:"novo()"},
+  orientacoes: {nome:"Orientações", cor:"#E53935", texto:"#FFFFFF", sub:"Planos de trabalho e metas dos bolsistas",
+                acaoRotulo:"+ Registrar plano", acaoFuncao:"novoPlano()"},
+  contas:      {nome:"Prestação de contas", cor:"#1C1C1C", texto:"#FFFFFF", sub:"Relatórios para as agências e para a UFMA",
+                acaoRotulo:"", acaoFuncao:""},
+  dados:       {nome:"Sincronização e backup", cor:"#1C1C1C", texto:"#FFFFFF", sub:"GitHub, exportação e restauração",
+                acaoRotulo:"", acaoFuncao:""}
 };
 function faixaSecao(){
   const s = SECOES[ui.aba] || SECOES.hoje;
@@ -2085,9 +2122,20 @@ function faixaSecao(){
     const f = registro(ui.projetoAberto);
     if(f) sub = f.agencia + " · " + f.processo;
   }
+  /* contraste: faixa de texto escuro pede botão preto; faixa de texto branco pede botão mostarda */
+  const claro = String(s.texto).toUpperCase() === "#1C1C1C";
+  const estiloBotao = claro ? "background:#1C1C1C;color:#FFFFFF" : "background:var(--mostarda);color:#1C1C1C";
+  /* o aviso de salvamento é reescrito a cada render: preserva o texto que já estava lá */
+  const salvoAtual = (document.getElementById("salvo") || {}).textContent || "";
   return `<div class="faixa-secao" style="background:${s.cor};color:${s.texto}">
-    <div class="nome">${esc(s.nome)}</div>
-    <div class="sub">${esc(sub)}</div>
+    <div class="textos">
+      <div class="nome">${esc(s.nome)}</div>
+      <div class="sub">${esc(sub)}</div>
+    </div>
+    <div class="direita">
+      <span class="salvo" id="salvo" style="color:${s.texto};opacity:.75">${esc(salvoAtual)}</span>
+      ${s.acaoRotulo ? `<button class="btn-faixa" style="${estiloBotao}" onclick="${s.acaoFuncao}">${esc(s.acaoRotulo)}</button>` : ""}
+    </div>
   </div>`;
 }
 /* sobretítulo em mostarda com o título preto abaixo */
@@ -2106,7 +2154,7 @@ function semLogo(el){ el.outerHTML = '<span class="marca-ufma">UFMA</span>'; }
 
 function render(){
   const pinta = (lista, alvo) => document.getElementById(alvo).innerHTML = lista.map(([k,r])=>
-    `<button class="destino ${ui.aba===k?"on":""}" onclick="irPara('${k}')">${r}</button>`).join("");
+    `<button class="destino ${ui.aba===k?"on":""}" onclick="irPara('${k}')">${icone(k)}<span>${r}</span></button>`).join("");
   pinta(DESTINOS, "destinos");
   pinta(DESTINOS_PE, "destinos-pe");
   document.getElementById("lateral").className = "lateral" + (ui.menuAberto ? " aberta" : "");
@@ -2140,3 +2188,5 @@ carregar();
 carregarConfigGH();
 render();
 </script>
+</body>
+</html>
