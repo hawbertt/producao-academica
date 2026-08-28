@@ -160,6 +160,7 @@
   .lin .quando{font-size:12.5px;color:var(--ink2);white-space:nowrap}
   .det{border-top:1px solid var(--rule);margin-top:9px;padding-top:9px;cursor:default}
   .det .bloco{margin-bottom:9px}
+  .evid a{color:var(--navy);word-break:break-all}
   /* a urgência é comunicada pela borda colorida à esquerda e pela pílula de prazo */
   .lin.feito .tit{color:var(--ink2)}
 
@@ -575,7 +576,7 @@ const CICLOS = {"2025-2026":["2025-09-01","2026-08-31"], "2026-2027":["2026-09-0
 function planoPadrao(id, titulo, vinculo, ciclo, projetos, metas){
   return {id:id, titulo:titulo, aluno:"", vinculo:vinculo, ciclo:ciclo,
     inicio:CICLOS[ciclo][0], fim:CICLOS[ciclo][1], projetos:projetos,
-    situacao:"Em execução", resultados:"", notas:"",
+    situacao:"Em execução", resultados:"", notas:"", links:"",
     metas:metas.map((t,n)=>({id:id+"-m"+(n+1), texto:t, situacao:"Em execução", justificativa:""}))};
 }
 const PLANOS_PADRAO = [
@@ -777,7 +778,8 @@ const VERSAO_SEMENTES = 4;
 let state = {itens:[], fomentos:JSON.parse(JSON.stringify(FOMENTO_PADRAO)),
   metas:JSON.parse(JSON.stringify(METAS_PADRAO)), planos:JSON.parse(JSON.stringify(PLANOS_PADRAO)),
   versaoSementes:0,          /* mantido nos backups por compatibilidade; não é mais condição */
-  sementesRemovidas:[]};     /* ids de padrão apagados de propósito, que não devem voltar */
+  sementesRemovidas:[],      /* ids de padrão apagados de propósito, que não devem voltar */
+  sincronizadoEm:""};        /* atualizadoEm que o arquivo remoto tinha na última sincronização daqui */
 let ui = {aba:"hoje", busca:"", fStatus:"Todos", fTipo:"Todos", fFomento:"Todos", fomentoRel:"f-cnpq-405203",
   editando:null, editandoMeta:null, editandoPlano:null, fExecFomento:"Todos",
   fPlanoReg:"Todos", fPlanoCiclo:"Todos", planoAberto:"", modeloRel:"prestacao",
@@ -807,17 +809,45 @@ async function enviarGitHub(){
   try{
     let sha = null;
     const r0 = await fetch(ghUrl(), {headers:ghHeaders()});
-    if(r0.status === 200){ const d = await r0.json(); sha = d.sha; }
+    if(r0.status === 200){
+      const d = await r0.json(); sha = d.sha;
+      /* O arquivo já existe. Só grava por cima se ninguém mais tiver gravado
+         desde a última sincronização bem-sucedida deste aparelho. */
+      let remoto = null;
+      try{ remoto = JSON.parse(b64dec(d.content)); }catch(e){ remoto = null; }
+      const remotoEm = (remoto && remoto.atualizadoEm) ? remoto.atualizadoEm : "";
+      if(remotoEm !== state.sincronizadoEm){
+        const quando = remotoEm ? new Date(remotoEm).toLocaleString("pt-BR") : "data desconhecida";
+        const conta = x => Array.isArray(x) ? x.length : 0;
+        const aviso = "O arquivo no GitHub mudou depois da última vez que este aparelho sincronizou.\n\n"
+          + "No GitHub, gravado em " + quando + ":\n"
+          + "   " + conta(remoto && remoto.itens) + " registros de produção\n"
+          + "   " + conta(remoto && remoto.planos) + " planos de trabalho\n"
+          + "   " + conta(remoto && remoto.fomentos) + " projetos\n\n"
+          + "Neste aparelho:\n"
+          + "   " + state.itens.length + " registros de produção\n"
+          + "   " + state.planos.length + " planos de trabalho\n"
+          + "   " + state.fomentos.length + " projetos\n\n"
+          + "Continuar substitui o conteúdo do GitHub pelo deste aparelho. Continuar?";
+        if(!confirm(aviso)){
+          ghStatus("Envio cancelado. Baixe primeiro, confira o que veio e só então envie.", true);
+          return;
+        }
+      }
+    }
     else if(r0.status === 401 || r0.status === 403){ throw new Error("token recusado (" + r0.status + ")"); }
     else if(r0.status !== 404){ throw new Error("resposta " + r0.status); }
+    /* 404: o arquivo ainda não existe, grava direto */
+    const agora = new Date().toISOString();
     const corpo = {
       message: "Atualiza registros de produção (" + new Date().toLocaleString("pt-BR") + ")",
-      content: b64enc(JSON.stringify({...state, atualizadoEm:new Date().toISOString()}, null, 2))
+      content: b64enc(JSON.stringify({...state, atualizadoEm:agora}, null, 2))
     };
     if(sha) corpo.sha = sha;
     const r = await fetch(ghUrl(), {method:"PUT", headers:ghHeaders(), body:JSON.stringify(corpo)});
     if(!r.ok) throw new Error("resposta " + r.status);
     gh.ultimoEnvio = new Date().toISOString(); salvarConfigGH();
+    state.sincronizadoEm = agora; salvar();
     ghStatus("Enviado. " + state.itens.length + " registros, " + state.metas.length + " metas e " + state.planos.length + " planos guardados no GitHub.");
   }catch(e){ ghStatus("Não foi enviado: " + e.message + ". Confira o token e o nome do repositório.", true); }
 }
@@ -841,6 +871,8 @@ async function baixarGitHub(){
     if(Array.isArray(remoto.planos)) state.planos = remoto.planos;
     if(typeof remoto.versaoSementes === "number") state.versaoSementes = remoto.versaoSementes;
     if(Array.isArray(remoto.sementesRemovidas)) state.sementesRemovidas = remoto.sementesRemovidas;
+    /* a partir daqui este aparelho está em dia com esta versão do arquivo remoto */
+    state.sincronizadoEm = remoto.atualizadoEm || "";
     normalizarItens();
     salvar();
     ghStatus("Baixado. " + state.itens.length + " registros carregados neste aparelho.");
@@ -856,7 +888,8 @@ function carregar(){
       if(Array.isArray(d.metas)) state.metas = d.metas;
       if(Array.isArray(d.planos)) state.planos = d.planos;
       if(typeof d.versaoSementes === "number") state.versaoSementes = d.versaoSementes;
-      if(Array.isArray(d.sementesRemovidas)) state.sementesRemovidas = d.sementesRemovidas; }
+      if(Array.isArray(d.sementesRemovidas)) state.sementesRemovidas = d.sementesRemovidas;
+      if(typeof d.sincronizadoEm === "string") state.sincronizadoEm = d.sincronizadoEm; }
   }catch(e){ semStorage = true; }
   normalizarItens();
 }
@@ -905,6 +938,10 @@ function excluir(){
 }
 
 /* ============================ relatórios ============================ */
+/* uma linha por evidência, já limpa, para relatório e planilha */
+function linhasDeLinks(p){
+  return String(p.links || "").split("\n").map(s=>s.trim()).filter(Boolean);
+}
 /* lista todos os vínculos de um item, não só o registro filtrado */
 function vinculosDoItem(i){
   return (i.fomentos||[]).map(rotuloRegistro).join(" + ") || "sem vínculo";
@@ -952,6 +989,7 @@ function relatorio(){
     t += "  "+(n+1)+". "+p.titulo+"\n";
     t += "     "+(p.vinculo||"vínculo não informado")+", "+(p.ciclo||"ciclo não informado")+". Situação: "+p.situacao+".\n";
     t += "     Vínculos: "+(p.projetos.map(rotuloRegistro).join(" + ")||"nenhum")+".\n";
+    if(String(p.links||"").trim()) t += "     Evidências: "+linhasDeLinks(p).join(" | ")+"\n";
   });
   const p2 = c.filter(i=>i.agradecimento!=="Sim");
   t += "\n4. ITENS SEM AGRADECIMENTO REGISTRADO: "+p2.length+"\n";
@@ -1003,6 +1041,7 @@ function relatorioInstitucional(){
          " · Vigência "+dataBR(p.inicio)+" a "+dataBR(p.fim)+"\n";
     t += "     Projetos vinculados: "+(p.projetos.map(rotuloRegistro).join(" + ")||"nenhum")+"\n";
     t += "     Resultados: "+(p.resultados||"[a preencher]")+"\n";
+    if(String(p.links||"").trim()) t += "     Evidências: "+linhasDeLinks(p).join(" | ")+"\n";
     t += "     Metas do plano:\n";
     p.metas.forEach(m=>{
       t += "       - "+m.texto+" | "+m.situacao;
@@ -1144,6 +1183,7 @@ function importarJSON(){
         if(Array.isArray(d.planos)) state.planos = d.planos;
         if(typeof d.versaoSementes === "number") state.versaoSementes = d.versaoSementes;
         if(Array.isArray(d.sementesRemovidas)) state.sementesRemovidas = d.sementesRemovidas;
+        if(typeof d.sincronizadoEm === "string") state.sincronizadoEm = d.sincronizadoEm;
         normalizarItens();
         salvar();
       }catch(e){ alert("O arquivo não é um backup válido desta plataforma."); }
@@ -1246,11 +1286,12 @@ function normalizarItens(){
       if(!m.situacao) m.situacao = "Em execução";
       if(m.justificativa == null) m.justificativa = "";
     });
-    ["aluno","vinculo","inicio","fim","resultados","notas","ciclo"].forEach(k=>{ if(p[k] == null) p[k] = ""; });
+    ["aluno","vinculo","inicio","fim","resultados","notas","ciclo","links"].forEach(k=>{ if(p[k] == null) p[k] = ""; });
     if(!p.situacao) p.situacao = "Em execução";
   });
   if(typeof state.versaoSementes !== "number") state.versaoSementes = 0;
   if(!Array.isArray(state.sementesRemovidas)) state.sementesRemovidas = [];
+  if(typeof state.sincronizadoEm !== "string") state.sincronizadoEm = "";
   semear();
 }
 
@@ -1270,7 +1311,7 @@ function planosDoRegistro(id){ return state.planos.filter(p=>p.projetos.includes
 function novoPlano(){
   const id = "p"+Date.now()+Math.random().toString(36).slice(2,6);
   ui.editandoPlano = {id:id, titulo:"", aluno:"", vinculo:"PIBIC", ciclo:"", inicio:"", fim:"",
-    projetos:[], situacao:"Em execução", resultados:"", notas:"", metas:[]};
+    projetos:[], situacao:"Em execução", resultados:"", notas:"", links:"", metas:[]};
   render();
 }
 function editarPlano(id){ const p = planoPorId(id); if(p){ ui.editandoPlano = JSON.parse(JSON.stringify(p)); render(); } }
@@ -1887,6 +1928,7 @@ function cardPlano(p){
         : `<div class="nada" style="margin:2px 0">Nenhuma meta cadastrada neste plano.</div>`}
       </div>
       ${p.resultados ? `<div class="bloco meta">Resultados: ${esc(p.resultados)}</div>` : ""}
+      ${blocoEvidencias(p)}
       <div style="display:flex;gap:6px;align-items:center">
         <select style="width:auto" onchange="sitPlano('${p.id}',this.value)">
           ${SIT_PLANO.map(s=>`<option ${s===p.situacao?"selected":""}>${esc(s)}</option>`).join("")}
@@ -1906,6 +1948,18 @@ function cardPlano(p){
     </div>${det}</div>`;
 }
 
+/* Evidências ficam fora da plataforma: guardamos só o endereço.
+   Vira âncora apenas o que começa com http:// ou https://; o resto é texto. */
+function blocoEvidencias(p){
+  const linhas = String(p.links || "").split("\n").map(s=>s.trim()).filter(Boolean);
+  if(!linhas.length) return "";
+  return `<div class="bloco evid">
+    <div class="meta" style="margin:0 0 4px">Evidências</div>
+    ${linhas.map(l=>/^https?:\/\//i.test(l)
+      ? `<div style="font-size:13px"><a href="${esc(l)}" target="_blank" rel="noopener noreferrer">${esc(l)}</a></div>`
+      : `<div style="font-size:13px">${esc(l)}</div>`).join("")}
+  </div>`;
+}
 function telaOrientacoes(){
   const planos = state.planos
     .filter(p=>ui.fPlanoReg === "Todos" || p.projetos.includes(ui.fPlanoReg))
@@ -1987,6 +2041,8 @@ function formularioPlano(){
         <p class="meta" style="margin:6px 0 0">Os planos de 2026-2027 pertencem ao CNPq e também correm dentro do guarda-chuva do PEDIC: marque os dois.</p></div>
       <div class="full"><label>Resultados obtidos no período</label>
         <textarea oninput="campoPlano('resultados',this.value)">${esc(p.resultados)}</textarea></div>
+      <div class="full"><label>Links de evidências (um por linha: pasta de fotos, relatório, publicação)</label>
+        <textarea oninput="campoPlano('links',this.value)" placeholder="https://drive.google.com/...">${esc(p.links||"")}</textarea></div>
       <div class="full"><label>Observações</label>
         <textarea oninput="campoPlano('notas',this.value)">${esc(p.notas)}</textarea></div>
     </div>
