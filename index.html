@@ -154,7 +154,9 @@
     cursor:pointer;box-shadow:0 1px 2px rgba(28,28,28,.04)}
   .lin:hover{box-shadow:var(--sombra)}
   .lin .cab{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-  .lin .tit{flex:1;min-width:180px;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* até duas linhas antes de truncar: títulos longos de planos precisam se distinguir */
+  .lin .tit{flex:1;min-width:180px;font-size:13.5px;overflow:hidden;display:-webkit-box;
+    -webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical}
   .lin .quando{font-size:12.5px;color:var(--ink2);white-space:nowrap}
   .det{border-top:1px solid var(--rule);margin-top:9px;padding-top:9px;cursor:default}
   .det .bloco{margin-bottom:9px}
@@ -423,7 +425,9 @@ const MARCOS = [
   {rot:"Relatório Final à UFMA · PEDIC", data:"2027-08-31",
    nota:"Encerramento do registro do projeto guarda-chuva na UFMA (meta G12). É este o prazo do relatório, não o cronograma do CEP, que vai até novembro de 2028."},
   {rot:"Fim da vigência · CNPq", data:"2028-11-30",
-   nota:"Relatório final ao término da vigência do Processo 405203/2025, na plataforma Carlos Chagas."}
+   nota:"Relatório final ao término da vigência do Processo 405203/2025, na plataforma Carlos Chagas."},
+  {rot:"Fim da vigência · Extensão MGC", data:"2026-10-20",
+   nota:"Encerramento da vigência da ação PJ095-2025 na PROEC/UFMA. Relatório final ao término. Prorrogação por mais um ano pretendida e ainda não solicitada: confirmar na PROEC o prazo do pedido, que costuma ser anterior ao fim da vigência."}
 ];
 const METAS_PADRAO = [
   {id:"g-cnpq-m1", codigo:"M1", fomento:"f-cnpq-405203", continua:false, prazo:"2026-11-17", status:"A fazer",
@@ -533,7 +537,31 @@ const METAS_PADRAO = [
    obs:"Vincular aqui cada item registrado na aba Produção que derive do guarda-chuva."},
   {id:"g-pedic-g12", codigo:"G12", fomento:"f-pedic-ufma", continua:false, prazo:"2027-08-31", status:"A fazer",
    descricao:"Elaboração e apresentação do relatório final à UFMA.",
-   obs:"É o marco que encerra o registro na UFMA, em agosto de 2027. Use o modelo Relatório final institucional, na aba Prestação de contas, para montar o texto."}
+   obs:"É o marco que encerra o registro na UFMA, em agosto de 2027. Use o modelo Relatório final institucional, na aba Prestação de contas, para montar o texto."},
+  {id:"g-ext-x1", codigo:"X1", fomento:"f-ext-mgc-proec", continua:true, prazo:"", status:"A fazer",
+   descricao:"Popularização e acesso, ampliando com qualidade a oferta regular de ações museológicas do MGC para escolas previamente cadastradas do Médio Mearim.",
+   obs:"Contínua ao longo dos 12 meses de vigência."},
+  {id:"g-ext-x2", codigo:"X2", fomento:"f-ext-mgc-proec", continua:true, prazo:"", status:"A fazer",
+   descricao:"Formação de monitores em um processo formativo contínuo em mediação e divulgação científica, articulado às disciplinas do curso e à prática de campo no museu.",
+   obs:"Contínua ao longo dos 12 meses de vigência."},
+  {id:"g-ext-x3", codigo:"X3", fomento:"f-ext-mgc-proec", continua:true, prazo:"", status:"A fazer",
+   descricao:"Aperfeiçoamento curatorial para promover a melhoria contínua dos roteiros expositivos e das atividades, a partir do feedback de visitantes e docentes, assegurando acessibilidade e atualizações pertinentes.",
+   obs:"Contínua ao longo dos 12 meses de vigência."},
+  {id:"g-ext-x4", codigo:"X4", fomento:"f-ext-mgc-proec", continua:true, prazo:"", status:"A fazer",
+   descricao:"Articulação universidade-escola-comunidade, fortalecendo parcerias e fluxos de pré-visita, visita e pós-visita, com devolutivas e apoio aos professores para continuidade das experiências em sala de aula.",
+   obs:"Contínua ao longo dos 12 meses de vigência."},
+  {id:"g-ext-x5", codigo:"X5", fomento:"f-ext-mgc-proec", continua:true, prazo:"", status:"A fazer",
+   descricao:"Comunicação pública digital para manter presença ativa no site e nas redes sociais do MGC, dar visibilidade às ações, popularizar conteúdos científicos e facilitar agendamentos.",
+   obs:"Contínua ao longo dos 12 meses de vigência."},
+  {id:"g-ext-x6", codigo:"X6", fomento:"f-ext-mgc-proec", continua:true, prazo:"", status:"A fazer",
+   descricao:"Buscar assegurar acessibilidade e inclusão, para dar condições de acesso informacional, comunicacional e físico às atividades, contemplando diferentes necessidades do público atendido.",
+   obs:"Contínua ao longo dos 12 meses de vigência."},
+  {id:"g-ext-x7", codigo:"X7", fomento:"f-ext-mgc-proec", continua:false, prazo:"2026-10-20", status:"A fazer",
+   descricao:"Implementar avaliação participativa e formativa das ações (instrumentos simples e reuniões de ajuste), por meio de relatórios, dando a devolutiva às escolas.",
+   obs:"O documento prevê relatório parcial no sexto mês e relatório final ao término da vigência."},
+  {id:"g-ext-x8", codigo:"X8", fomento:"f-ext-mgc-proec", continua:true, prazo:"", status:"A fazer",
+   descricao:"Indissociabilidade entre Ensino, Pesquisa e Extensão, para integrar as ações do projeto às iniciativas de ensino (disciplinas), pesquisa (PPECEM/PIBIC/PIBIC-EM/TCC) e extensão (atendimento ao público), garantindo retroalimentação entre prática e reflexão.",
+   obs:"Contínua ao longo dos 12 meses de vigência."}
 ];
 
 const SIT_PLANO = ["Em execução","Concluído","Interrompido"];
@@ -738,10 +766,11 @@ const PLANOS_PADRAO = [
     "Desenvolver e analisar ações de divulgação científica, utilizando redes sociais como estratégia de mediação dos processos curatoriais do museu junto ao público geral."])
 ];
 
-const VERSAO_SEMENTES = 3;
+const VERSAO_SEMENTES = 4;
 let state = {itens:[], fomentos:JSON.parse(JSON.stringify(FOMENTO_PADRAO)),
   metas:JSON.parse(JSON.stringify(METAS_PADRAO)), planos:JSON.parse(JSON.stringify(PLANOS_PADRAO)),
-  versaoSementes:0};   /* 0 faz a semeadura conferir o que falta; semear() marca como feita */
+  versaoSementes:0,          /* mantido nos backups por compatibilidade; não é mais condição */
+  sementesRemovidas:[]};     /* ids de padrão apagados de propósito, que não devem voltar */
 let ui = {aba:"hoje", busca:"", fStatus:"Todos", fTipo:"Todos", fFomento:"Todos", fomentoRel:"f-cnpq-405203",
   editando:null, editandoMeta:null, editandoPlano:null, fExecFomento:"Todos",
   fPlanoReg:"Todos", fPlanoCiclo:"Todos", planoAberto:"", modeloRel:"prestacao",
@@ -804,6 +833,7 @@ async function baixarGitHub(){
     if(Array.isArray(remoto.metas)) state.metas = remoto.metas;
     if(Array.isArray(remoto.planos)) state.planos = remoto.planos;
     if(typeof remoto.versaoSementes === "number") state.versaoSementes = remoto.versaoSementes;
+    if(Array.isArray(remoto.sementesRemovidas)) state.sementesRemovidas = remoto.sementesRemovidas;
     normalizarItens();
     salvar();
     ghStatus("Baixado. " + state.itens.length + " registros carregados neste aparelho.");
@@ -818,7 +848,8 @@ function carregar(){
       if(Array.isArray(d.fomentos) && d.fomentos.length) state.fomentos = d.fomentos;
       if(Array.isArray(d.metas)) state.metas = d.metas;
       if(Array.isArray(d.planos)) state.planos = d.planos;
-      if(typeof d.versaoSementes === "number") state.versaoSementes = d.versaoSementes; }
+      if(typeof d.versaoSementes === "number") state.versaoSementes = d.versaoSementes;
+      if(Array.isArray(d.sementesRemovidas)) state.sementesRemovidas = d.sementesRemovidas; }
   }catch(e){ semStorage = true; }
   normalizarItens();
 }
@@ -1105,6 +1136,7 @@ function importarJSON(){
         if(Array.isArray(d.metas)) state.metas = d.metas;
         if(Array.isArray(d.planos)) state.planos = d.planos;
         if(typeof d.versaoSementes === "number") state.versaoSementes = d.versaoSementes;
+        if(Array.isArray(d.sementesRemovidas)) state.sementesRemovidas = d.sementesRemovidas;
         normalizarItens();
         salvar();
       }catch(e){ alert("O arquivo não é um backup válido desta plataforma."); }
@@ -1124,15 +1156,24 @@ function diasAte(iso){ if(!iso) return null;
   return Math.round((d-h)/86400000); }
 /* ===== compatibilidade com backups antigos e semeadura dos dados iniciais ===== */
 function semear(){
-  /* acrescenta apenas o que ainda nao existe, por id, e roda uma unica vez por aparelho */
-  if(state.versaoSementes >= VERSAO_SEMENTES) return;
+  /* Roda sempre e acrescenta por id apenas o que falta: a comparação por id já impede duplicar.
+     A trava por versão saía sem fazer nada quando o número vinha maior do arquivo remoto ou de
+     um backup importado, e registros corretos deixavam de entrar em silêncio.
+     O que foi apagado de propósito fica em state.sementesRemovidas e não volta. */
+  const fora = Array.isArray(state.sementesRemovidas) ? state.sementesRemovidas : [];
   const idsF = state.fomentos.map(x=>x.id);
-  FOMENTO_PADRAO.forEach(f=>{ if(!idsF.includes(f.id)) state.fomentos.push(JSON.parse(JSON.stringify(f))); });
+  FOMENTO_PADRAO.forEach(f=>{ if(!idsF.includes(f.id) && !fora.includes(f.id)) state.fomentos.push(JSON.parse(JSON.stringify(f))); });
   const idsM = state.metas.map(x=>x.id);
-  METAS_PADRAO.forEach(m=>{ if(!idsM.includes(m.id)) state.metas.push(JSON.parse(JSON.stringify(m))); });
+  METAS_PADRAO.forEach(m=>{ if(!idsM.includes(m.id) && !fora.includes(m.id)) state.metas.push(JSON.parse(JSON.stringify(m))); });
   const idsP = state.planos.map(x=>x.id);
-  PLANOS_PADRAO.forEach(p=>{ if(!idsP.includes(p.id)) state.planos.push(JSON.parse(JSON.stringify(p))); });
-  state.versaoSementes = VERSAO_SEMENTES;
+  PLANOS_PADRAO.forEach(p=>{ if(!idsP.includes(p.id) && !fora.includes(p.id)) state.planos.push(JSON.parse(JSON.stringify(p))); });
+}
+/* registra que um id vindo do padrão foi apagado de propósito */
+function marcarSementeRemovida(id){
+  if(!Array.isArray(state.sementesRemovidas)) state.sementesRemovidas = [];
+  const ehSemente = FOMENTO_PADRAO.some(f=>f.id === id) || METAS_PADRAO.some(m=>m.id === id)
+    || PLANOS_PADRAO.some(p=>p.id === id);
+  if(ehSemente && !state.sementesRemovidas.includes(id)) state.sementesRemovidas.push(id);
 }
 /* backup antigo com aprovação ética como registro próprio: vira atributo do projeto */
 function migrarAprovacaoEtica(){
@@ -1202,6 +1243,7 @@ function normalizarItens(){
     if(!p.situacao) p.situacao = "Em execução";
   });
   if(typeof state.versaoSementes !== "number") state.versaoSementes = 0;
+  if(!Array.isArray(state.sementesRemovidas)) state.sementesRemovidas = [];
   semear();
 }
 
@@ -1248,6 +1290,7 @@ function gravarPlano(){
 }
 function excluirPlano(){
   if(!confirm("Excluir este plano de trabalho e as metas dele?")) return;
+  marcarSementeRemovida(ui.editandoPlano.id);
   state.planos = state.planos.filter(x=>x.id!==ui.editandoPlano.id);
   ui.editandoPlano = null; salvar();
 }
@@ -1298,6 +1341,7 @@ function gravarMeta(){
 function excluirMeta(){
   if(!confirm("Excluir esta meta? Os vínculos com a produção registrada serão desfeitos.")) return;
   const id = ui.editandoMeta.id;
+  marcarSementeRemovida(id);
   state.metas = state.metas.filter(x=>x.id!==id);
   state.itens.forEach(i=>{ if(Array.isArray(i.metas)) i.metas = i.metas.filter(x=>x!==id); });
   ui.editandoMeta = null; salvar();
@@ -1581,7 +1625,7 @@ function telaProducao(){
     return `<div class="lin ${feito?"feito":""}" style="${fx(cor)}" onclick="abrir('${i.id}')">
       <div class="cab">
         ${i.fomentos.map(x=>marcador(x,11)).join("")}
-        <span class="tit">${esc(i.titulo || "(sem título)")}</span>
+        <span class="tit" title="${esc(i.titulo || "")}">${esc(i.titulo || "(sem título)")}</span>
         <span class="quando">${esc([i.veiculo,i.ano].filter(Boolean).join(" · "))}</span>
         ${tag(i.status)}
         ${pend?`<span class="carimbo">Sem agradecimento</span>`:""}
@@ -1783,7 +1827,7 @@ function producaoDoProjeto(f, its){
   return its.map(i=>`<div class="lin" style="${fx(f.id)}" onclick="abrir('${i.id}')">
     <div class="cab">
       ${i.fomentos.map(x=>marcador(x,11)).join("")}
-      <span class="tit ${CONCLUIDOS.includes(i.status)?"":""}">${esc(i.titulo || "(sem título)")}</span>
+      <span class="tit" title="${esc(i.titulo || "")}">${esc(i.titulo || "(sem título)")}</span>
       <span class="quando">${esc([i.tipo,i.ano].filter(Boolean).join(" · "))}</span>
       ${tag(i.status)}
     </div></div>`).join("");
@@ -1956,6 +2000,7 @@ function addFomento(){
 }
 function removerFomento(id){
   if(!confirm("Remover este registro? Os assentos, as metas e os planos vinculados a ele perdem o vínculo.")) return;
+  marcarSementeRemovida(id);
   state.fomentos = state.fomentos.filter(x=>x.id!==id);
   state.itens.forEach(i=>{ i.fomentos = i.fomentos.filter(x=>x!==id); });
   state.planos.forEach(p=>{ p.projetos = p.projetos.filter(x=>x!==id); });
