@@ -51,8 +51,8 @@
   .conteudo{flex:1;min-width:0;margin-left:var(--lateral);display:flex;flex-direction:column}
 
   /* ---------- faixa de seção: título à esquerda, ação à direita ---------- */
-  .faixa-secao{padding:26px 30px;display:flex;align-items:center;justify-content:space-between;
-    gap:20px;flex-wrap:wrap}
+  .faixa-secao{padding:26px 30px}
+  .faixa-secao .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
   .faixa-secao .textos{min-width:0}
   .faixa-secao .nome{font-family:var(--marca);font-weight:900;text-transform:uppercase;letter-spacing:.015em;
     font-size:34px;line-height:1.05;margin:0}
@@ -64,14 +64,14 @@
     font-family:var(--body);font-size:13.5px;font-weight:700;white-space:nowrap}
   /* abaixo de 640px a ação desce para uma linha própria, alinhada à esquerda */
   @media(max-width:640px){
-    .faixa-secao{flex-direction:column;align-items:flex-start;gap:14px}
+    .faixa-secao .wrap{flex-direction:column;align-items:flex-start;gap:14px}
     .faixa-secao .nome{font-size:26px}
     .faixa-secao .direita{width:100%;justify-content:flex-start}
   }
 
   /* marca d'água das quatro formas do controle, atrás do conteúdo */
-  main{flex:1;padding:20px 26px 44px}
-  .wrap{max-width:1060px;margin:0 auto}
+  main{flex:1;padding:20px 30px 44px}
+  .wrap{max-width:1180px;margin:0 auto}
   .abrir-menu{display:none}
 
   @media(max-width:899px){
@@ -158,13 +158,36 @@
   .lin .quando{font-size:12.5px;color:var(--ink2);white-space:nowrap}
   .det{border-top:1px solid var(--rule);margin-top:9px;padding-top:9px;cursor:default}
   .det .bloco{margin-bottom:9px}
-  .lin.atrasado{background:var(--stamp-tom)}
-  .lin.perto{background:var(--amber-tom)}
+  /* a urgência é comunicada pela borda colorida à esquerda e pela pílula de prazo */
   .lin.feito .tit{color:var(--ink2)}
 
   .linha{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
   .sep{border-top:1px solid var(--rule);padding-top:8px;margin-top:9px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .vazio{border:1px solid var(--fio);border-radius:16px;background:#fff;padding:18px;text-align:center}
+  /* indicador único de toda a plataforma: número preto, cor só no ladrilho do ícone */
+  .indicadores{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+  @media(max-width:900px){.indicadores{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.indicadores{grid-template-columns:1fr}}
+  .indicador{background:#fff;border:1px solid var(--rule);border-radius:14px;box-shadow:var(--sombra);
+    padding:16px 18px;display:flex;align-items:center;gap:14px}
+  .indicador .ladrilho{width:38px;height:38px;border-radius:10px;flex:none;
+    display:flex;align-items:center;justify-content:center}
+  .indicador .rotulo{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2)}
+  .indicador .valor{font-size:26px;font-weight:900;color:var(--ink);line-height:1.15;margin-top:2px}
+  /* barra de filtros como cartão, igual em Produção e em Orientações */
+  .filtros{background:#fff;border:1px solid var(--rule);border-radius:14px;box-shadow:var(--sombra);
+    padding:16px 18px;margin-bottom:16px;display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap}
+  .filtros .campo{flex:1;min-width:160px}
+  .filtros .campo > label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);margin-bottom:6px}
+  .filtros .direita{margin-left:auto;display:flex;gap:6px;align-items:center}
+  /* estado vazio como cartão de borda tracejada */
+  .vazio{border:1px dashed var(--rule);border-radius:14px;background:#fff;padding:44px 24px;text-align:center}
+  .vazio .icone{color:var(--rule);line-height:0;margin-bottom:14px}
+  .vazio .titulo{font-size:15px;font-weight:700;margin-bottom:6px}
+  .vazio .expl{font-size:13px;color:var(--ink2);margin-bottom:16px;max-width:46ch;
+    margin-left:auto;margin-right:auto}
+  /* pílula de contagem regressiva */
+  .prazo-pilula{display:inline-block;border-radius:999px;padding:4px 11px;font-size:12px;
+    font-weight:600;white-space:nowrap}
   .col{background:#fff;border:1px solid var(--fio);border-radius:16px;padding:12px;box-shadow:var(--sombra)}
   .mini{border-radius:10px;background:#FBFBFA;padding:9px;cursor:pointer;margin-bottom:6px}
   .barra{height:10px;background:var(--mostarda);border-radius:999px;min-width:10px}
@@ -185,9 +208,8 @@
     line-height:1.15;margin:0 0 4px;letter-spacing:.01em}
 
   /* ---------- rodapé preto ---------- */
-  .rodape{background:#1C1C1C;color:#fff;padding:30px 26px 20px;margin-top:28px}
-  .rodape .cols{display:flex;gap:44px;flex-wrap:wrap;max-width:1060px;margin:0 auto;
-    justify-content:center;text-align:center}
+  .rodape{background:#1C1C1C;color:#fff;padding:30px 30px 20px;margin-top:28px}
+  .rodape .cols{display:flex;gap:44px;flex-wrap:wrap;justify-content:center;text-align:center}
   .rodape h4{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.7);
     margin:0 0 12px;font-weight:700}
   .placa{display:inline-flex;align-items:center;gap:24px;flex-wrap:wrap}
@@ -197,8 +219,8 @@
   /* as logos das agências são azul-escuro: viram branco chapado, como no rodapé do site */
   .placa img.branca{filter:brightness(0) invert(1)}
   .marca-ufma{font-family:var(--marca);font-weight:900;font-size:19px;letter-spacing:.06em;color:#1C1C1C}
-  .rodape .credito{border-top:1px solid rgba(255,255,255,.16);margin:22px auto 0;padding-top:14px;
-    font-size:12px;color:rgba(255,255,255,.62);max-width:1060px}
+  .rodape .credito{border-top:1px solid rgba(255,255,255,.16);margin:22px 0 0;padding-top:14px;
+    font-size:12px;color:rgba(255,255,255,.62)}
 
   .tl{width:100%;height:auto;display:block}
   .tl text{font-family:var(--body)}
@@ -208,8 +230,6 @@
   .ag .quando{flex:0 0 120px;font-size:12.5px;color:var(--ink2)}
   .ag .oque{flex:1;min-width:180px;font-size:13.5px}
   .ag .dias{font-size:12.5px;white-space:nowrap}
-  .ag.vencida{background:var(--stamp-tom)}
-  .ag.proxima{background:var(--amber-tom)}
   .ag.longe .oque{color:var(--ink2)}
   .vencido{color:var(--stamp)} .proximo{color:var(--amber)} .neutro{color:var(--ink2)}
 </style>
@@ -228,7 +248,7 @@
     <div id="faixa"></div>
     <div id="aviso"></div>
     <main><div class="wrap" id="app"></div></main>
-    <footer class="rodape">
+    <footer class="rodape"><div class="wrap">
       <div class="cols">
         <div>
           <h4>Realização</h4>
@@ -247,7 +267,7 @@
       </div>
       <div class="credito">Museu Game Ciência · Espaço Ciência Maria Laura Lopes · UFMA, Centro de Ciências de Bacabal.
         Livro de assentos da produção acadêmica e da execução dos projetos.</div>
-    </footer>
+    </div></footer>
   </div>
 </div>
 <div id="modal"></div>
@@ -968,12 +988,11 @@ function telaContas(){
     <div style="font-family:var(--data);font-size:12.5px;color:var(--ink2)">${esc(f.agencia)} · ${esc(f.processo)} · ${esc(f.chamada)}</div>
     <div style="font-family:var(--data);font-size:12.5px;color:var(--ink2)">Vigência ${esc(f.inicio)} a ${esc(f.fim)}</div>
     ${f.nota?`<p class="meta" style="margin-top:8px;color:var(--stamp)">${esc(f.nota)}</p>`:""}
-    <div class="grid g4" style="margin:18px 0">
-      ${[["Itens vinculados",v.length,"var(--ink)"],["Concluídos",c.length,"var(--green)"],
-         ["Sem agradecimento",s.length,"var(--stamp)"],["Planos de trabalho",pls.length,"var(--navy)"]]
-        .map(m=>`<div style="border-left:3px solid ${m[2]};padding-left:10px">
-          <div class="num" style="font-size:26px;color:${m[2]}">${m[1]}</div><div class="rot">${m[0]}</div></div>`).join("")}
-    </div>
+    <div style="margin:18px 0">${indicadores([
+      ["Itens vinculados", v.length, iconeInd("doc"), "navy"],
+      ["Concluídos", c.length, iconeInd("check"), "green"],
+      ["Sem agradecimento", s.length, iconeInd("aviso"), "stamp"],
+      ["Planos de trabalho", pls.length, iconeInd("pessoas"), "grafite"]])}</div>
     <div style="background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:12px">
       <div class="rot" style="margin:0 0 6px">Texto de agradecimento a colar no artigo</div>
       <div style="font-size:13.5px;line-height:1.5">${esc(f.texto)}</div>
@@ -1403,10 +1422,9 @@ function telaHoje(){
   const planosSem = planosPendentes();
   const lista = agenda();
 
-  let h = `<div class="card" style="margin-bottom:18px">
-    ${cabecalhoBloco("Panorama","Os três projetos no tempo")}
-    ${linhaDoTempo()}
-  </div>`;
+  /* o cabeçalho fica fora do cartão, para alinhar com o título da faixa */
+  let h = `${cabecalhoBloco("Panorama","Os três projetos no tempo")}
+  <div class="card" style="margin-bottom:18px">${linhaDoTempo()}</div>`;
 
   h += `<div style="margin-bottom:20px">
     ${cabecalhoBloco("Agenda","O que vem pela frente")}
@@ -1418,7 +1436,7 @@ function telaHoje(){
         <div class="quando ${cls}">${dataBR(l.data)}</div>
         <div class="oque">${l.proj ? marcador(l.proj,11)+" " : ""}${esc(l.titulo)}
           <span class="meta" style="margin-left:6px">${esc(l.rotulo)}</span></div>
-        <div class="dias ${cls}">${textoDias(d)}</div>
+        <div>${pilulaPrazo(cls, textoDias(d))}</div>
       </div>`;
     }).join("") : `<div class="nada">Nenhum prazo à vista.</div>`}
   </div>`;
@@ -1471,13 +1489,33 @@ function telaProducao(){
     .filter(i=>!b || ((i.titulo+" "+i.autores+" "+i.veiculo+" "+i.notas).toLowerCase().includes(b)))
     .sort((x,y)=>(y.ano||"").localeCompare(x.ano||"") || x.titulo.localeCompare(y.titulo));
 
-  /* a antiga aba Em andamento virou este filtro, e o quadro virou uma vista da mesma tela */
-  let h = `<div class="linha" style="margin-bottom:12px;align-items:center">
-    <div style="display:flex;gap:6px;flex-wrap:wrap">
-      ${["Todos","Em andamento","Concluído","Recusado"].map(r=>
-        `<button class="chip" style="${ui.fRapido===r?estiloAtivo(corFiltro):""}" onclick="ui.fRapido='${r}';render()">${r}</button>`).join("")}
-    </div>
-    <div style="display:flex;gap:6px">
+  /* contagens sobre toda a produção, com os estados que o modelo já conhece */
+  const emAnd = state.itens.filter(i=>!CONCLUIDOS.includes(i.status) && i.status !== "Recusado").length;
+  const conc = state.itens.filter(i=>CONCLUIDOS.includes(i.status)).length;
+  const recu = state.itens.filter(i=>i.status === "Recusado").length;
+  let h = indicadores([
+    ["Total", state.itens.length, iconeInd("doc"), "navy"],
+    ["Em andamento", emAnd, iconeInd("relogio"), "amber"],
+    ["Concluídos", conc, iconeInd("check"), "green"],
+    ["Recusados", recu, iconeInd("xis"), "grafite"]
+  ]);
+
+  /* a antiga aba Em andamento virou os chips de situação; o quadro é uma vista da mesma tela */
+  h += `<div class="filtros">
+    <div class="campo" style="flex:2;min-width:220px"><label>Pesquisar produção</label>
+      <input placeholder="Buscar título, autor ou veículo" value="${esc(ui.busca)}"
+        oninput="ui.busca=this.value;render();document.querySelector('input[placeholder^=Buscar]').focus()"></div>
+    <div class="campo" style="flex:2;min-width:250px"><label>Situação</label>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        ${["Todos","Em andamento","Concluído","Recusado"].map(r=>
+          `<button class="chip" style="${ui.fRapido===r?estiloAtivo(corFiltro):""}" onclick="ui.fRapido='${r}';render()">${r}</button>`).join("")}
+      </div></div>
+    <div class="campo"><label>Tipo de produção</label>
+      <select onchange="ui.fTipo=this.value;render()">${["Todos"].concat(tiposComLegado()).map(s=>`<option ${s===ui.fTipo?"selected":""}>${s}</option>`).join("")}</select></div>
+    <div class="campo"><label>Projeto vinculado</label>
+      <select onchange="ui.fFomento=this.value;render()"><option value="Todos">Todos os projetos</option>
+        ${state.fomentos.map(x=>`<option value="${x.id}" ${x.id===ui.fFomento?"selected":""}>${esc(rotuloRegistro(x.id))}</option>`).join("")}</select></div>
+    <div class="direita">
       ${[["lista","Lista"],["quadro","Quadro"]].map(([k,r])=>
         `<button class="chip" style="${ui.prodVista===k?estiloAtivo(corFiltro):""}" onclick="ui.prodVista='${k}';render()">${r}</button>`).join("")}
     </div>
@@ -1485,16 +1523,11 @@ function telaProducao(){
 
   if(ui.prodVista === "quadro") return h + telaAndamento();
 
-  h += `<div class="grid g4" style="margin-bottom:14px">
-    <input placeholder="Buscar título, autor, veículo" value="${esc(ui.busca)}" oninput="ui.busca=this.value;render();document.querySelector('input[placeholder^=Buscar]').focus()">
-    <select onchange="ui.fStatus=this.value;render()">${["Todos"].concat(STATUS).map(s=>`<option ${s===ui.fStatus?"selected":""}>${s}</option>`).join("")}</select>
-    <select onchange="ui.fTipo=this.value;render()">${["Todos"].concat(tiposComLegado()).map(s=>`<option ${s===ui.fTipo?"selected":""}>${s}</option>`).join("")}</select>
-    <select onchange="ui.fFomento=this.value;render()"><option value="Todos">Todos os projetos</option>
-      ${state.fomentos.map(x=>`<option value="${x.id}" ${x.id===ui.fFomento?"selected":""}>${esc(rotuloRegistro(x.id))}</option>`).join("")}</select>
-  </div>`;
-
-  if(!f.length) return h + `<div class="nada">Nenhum assento neste filtro.
-    <button class="btn sm" style="margin-left:8px" onclick="novo()">+ Registrar produção</button></div>`;
+  if(!f.length) return h + estadoVazio("livro",
+    state.itens.length ? "Nenhuma produção neste filtro" : "Nenhuma produção registrada",
+    state.itens.length ? "Ajuste a situação, o tipo ou o projeto para ver os assentos já registrados."
+      : "Comece registrando um artigo, capítulo, livro, trabalho em evento ou outro produto acadêmico.",
+    "+ Registrar produção", "novo()");
 
   h += f.map(i=>{
     const feito = CONCLUIDOS.includes(i.status);
@@ -1758,7 +1791,7 @@ function cardPlano(p){
       <span class="tit" title="${esc(p.titulo||"")}">${esc(p.titulo||"(sem título)")}</span>
       <span class="quando">${esc([p.vinculo,p.ciclo].filter(Boolean).join(" · "))}</span>
       <span class="quando">encerra ${dataBR(p.fim)}</span>
-      <span class="tag" style="background:var(--paper);color:var(--ink2)">${esc(p.situacao)}</span>
+      ${chipSituacaoPlano(p.situacao)}
       <span class="meta" style="margin:0;white-space:nowrap">${cum} de ${p.metas.length} cumpridas</span>
     </div>${det}</div>`;
 }
@@ -1772,30 +1805,35 @@ function telaOrientacoes(){
   const semNome = planos.filter(p=>!p.aluno).length;
   const corFiltro = ui.fPlanoReg !== "Todos" ? ui.fPlanoReg : "";
 
-  let h = faixaNumeros([["Planos no filtro",planos.length,"var(--ink)"],
-    ["Concluídos",planos.filter(p=>p.situacao==="Concluído").length,"var(--green)"],
-    ["Metas propostas",totMetas,"var(--navy)"],
-    ["Sem bolsista informado",semNome,"var(--stamp)"]]);
+  let h = indicadores([
+    ["Planos no filtro", planos.length, iconeInd("doc"), "navy"],
+    ["Concluídos", planos.filter(p=>p.situacao==="Concluído").length, iconeInd("check"), "green"],
+    ["Metas propostas", totMetas, iconeInd("alvo"), "amber"],
+    ["Sem bolsista informado", semNome, iconeInd("pessoas"), "grafite"]
+  ]);
 
-  if(semNome) h += `<p class="meta" style="margin:-4px 0 14px">Os documentos originais não trazem o nome do bolsista:
+  if(semNome) h += `<p class="meta" style="margin:-6px 0 14px">Os documentos originais não trazem o nome do bolsista:
     o campo ficou em branco de propósito, e nenhum CPF, matrícula, endereço ou telefone foi copiado.</p>`;
 
-  h += `<div class="grid g4" style="align-items:end;margin-bottom:14px">
-    <div><label>Filtrar por registro</label>
+  h += `<div class="filtros">
+    <div class="campo"><label>Projeto vinculado</label>
       <select onchange="ui.fPlanoReg=this.value;render()">
         <option value="Todos">Todos os registros</option>
         ${state.fomentos.map(f=>`<option value="${f.id}" ${f.id===ui.fPlanoReg?"selected":""}>${esc(rotuloRegistro(f.id))}</option>`).join("")}
       </select></div>
-    <div><label>Filtrar por ciclo</label>
+    <div class="campo"><label>Ciclo do plano</label>
       <select onchange="ui.fPlanoCiclo=this.value;render()">
         <option value="Todos">Todos os ciclos</option>
         ${ciclos.map(c=>`<option value="${esc(c)}" ${c===ui.fPlanoCiclo?"selected":""}>${esc(c)}</option>`).join("")}
       </select></div>
-    <div><button class="btn pri" onclick="novoPlano()">+ Adicionar plano</button></div>
-    <div><button class="btn" onclick="restaurarPlanosPadrao()">Restaurar planos originais</button></div>
+    <div class="direita">
+      <button class="btn" onclick="restaurarPlanosPadrao()">Restaurar planos originais</button>
+    </div>
   </div>`;
 
-  if(!planos.length) return h + `<div class="nada">Nenhum plano neste filtro.</div>`;
+  if(!planos.length) return h + estadoVazio("pessoas", "Nenhum plano neste filtro",
+    "Ajuste o projeto ou o ciclo para ver os planos de trabalho já cadastrados.",
+    "+ Registrar plano", "novoPlano()");
 
   ciclos.forEach(c=>{
     const g = planos.filter(p=>(p.ciclo||"sem ciclo") === c);
@@ -1989,8 +2027,11 @@ function metasDoProjeto(f){
   const concluidas = metas.filter(m=>statusMeta(m) === "Concluída").length;
   const semProd = metas.filter(m=>itensDaMeta(m.id).length === 0).length;
 
-  let h = faixaNumeros([["Metas",metas.length,"var(--ink)"],["Concluídas",concluidas,"var(--green)"],
-    ["Atrasadas",atrasadas,"var(--stamp)"],["Sem produção vinculada",semProd,"var(--amber)"]]);
+  let h = indicadores([
+    ["Metas", metas.length, iconeInd("alvo"), "navy"],
+    ["Concluídas", concluidas, iconeInd("check"), "green"],
+    ["Atrasadas", atrasadas, iconeInd("aviso"), "stamp"],
+    ["Sem produção vinculada", semProd, iconeInd("doc"), "amber"]]);
 
   h += `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
     <button class="btn pri" onclick="novaMeta()">+ Adicionar meta</button>
@@ -2008,12 +2049,77 @@ function metasDoProjeto(f){
   h += secao("Metas contínuas", "Atravessam toda a vigência e nunca são contadas como atrasadas.", continuas);
   return h;
 }
-/* faixa horizontal única de números, no lugar dos quatro cartões altos */
-function faixaNumeros(pares){
-  return `<div class="fnum">${pares.map(([rot,val,cor])=>
-    `<div><div class="num ${val?"":"zero"}" style="${val?"color:"+cor:""}">${val}</div>
-      <div class="rot">${esc(rot)}</div></div>`).join("")}</div>`;
+/* ===== componentes visuais compartilhados ===== */
+/* tons do ladrilho do indicador: a cor entra só aí, o número é sempre preto */
+const TONS_IND = {
+  navy:["var(--navy-soft)","var(--navy)"], amber:["var(--amber-soft)","var(--amber)"],
+  green:["var(--green-soft)","var(--green)"], stamp:["var(--stamp-soft)","var(--stamp)"],
+  grafite:["var(--grafite-soft)","var(--grafite)"], vinho:["var(--vinho-soft)","var(--vinho)"]
+};
+const ICONES_IND = {
+  doc:`<path d="M5 2.6h5l3 3V15a.5.5 0 0 1-.5.5H5.5A.5.5 0 0 1 5 15z"/><path d="M10 2.6V6h3"/>`,
+  relogio:`<circle cx="9" cy="9" r="6.3"/><path d="M9 5.4V9l2.6 1.6"/>`,
+  check:`<circle cx="9" cy="9" r="6.3"/><path d="M6.2 9.2 8.1 11.1l3.7-4.1"/>`,
+  xis:`<circle cx="9" cy="9" r="6.3"/><path d="M6.8 6.8l4.4 4.4M11.2 6.8l-4.4 4.4"/>`,
+  alvo:`<circle cx="9" cy="9" r="6.3"/><circle cx="9" cy="9" r="2.4"/>`,
+  pessoas:`<circle cx="6.9" cy="6.5" r="2.3"/><path d="M2.7 15.1c0-2.3 1.9-4 4.2-4s4.2 1.7 4.2 4"/><path d="M12.3 4.4a2.3 2.3 0 0 1 0 4.4"/>`,
+  aviso:`<path d="M9 3.3 15.5 14.5H2.5z"/><path d="M9 7.6v3.1M9 12.6h.01"/>`,
+  pasta:`<path d="M2.6 5.4a1.1 1.1 0 0 1 1.1-1.1h2.9l1.5 1.8h6.2a1.1 1.1 0 0 1 1.1 1.1v6.6a1.1 1.1 0 0 1-1.1 1.1H3.7a1.1 1.1 0 0 1-1.1-1.1z"/>`
+};
+function iconeInd(k){
+  return `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor"
+    stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONES_IND[k]||""}</svg>`;
 }
+/* cartão de indicador único de toda a plataforma */
+function cartaoIndicador(rotulo, numero, icone, cor){
+  const par = TONS_IND[cor] || TONS_IND.grafite;
+  return `<div class="indicador">
+    <div class="ladrilho" style="background:${par[0]};color:${par[1]}">${icone}</div>
+    <div style="min-width:0">
+      <div class="rotulo">${esc(rotulo)}</div>
+      <div class="valor">${numero}</div>
+    </div>
+  </div>`;
+}
+function indicadores(lista){
+  return `<div class="indicadores">${lista.map(x=>cartaoIndicador(x[0],x[1],x[2],x[3])).join("")}</div>`;
+}
+/* ilustrações de estado vazio, em traço fino */
+const ILUSTRA = {
+  livro:`<path d="M28 16v32"/><path d="M28 16c-4.6-3.6-10.4-5.2-18-4.8v30.4c7.6-.4 13.4 1.2 18 4.8 4.6-3.6 10.4-5.2 18-4.8V11.2c-7.6-.4-13.4 1.2-18 4.8z"/><circle cx="38" cy="38" r="7"/><path d="M43 43l5 5"/>`,
+  pessoas:`<circle cx="21" cy="20" r="7"/><path d="M8 48c0-7.2 5.8-13 13-13s13 5.8 13 13"/><path d="M39 13a7 7 0 0 1 0 14"/><path d="M42 35c4.4 1.6 7.4 5.8 7.4 11.6"/>`,
+  pasta:`<path d="M7 17a3 3 0 0 1 3-3h9l4.4 5.4H49a3 3 0 0 1 3 3v20.2a3 3 0 0 1-3 3H10a3 3 0 0 1-3-3z"/>`
+};
+function estadoVazio(ilustra, titulo, explicacao, rotuloBotao, funcaoBotao){
+  return `<div class="vazio">
+    <div class="icone"><svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="currentColor"
+      stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ILUSTRA[ilustra]||""}</svg></div>
+    <div class="titulo">${esc(titulo)}</div>
+    <div class="expl">${esc(explicacao)}</div>
+    ${rotuloBotao ? `<button class="btn pri" onclick="${funcaoBotao}">${esc(rotuloBotao)}</button>` : ""}
+  </div>`;
+}
+/* pílula de contagem regressiva: fundo em tom suave, texto na cor forte */
+const TONS_PRAZO = {
+  vencido:["var(--stamp-soft)","var(--stamp)"],
+  proximo:["var(--amber-soft)","var(--amber)"],
+  neutro:["#F3F4F6","var(--ink2)"]
+};
+function pilulaPrazo(cls, texto){
+  const par = TONS_PRAZO[cls] || TONS_PRAZO.neutro;
+  return `<span class="prazo-pilula" style="background:${par[0]};color:${par[1]}">${esc(texto)}</span>`;
+}
+/* chip de situação do plano: definido pela situação, nunca pela urgência da linha */
+const TONS_SIT_PLANO = {
+  "Concluído":["var(--green-soft)","var(--green)"],
+  "Interrompido":["var(--stamp-soft)","var(--stamp)"],
+  "Em execução":["#F3F4F6","var(--ink2)"]
+};
+function chipSituacaoPlano(s){
+  const par = TONS_SIT_PLANO[s] || TONS_SIT_PLANO["Em execução"];
+  return `<span class="tag" style="background:${par[0]};color:${par[1]}">${esc(s)}</span>`;
+}
+/* faixa horizontal única de números, no lugar dos quatro cartões altos */
 
 function formularioMeta(){
   const m = ui.editandoMeta; if(!m) return "";
@@ -2127,7 +2233,7 @@ function faixaSecao(){
   const estiloBotao = claro ? "background:#1C1C1C;color:#FFFFFF" : "background:var(--mostarda);color:#1C1C1C";
   /* o aviso de salvamento é reescrito a cada render: preserva o texto que já estava lá */
   const salvoAtual = (document.getElementById("salvo") || {}).textContent || "";
-  return `<div class="faixa-secao" style="background:${s.cor};color:${s.texto}">
+  return `<div class="faixa-secao" style="background:${s.cor};color:${s.texto}"><div class="wrap">
     <div class="textos">
       <div class="nome">${esc(s.nome)}</div>
       <div class="sub">${esc(sub)}</div>
@@ -2136,7 +2242,7 @@ function faixaSecao(){
       <span class="salvo" id="salvo" style="color:${s.texto};opacity:.75">${esc(salvoAtual)}</span>
       ${s.acaoRotulo ? `<button class="btn-faixa" style="${estiloBotao}" onclick="${s.acaoFuncao}">${esc(s.acaoRotulo)}</button>` : ""}
     </div>
-  </div>`;
+  </div></div>`;
 }
 /* sobretítulo em mostarda com o título preto abaixo */
 function cabecalhoBloco(sobre, titulo){
