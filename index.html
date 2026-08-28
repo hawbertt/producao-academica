@@ -420,13 +420,13 @@ const CORES_META = {
   "Concluída":["var(--green-soft)","var(--green)"], "Atrasada":["var(--stamp-soft)","var(--stamp)"]
 };
 const MARCOS = [
-  {rot:"Relatório Técnico Final · FAPEMA", data:"2027-08-30",
+  {rot:"Relatório Técnico Final · FAPEMA", data:"2027-08-30", proj:"f-fapema-bepp-10468",
    nota:"Envio exclusivo pelo bolsista, via Patronage. Prazo improrrogável (cláusulas 16 e 17 do termo)."},
-  {rot:"Relatório Final à UFMA · PEDIC", data:"2027-08-31",
+  {rot:"Relatório Final à UFMA · PEDIC", data:"2027-08-31", proj:"f-pedic-ufma",
    nota:"Encerramento do registro do projeto guarda-chuva na UFMA (meta G12). É este o prazo do relatório, não o cronograma do CEP, que vai até novembro de 2028."},
-  {rot:"Fim da vigência · CNPq", data:"2028-11-30",
+  {rot:"Fim da vigência · CNPq", data:"2028-11-30", proj:"f-cnpq-405203",
    nota:"Relatório final ao término da vigência do Processo 405203/2025, na plataforma Carlos Chagas."},
-  {rot:"Fim da vigência · Extensão MGC", data:"2026-10-20",
+  {rot:"Fim da vigência · Extensão MGC", data:"2026-10-20", proj:"f-ext-mgc-proec",
    nota:"Encerramento da vigência da ação PJ095-2025 na PROEC/UFMA. Relatório final ao término. Prorrogação por mais um ano pretendida e ainda não solicitada: confirmar na PROEC o prazo do pedido, que costuma ser anterior ao fim da vigência."}
 ];
 const METAS_PADRAO = [
@@ -1399,10 +1399,25 @@ function icone(k){
 }
 
 /* ============================ tela Hoje ============================ */
-const ORDEM_PROJETOS = ["f-pedic-ufma","f-cnpq-405203","f-fapema-bepp-10468"];
-const NOME_CURTO = {"f-pedic-ufma":"PEDIC","f-cnpq-405203":"CNPq","f-fapema-bepp-10468":"FAPEMA"};
+/* Todos os projetos cadastrados entram na linha do tempo, sem lista fixa:
+   a ordem é a da data de início, e quem não tem data vai para o fim. */
+function projetosDaLinha(){
+  return state.fomentos.slice().sort((a,b)=>{
+    const ia = a.inicio || "", ib = b.inicio || "";
+    if(!ia && !ib) return 0;
+    if(!ia) return 1;
+    if(!ib) return -1;
+    return ia.localeCompare(ib);
+  });
+}
+/* apelidos curtos; quem não estiver no mapa usa a própria agência */
+const NOME_CURTO = {"f-pedic-ufma":"PEDIC","f-cnpq-405203":"CNPq","f-fapema-bepp-10468":"FAPEMA",
+  "f-ext-mgc-proec":"Extensão"};
+function nomeCurto(f){ return NOME_CURTO[f.id] || f.agencia || rotuloRegistro(f.id); }
 
 function projetoDoMarco(mk){
+  if(mk.proj) return mk.proj;
+  /* reserva para marcos sem o campo proj, vindos de versões anteriores */
   if(/FAPEMA/i.test(mk.rot)) return "f-fapema-bepp-10468";
   if(/UFMA|PEDIC/i.test(mk.rot)) return "f-pedic-ufma";
   if(/CNPq/i.test(mk.rot)) return "f-cnpq-405203";
@@ -1418,11 +1433,10 @@ function textoDias(d){
 /* linha do tempo em SVG puro, sem biblioteca externa */
 function linhaDoTempo(){
   const L = 132, R = 26, W = 1000, topo = 44, alt = 24, gap = 30;
-  const faixas = ORDEM_PROJETOS.map(id=>{
-    const f = registro(id);
-    return {id:id, nome:NOME_CURTO[id] || rotuloRegistro(id),
-      inicio:(f && f.inicio) || "", fim:(f && f.fim) || "", cor:marcaDe(id).cor};
-  });
+  const faixas = projetosDaLinha().map(f=>({
+    id:f.id, nome:nomeCurto(f),
+    inicio:f.inicio || "", fim:f.fim || "", cor:marcaDe(f.id).cor
+  }));
   const datas = [];
   faixas.forEach(x=>{ if(x.inicio) datas.push(x.inicio); if(x.fim) datas.push(x.fim); });
   MARCOS.forEach(m=>datas.push(m.data));
@@ -1433,7 +1447,7 @@ function linhaDoTempo(){
   const x = s => L + (ms(s) - t0) / (t1 - t0) * (W - L - R);
   const H = topo + faixas.length * (alt + gap) + 16;
 
-  let s = `<svg class="tl" viewBox="0 0 ${W} ${H}" role="img" aria-label="Linha do tempo dos três projetos">`;
+  let s = `<svg class="tl" viewBox="0 0 ${W} ${H}" role="img" aria-label="Linha do tempo dos projetos">`;
   /* anos */
   const a0 = new Date(t0).getFullYear(), a1 = new Date(t1).getFullYear();
   for(let a = a0; a <= a1; a++){
@@ -1519,7 +1533,7 @@ function telaHoje(){
   const lista = agenda();
 
   /* o cabeçalho fica fora do cartão, para alinhar com o título da faixa */
-  let h = `${cabecalhoBloco("Panorama","Os três projetos no tempo")}
+  let h = `${cabecalhoBloco("Panorama","Os projetos no tempo")}
   <div class="card" style="margin-bottom:18px">${linhaDoTempo()}</div>`;
 
   h += `<div style="margin-bottom:20px">
@@ -2305,7 +2319,7 @@ function formulario(){
 /* ============================ render ============================ */
 /* faixa de seção: nome em branco sobre a cor da seção, com subtítulo */
 const SECOES = {
-  hoje:        {nome:"Hoje", cor:"#E0A231", texto:"#1C1C1C", sub:"Prazos, ritmo e pendências dos três projetos",
+  hoje:        {nome:"Hoje", cor:"#E0A231", texto:"#1C1C1C", sub:"Prazos, ritmo e pendências dos projetos",
                 acaoRotulo:"+ Registrar produção", acaoFuncao:"novo()"},
   projetos:    {nome:"Projetos", cor:"#22B04D", texto:"#FFFFFF", sub:"Fomento, guarda-chuva, ética e extensão",
                 acaoRotulo:"", acaoFuncao:""},
