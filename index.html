@@ -402,6 +402,14 @@ const FOMENTO_PADRAO = [{
   objetivos:"Objetivo geral: desenvolver jogos digitais e de tabuleiro e metodologias de ensino para uso nas aulas de Ciências e Química do ensino fundamental e médio, além de manter o Museu Game Ciência como espaço de divulgação e alfabetização científica, com prioridade na formação inicial e contínua de professores.\n\nO1. Promover espaço de debate e interação entre Universidade e escola.\nO2. Dar subsídios para professores trabalharem com tecnologias digitais em aula, com acompanhamento dos bolsistas.\nO3. Investigar os resultados da inserção dos jogos e tecnologias digitais, verificando pontos positivos e negativos da metodologia e o engajamento de discentes e professores.\nO4. Analisar os pontos de equilíbrio entre design de games e design instrucional nos jogos digitais para o ensino de Ciências.\nO5. Disponibilizar aos professores recursos de ensino ancorados na abordagem CTSA.",
   nota:"PRAZO QUE REGE O RELATÓRIO FINAL. O registro na UFMA encerra em agosto de 2027, limite de 3 anos de vigência sem renovação, e é esta data que define a entrega do relatório final à UFMA (meta G12). Não confundir com o cronograma da aprovação ética, que vai até novembro de 2028. Data de início inferida do limite de 3 anos: confirmar a data exata do registro na UFMA.",
   texto:"Projeto institucional, sem texto de agradecimento a agência de fomento. É o guarda-chuva do qual derivam o projeto CNPq 405203/2025-0 e a proposta FAPEMA BEPP-10468/26."
+},{
+  id:"f-ext-mgc-proec", tipo:"Extensão", agencia:"UFMA",
+  nome:"Museu Game Ciência como Espaço de Divulgação Científica no Médio Mearim",
+  processo:"PJ095-2025", chamada:"Edital PROEC/UFMA nº 07/2025, ação de extensão tipo PROJETO",
+  inicio:"2025-10-20", fim:"2026-10-20",
+  objetivos:"Objetivo geral: popularizar e divulgar a ciência no Médio Mearim por meio das ações museológicas do Museu Game Ciência (visitas mediadas, exposições e atividades interativas com jogos digitais e práticas lúdicas), articulando universidade, escola e comunidade e consolidando o MGC como espaço de divulgação científica e educação não formal na região.\n\nO1. Realizar visitas mediadas regulares com escolas previamente cadastradas da microrregião do Médio Mearim, com roteiros adaptados às faixas etárias e aos contextos locais.\nO2. Executar atividades interativas e lúdicas com jogos digitais e demonstrações que promovam o diálogo ciência-tecnologia-sociedade.\nO3. Aperfeiçoar a curadoria e os roteiros expositivos do acervo do MGC a partir do feedback dos visitantes e das avaliações realizadas durante o projeto.\nO4. Formar e acompanhar monitores e licenciandos, bolsistas e voluntários, em mediação e divulgação científica, por meio de ciclos formativos teórico-práticos e supervisão em serviço.\nO5. Fortalecer a articulação universidade-escola-comunidade, apoiando os professores antes, durante e após a visita, para que o vivenciado no museu continue em sala de aula.\nO6. Produzir e disseminar materiais de divulgação no site e nas redes sociais sobre as ações e os temas abordados, assegurando acessibilidade comunicacional.\nO7. Manter sistema de acompanhamento e avaliação participativa das ações, com instrumentos simples e devolutivas às escolas e à equipe.\nO8. Integrar o projeto às iniciativas de pesquisa, retroalimentando as práticas extensionistas com evidências sobre divulgação científica e mediação museal.\nO9. Assegurar acessibilidade e inclusão nas atividades e nos espaços do MGC, contemplando diferentes necessidades do público atendido.",
+  nota:"A vigência concedida (20/10/2025 a 20/10/2026) difere do período proposto no documento do projeto (01/10/2025 a 30/09/2026), por atraso na tramitação. Situação no SIGAA: APROVADO CÂMARA. Há prorrogação pretendida por mais um ano, ainda não solicitada, com dois planos de trabalho a vincular depois da concessão.",
+  texto:"Projeto de extensão institucional, sem agradecimento a agência de fomento."
 }];
 
 const STATUS_META = ["A fazer","Em andamento","Concluída","Atrasada"];
@@ -616,6 +624,19 @@ const PLANOS_PADRAO = [
     "Play-testes do jogo",
     "Sistematização e análise dos dados",
     "Escrita do relatório final e apresentação no SEMIC"]),
+  planoPadrao("p-2526-mecanica",
+    "Desenvolvimento de um jogo digital para o ensino de Mecânica Geral com protagonista mulher negra na trajetória científica",
+    "Iniciação científica", "2025-2026", ["f-cnpq-405203"], [
+    "Levantamento bibliográfico e definição do recorte de conteúdos de Mecânica Geral",
+    "Formação técnica em Construct 3 e estudos sobre PixelArt e perspectiva top-down",
+    "Elaboração do Game Design Document (GDD) na disciplina Jogos para o Ensino de Ciências",
+    "Leituras formativas sobre relações étnico-raciais, gênero e representatividade científica",
+    "Produção de ativos visuais em PixelArt (cenários, personagens e elementos do jogo)",
+    "Programação das mecânicas e fases do jogo no Construct 3",
+    "Integração das cartas de mulheres cientistas oriundas do jogo de tabuleiro do laboratório",
+    "Validação interna do jogo com especialistas do PEDIC e ensaios no MGC",
+    "Análise breve da aprendizagem durante a validação, sob referencial da Ação Mediada",
+    "Sistematização de princípios de design e redação do relatório final"]),
   planoPadrao("p-2627-tabagismo",
     "Tabagismo e o corpo humano: materiais lúdicos para educação em saúde e divulgação científica na perspectiva CTS",
     "PIBIC", "2026-2027", ["f-cnpq-405203","f-pedic-ufma"], [
@@ -690,10 +711,34 @@ const PLANOS_PADRAO = [
     "Aplicação-teste dos protótipos com estudantes (escola parceira e/ou Museu Game Ciência)",
     "Sistematização e análise dos dados de validação",
     "Relatório parcial",
-    "Escrita do relatório final e apresentação no SEMIC"])
+    "Escrita do relatório final e apresentação no SEMIC"]),
+  planoPadrao("p-2627-fisicarv",
+    "Tecnologias lúdico-imersivas no ensino de Física: visitação virtual a museus de ciência e jogo digital como estratégias de divulgação e alfabetização científica em espaços não formais",
+    "PIBIC", "2026-2027", ["f-cnpq-405203"], [
+    "Revisão teórica (PBD, CTS, RV, design de jogos, ação mediada)",
+    "Reuniões de orientação e participação no PEDIC / MGC",
+    "Formação técnica introdutória em Unity e em RV",
+    "Levantamento e catalogação de museus virtuais (acervo GEPEC)",
+    "Seleção dos museus e elaboração das atividades investigativas com RV (Eixo 1)",
+    "Design do jogo: documento de design, mecânicas e tétrade elementar (Eixo 2)",
+    "Desenvolvimento do protótipo em Unity — versões alfa e beta (Eixo 2)",
+    "Integração visitação virtual + jogo em torno do problema-âncora",
+    "Aplicação-piloto e coleta de dados (validação — ciclo PBD)",
+    "Redesign e refinamento dos produtos (ciclo iterativo)",
+    "Sistematização e análise dos dados",
+    "Relatório parcial",
+    "Escrita do relatório final e apresentação no SEMIC"]),
+  /* o documento deste plano não traz cronograma: as metas são os objetivos específicos */
+  planoPadrao("p-2627-curadoria",
+    "Práticas curatoriais no Museu Game Ciência no campo da divulgação científica",
+    "Iniciação científica", "2026-2027", ["f-cnpq-405203"], [
+    "Analisar referenciais teóricos sobre museologia sociocultural, curadoria e divulgação científica, situando o Museu Game Ciência no contexto dos museus de terceira geração.",
+    "Examinar documentos e diretrizes do Instituto Brasileiro de Museus (IBRAM) relacionados à organização museológica, curadoria e documentação de acervos.",
+    "Investigar as práticas curatoriais adotadas no Museu Game Ciência, considerando critérios de organização, inventário e narrativa do acervo de jogos educativos.",
+    "Desenvolver e analisar ações de divulgação científica, utilizando redes sociais como estratégia de mediação dos processos curatoriais do museu junto ao público geral."])
 ];
 
-const VERSAO_SEMENTES = 2;
+const VERSAO_SEMENTES = 3;
 let state = {itens:[], fomentos:JSON.parse(JSON.stringify(FOMENTO_PADRAO)),
   metas:JSON.parse(JSON.stringify(METAS_PADRAO)), planos:JSON.parse(JSON.stringify(PLANOS_PADRAO)),
   versaoSementes:0};   /* 0 faz a semeadura conferir o que falta; semear() marca como feita */
