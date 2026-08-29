@@ -387,14 +387,19 @@ const CORES_REGISTRO = {   /* o tipo é rótulo neutro: a identidade vem da form
   "Extensão":["var(--grafite-soft)","var(--grafite)"]
 };
 const FOMENTO_PADRAO = [{
-  id:"f-cnpq-405203", tipo:"Fomento externo", agencia:"CNPq", nome:"Divulgação científica por tecnologias lúdicas",
+  id:"f-cnpq-405203", tipo:"Fomento externo", agencia:"CNPq",
+  nome:"Divulgação científica e alfabetização científica por tecnologias lúdicas como estratégia para o ensino de ciências em espaços não formais",
   processo:"405203/2025", chamada:"Chamada CNPq nº 44/2024, Faixa A",
-  inicio:"2025-11-18", fim:"2028-11-30", objetivos:"", nota:"",
+  inicio:"2025-11-18", fim:"2028-11-30",
+  objetivos:"Objetivo geral: Desenvolver e integrar tecnologias lúdicas inovadoras, como jogos de tabuleiro, realidade virtual e robótica educacional, no Museu Game Ciência, para potencializar a Divulgação Científica e a Alfabetização Científica em espaços de educação não formal, visando o engajamento de públicos diversos e a formação crítica e científica de estudantes e visitantes.\n\nO1. Criar e testar jogos de tabuleiro com mecânicas inovadoras focados em temas científico-sociais, em áreas como: educação ambiental, saúde, o papel das mulheres na ciência, química forense, dentre outros, utilizando prototipagem com impressoras 3D, de corte e convencionais.\nO2. Criar experiências imersivas de Realidade Virtual que transportem visitantes a ambientes históricos e culturais do mundo lúdico, conectados ao ensino de Ciências, e possibilitem visitas virtuais a outros espaços semelhantes no Brasil e no mundo.\nO3. Implementar oficinas interativas que integrem robótica educacional e jogos digitais no contexto do Museu Game Ciência (MGC), utilizando kits como Arduino e LEGO para explorar conceitos de energia, sustentabilidade e tecnologia de forma prática, criativa e lúdica, conectando o aprendizado científico ao universo dos jogos.\nO4. Expandir o alcance das ações museológicas do MGC por meio do desenvolvimento e integração de tecnologias lúdicas e práticas pedagógicas, fortalecendo o diálogo entre o museu e as escolas de educação básica da microrregião do Médio-Mearim, bem como de outras localidades.\nO5. Investigar o potencial das tecnologias lúdicas desenvolvidas no contexto do MGC para promover a Divulgação Científica (DC), a Alfabetização Científica (AC) e a compreensão de conceitos científicos, com base em referenciais teóricos e metodológicos.\nO6. Fortalecer parcerias institucionais com a UnB, UFPI e IEMA, promovendo o intercâmbio de conhecimentos e a colaboração interdisciplinar no desenvolvimento e validação de tecnologias lúdicas e estratégias educacionais.",
+  nota:"",
   texto:"O autor agradece ao CNPq pelo apoio financeiro, Processo nº 405203/2025."
 },{
   id:"f-fapema-bepp-10468", tipo:"Fomento externo", agencia:"FAPEMA", nome:"Tecnologias lúdicas e abordagem CTS no Museu Game Ciência para a divulgação e alfabetização científica na microrregião do Médio Mearim",
   processo:"BEPP-10468/26", chamada:"Edital 12/2026, Programa Maranhão Ciência, Bolsa de Produtividade (BEPP), Termo 4653/2026",
-  inicio:"2026-08-01", fim:"2027-07-30", objetivos:"", nota:"",
+  inicio:"2026-08-01", fim:"2027-07-30",
+  objetivos:"Objetivo geral: Investigar as contribuições da produção e aplicação de tecnologias lúdicas para a divulgação e alfabetização científica em espaços de educação científica do interior do Maranhão, sob a abordagem Ciência, Tecnologia e Sociedade (CTS), tendo o Museu Game Ciência como caso de aprofundamento e dialogando com iniciativas correlatas do IEMA e do IFMA na microrregião do Médio Mearim.\n\nO1. Analisar os processos de produção e de aplicação das tecnologias lúdicas (jogos analógicos, jogos digitais e robótica educacional) desenvolvidas no Museu Game Ciência, sob a abordagem Ciência, Tecnologia e Sociedade, identificando suas contribuições para a DC e AC do público da microrregião do Médio Mearim.\nO2. Mapear iniciativas correlatas em educação científica e tecnológica conduzidas pelo IEMA e pelo IFMA na microrregião do Médio Mearim, em diálogo com as ações desenvolvidas no Museu Game Ciência.\nO3. Sistematizar a experiência do Museu Game Ciência como caso de aprofundamento dentro do conjunto de iniciativas de educação científica do interior maranhense, em diálogo com os desafios estratégicos do Plano Maranhão 2050 e com a literatura sobre espaços não formais de educação científica no Nordeste brasileiro.",
+  nota:"",
   texto:"O autor agradece à FAPEMA pela Bolsa de Produtividade, Processo BEPP-10468/26. Relatório Técnico Final até 30/08/2027, via Patronage."
 },{
   id:"f-pedic-ufma", tipo:"Projeto institucional", agencia:"UFMA", nome:"Laboratório de Pesquisa em Ensino Digital para Ciência (PEDIC): focando na aprendizagem baseada em jogos",
@@ -774,6 +779,8 @@ const PLANOS_PADRAO = [
     "Elaboração do relatório final e apresentação no SEMIC"])
 ];
 
+/* Não é mais lida por ninguém: a trava por versão saiu de semear(), que hoje acrescenta por id.
+   Subir este número não produz efeito. Mantida só para não quebrar backups antigos. */
 const VERSAO_SEMENTES = 4;
 let state = {itens:[], fomentos:JSON.parse(JSON.stringify(FOMENTO_PADRAO)),
   metas:JSON.parse(JSON.stringify(METAS_PADRAO)), planos:JSON.parse(JSON.stringify(PLANOS_PADRAO)),
