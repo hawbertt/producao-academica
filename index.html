@@ -905,6 +905,10 @@ const esc = s => String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
 const fom = id => { const f = state.fomentos.find(x=>x.id===id); return f ? f.agencia+" "+f.processo : id; };
 const tag = s => `<span class="tag" style="background:${CORES[s]?CORES[s][0]:"#EEE"};color:${CORES[s]?CORES[s][1]:"#555"}">${esc(s)}</span>`;
 const pendentes = () => state.itens.filter(i=>CONCLUIDOS.includes(i.status) && i.fomentos.length>0 && i.agradecimento!=="Sim");
+/* mesma regra de pendência de agradecimento na lista e no quadro */
+function semAgradecimento(i){
+  return !!(i.fomentos.length && CONCLUIDOS.includes(i.status) && i.agradecimento !== "Sim");
+}
 function baixar(nome, conteudo, tipo){
   const b = new Blob([conteudo], {type:(tipo||"text/plain")+";charset=utf-8"});
   const u = URL.createObjectURL(b); const a = document.createElement("a");
@@ -1672,17 +1676,18 @@ function telaProducao(){
     </div>
   </div>`;
 
-  if(ui.prodVista === "quadro") return h + telaAndamento();
-
+  /* o estado vazio vem antes da bifurcação: lista e quadro mostram o mesmo */
   if(!f.length) return h + estadoVazio("livro",
     state.itens.length ? "Nenhuma produção neste filtro" : "Nenhuma produção registrada",
     state.itens.length ? "Ajuste a situação, o tipo ou o projeto para ver os assentos já registrados."
       : "Comece registrando um artigo, capítulo, livro, trabalho em evento ou outro produto acadêmico.",
     "+ Registrar produção", "novo()");
 
+  if(ui.prodVista === "quadro") return h + telaAndamento(f);
+
   h += f.map(i=>{
     const feito = CONCLUIDOS.includes(i.status);
-    const pend = i.fomentos.length && feito && i.agradecimento !== "Sim";
+    const pend = semAgradecimento(i);
     const cor = i.fomentos.length ? i.fomentos[0] : "";
     return `<div class="lin ${feito?"feito":""}" style="${fx(cor)}" onclick="abrir('${i.id}')">
       <div class="cab">
@@ -1698,15 +1703,34 @@ function telaProducao(){
   return h;
 }
 
-function telaAndamento(){
-  const cols = ["Escrevendo","A submeter","Submetido","Em revisão","Aceito"];
+/* Colunas do quadro. Os chips de situação não casam um a um com as colunas:
+   "Em andamento" cobre quatro situações e "Concluído" cobre Aceito e Publicado.
+   Com um chip ativo, aparecem só as colunas que aquele chip admite. */
+function colunasDoQuadro(lista){
+  const base = ["Escrevendo","A submeter","Submetido","Em revisão","Aceito"];
+  if(ui.fRapido === "Concluído")    return STATUS.filter(s=>CONCLUIDOS.includes(s));
+  if(ui.fRapido === "Recusado")     return ["Recusado"];
+  if(ui.fRapido === "Em andamento") return STATUS.filter(s=>!CONCLUIDOS.includes(s) && s !== "Recusado");
+  /* Todos: as colunas de sempre, mais qualquer situação presente que não esteja nelas,
+     para que item Publicado ou Recusado não fique invisível */
+  const extras = [...new Set(lista.map(i=>i.status))].filter(s=>!base.includes(s));
+  return base.concat(STATUS.filter(s=>extras.includes(s)));
+}
+/* Recebe a mesma lista já filtrada que a vista em lista usa, para as duas não divergirem */
+function telaAndamento(lista){
+  const itens = Array.isArray(lista) ? lista : state.itens;
+  const cols = colunasDoQuadro(itens);
   return `<div class="grid g3">${cols.map(c=>{
-    const g = state.itens.filter(i=>i.status===c);
+    const g = itens.filter(i=>i.status===c);
     return `<div class="col"><div class="linha" style="margin-bottom:10px">${tag(c)}
       <span style="font-family:var(--data);font-size:12px;color:var(--ink2)">${g.length}</span></div>
       ${g.length?g.map(i=>`<div class="mini" onclick="abrir('${i.id}')">
-        <div style="font-size:13.5px;font-weight:600;line-height:1.3">${esc(i.titulo||"(sem título)")}</div>
+        <div style="display:flex;align-items:flex-start;gap:6px">
+          ${i.fomentos.map(x=>marcador(x,11)).join("")}
+          <span style="font-size:13.5px;font-weight:600;line-height:1.3">${esc(i.titulo||"(sem título)")}</span>
+        </div>
         <div class="meta" style="font-size:11.5px">${esc(i.veiculo||i.tipo)}</div>
+        ${semAgradecimento(i)?`<div style="margin-top:5px"><span class="carimbo">Sem agradecimento</span></div>`:""}
         ${i.prazo?`<div style="font-family:var(--data);font-size:11px;color:var(--stamp);margin-top:4px">prazo ${esc(i.prazo)}</div>`:""}
       </div>`).join(""):`<p class="meta">Vazio.</p>`}</div>`;
   }).join("")}</div>`;
